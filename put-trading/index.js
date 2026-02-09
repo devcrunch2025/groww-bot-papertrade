@@ -3,6 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const { createObjectCsvWriter } = require('csv-writer');
 
 // --- SETTINGS ---
 const ACCESS_TOKEN = process.env.GROW_ACCESS_TOKEN;
@@ -30,6 +31,7 @@ function getTickFile() { return path.join(LOG_DIR, `${getDate()}_${STOCK}_ticks.
 function getCandleFile() { return path.join(LOG_DIR, `${getDate()}_${STOCK}_candles.json`); }
 function getTimeFile() { return path.join(LOG_DIR, `${getDate()}_${STOCK}_time.json`); }
 function getLogFile() { return path.join(LOG_DIR, `${getDate()}_${STOCK}.log`); }
+function getCSVFile() { return path.join(LOG_DIR, `${getDate()}_${STOCK}_signals.csv`); }
 
 // --- DEBUG LOG ---
 function logDebug(msg) {
@@ -47,19 +49,38 @@ function sendEmail(subject, body) {
     });
 }
 
+// --- CSV WRITER ---
+const csvWriter = createObjectCsvWriter({
+    path: getCSVFile(),
+    header: [
+        { id: 'timestamp', title: 'Timestamp' },
+        { id: 'signal', title: 'Signal' },
+        { id: 'price', title: 'Price' },
+        { id: 'profitOrLoss', title: 'ProfitOrLoss' }
+    ],
+    append: fs.existsSync(getCSVFile())
+});
+
+// --- PAPER TRADING STATE ---
+let lastBuyPrice = null;
+
 // --- INIT FILES ---
 function initFiles() {
     if (!fs.existsSync(getTickFile())) writeJSON(getTickFile(), []);
     if (!fs.existsSync(getCandleFile())) writeJSON(getCandleFile(), []);
     if (!fs.existsSync(getTimeFile())) writeJSON(getTimeFile(), { time: Date.now() });
+    if (!fs.existsSync(getCSVFile())) fs.writeFileSync(getCSVFile(), '');
 }
 
 // --- FILE HELPERS ---
 function readJSON(file) { return JSON.parse(fs.readFileSync(file)); }
 function writeJSON(file, data) { fs.writeFileSync(file, JSON.stringify(data, null, 2)); }
 
-// --- PRICE HISTORY ---
-let lastPrice = null;
+// --- LOG SIGNAL TO CSV ---
+function logCSV(signal, price, profitOrLoss = '') {
+    csvWriter.writeRecords([{ timestamp: new Date().toISOString(), signal, price, profitOrLoss }])
+        .catch(err => logDebug(`CSV write error ❌ ${err.message}`));
+}
 
 // --- API FETCH ---
 async function fetchLivePrice() {
@@ -128,13 +149,18 @@ function checkCandle() {
             // BUY: last 2 candles rising
             if (prevClose1 < prevClose2 && prevClose2 < currClose) {
                 logDebug(`BUY SIGNAL | Last 2 candles rising`);
-                sendEmail(`BUY SIGNAL`, `BUY signal for ${STOCK} at price ${currClose}`);
+                sendEmail('BUY SIGNAL', `BUY signal for ${STOCK} at price ${currClose}`);
+                lastBuyPrice = currClose; // store buy price for P&L
+                logCSV('BUY', currClose);
             }
 
             // SELL: last candle falling
-            if (prevClose2 > currClose) {
-                logDebug(`SELL SIGNAL | Last candle fell`);
-                sendEmail(`SELL SIGNAL`, `SELL signal for ${STOCK} at price ${currClose}`);
+            if (prevClose2 > currClose && lastBuyPrice !== null) {
+                const profit = (currClose - lastBuyPrice).toFixed(2);
+                logDebug(`SELL SIGNAL | Last candle fell | Profit/Loss: ${profit}`);
+                sendEmail('SELL SIGNAL', `SELL signal for ${STOCK} at price ${currClose} | P/L: ${profit}`);
+                logCSV('SELL', currClose, profit);
+                lastBuyPrice = null; // reset after sell
             }
         }
 
@@ -144,14 +170,7 @@ function checkCandle() {
     }
 }
 
-// --- START BOT ---
-console.log("Live JSON Candle Bot with BUY/SELL email Started...");
-initFiles();
-fetchLivePrice(); // first fetch immediately
-setInterval(fetchLivePrice, FETCH_INTERVAL);
-
-
-// --- SEND CSV HOURLY ---
+// --- SEND HOURLY CSV REPORT ---
 function sendCSVHourly() {
     const csvFile = getCSVFile();
     if (!fs.existsSync(csvFile)) {
@@ -174,5 +193,11 @@ function sendCSVHourly() {
     });
 }
 
-// --- Schedule hourly email ---
+// --- START BOT ---
+console.log("Live JSON Candle Bot with BUY/SELL + P&L CSV + Hourly Email Started...");
+initFiles();
+fetchLivePrice(); // first fetch immediately
+setInterval(fetchLivePrice, FETCH_INTERVAL);
+
+// --- Schedule hourly CSV email ---
 setInterval(sendCSVHourly, 60 * 60 * 1000); // every 1 hour

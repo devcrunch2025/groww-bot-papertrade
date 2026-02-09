@@ -1,0 +1,267 @@
+[2026-02-09T05:19:44.788Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:19:45.399Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.6,"quantity":706,"orderCount":6},{"price":1463.5,"quantity":631,"orderCount":7},{"price":1463.4,"quantity":764,"orderCount":10},{"price":1463.3,"quantity":532,"orderCount":6},{"price":1463.2,"quantity":657,"orderCount":10}],"sell":[{"price":1464,"quantity":25,"orderCount":2},{"price":1464.1,"quantity":68,"orderCount":1},{"price":1464.2,"quantity":311,"orderCount":4},{"price":1464.3,"quantity":468,"orderCount":6},{"price":1464.4,"quantity":523,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614381,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":363269,"total_sell_quantity":715329,"volume":1969661,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:19:45.402Z] Live price: 1464
+[2026-02-09T05:19:54.843Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:19:55.407Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.299999999999955,"day_change_perc":0.9167355941549459,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.5,"quantity":194,"orderCount":5},{"price":1463.4,"quantity":61,"orderCount":3},{"price":1463.3,"quantity":695,"orderCount":7},{"price":1463.2,"quantity":574,"orderCount":8},{"price":1463.1,"quantity":844,"orderCount":13}],"sell":[{"price":1464.1,"quantity":474,"orderCount":6},{"price":1464.2,"quantity":657,"orderCount":9},{"price":1464.3,"quantity":855,"orderCount":12},{"price":1464.4,"quantity":2522,"orderCount":23},{"price":1464.5,"quantity":1118,"orderCount":15}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":100,"last_trade_time":1770614391,"low_trade_range":null,"last_price":1464.1,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376078,"total_sell_quantity":711811,"volume":1973951,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:19:55.409Z] Live price: 1464.1
+[2026-02-09T05:20:04.851Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:05.383Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":10,"orderCount":3},{"price":1463.6,"quantity":3,"orderCount":2},{"price":1463.5,"quantity":6,"orderCount":1},{"price":1463.4,"quantity":145,"orderCount":4},{"price":1463.3,"quantity":299,"orderCount":6}],"sell":[{"price":1464,"quantity":744,"orderCount":16},{"price":1464.1,"quantity":391,"orderCount":8},{"price":1464.2,"quantity":1086,"orderCount":11},{"price":1464.3,"quantity":1094,"orderCount":14},{"price":1464.4,"quantity":2597,"orderCount":25}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614400,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376921,"total_sell_quantity":715746,"volume":1974497,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:05.384Z] Live price: 1464
+[2026-02-09T05:20:14.865Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:15.448Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":17,"orderCount":4},{"price":1463.6,"quantity":3,"orderCount":2},{"price":1463.5,"quantity":41,"orderCount":1},{"price":1463.4,"quantity":174,"orderCount":4},{"price":1463.3,"quantity":341,"orderCount":7}],"sell":[{"price":1464.1,"quantity":672,"orderCount":8},{"price":1464.2,"quantity":1130,"orderCount":11},{"price":1464.3,"quantity":1291,"orderCount":13},{"price":1464.4,"quantity":2497,"orderCount":22},{"price":1464.5,"quantity":1519,"orderCount":13}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614413,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376428,"total_sell_quantity":716582,"volume":1980710,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:15.449Z] Live price: 1464
+[2026-02-09T05:20:24.870Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:25.436Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":12.900000000000091,"day_change_perc":0.8891645988420245,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":1,"orderCount":1},{"price":1463.6,"quantity":617,"orderCount":6},{"price":1463.5,"quantity":491,"orderCount":3},{"price":1463.4,"quantity":493,"orderCount":4},{"price":1463.3,"quantity":430,"orderCount":8}],"sell":[{"price":1464,"quantity":82,"orderCount":3},{"price":1464.1,"quantity":1045,"orderCount":9},{"price":1464.2,"quantity":958,"orderCount":10},{"price":1464.3,"quantity":1616,"orderCount":14},{"price":1464.4,"quantity":2383,"orderCount":20}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":87,"last_trade_time":1770614422,"low_trade_range":null,"last_price":1463.7,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":383088,"total_sell_quantity":720706,"volume":1981616,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:25.437Z] Live price: 1463.7
+[2026-02-09T05:20:34.876Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:35.423Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":301,"orderCount":6},{"price":1463.6,"quantity":834,"orderCount":5},{"price":1463.5,"quantity":493,"orderCount":4},{"price":1463.4,"quantity":693,"orderCount":7},{"price":1463.3,"quantity":535,"orderCount":10}],"sell":[{"price":1464,"quantity":1277,"orderCount":8},{"price":1464.1,"quantity":658,"orderCount":7},{"price":1464.2,"quantity":768,"orderCount":10},{"price":1464.3,"quantity":1158,"orderCount":13},{"price":1464.4,"quantity":2504,"orderCount":24}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614432,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":381297,"total_sell_quantity":722650,"volume":1982127,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:35.424Z] Live price: 1464
+[2026-02-09T05:20:44.887Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:45.447Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":12.900000000000091,"day_change_perc":0.8891645988420245,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":216,"orderCount":7},{"price":1463.6,"quantity":777,"orderCount":5},{"price":1463.5,"quantity":816,"orderCount":6},{"price":1463.4,"quantity":753,"orderCount":9},{"price":1463.3,"quantity":527,"orderCount":9}],"sell":[{"price":1463.9,"quantity":479,"orderCount":3},{"price":1464,"quantity":1337,"orderCount":8},{"price":1464.1,"quantity":658,"orderCount":7},{"price":1464.2,"quantity":712,"orderCount":9},{"price":1464.3,"quantity":685,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614438,"low_trade_range":null,"last_price":1463.7,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":382387,"total_sell_quantity":721790,"volume":1982308,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:45.448Z] Live price: 1463.7
+[2026-02-09T05:20:54.889Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:55.468Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.100000000000136,"day_change_perc":0.902950096498493,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":301,"orderCount":2},{"price":1463.6,"quantity":699,"orderCount":4},{"price":1463.5,"quantity":860,"orderCount":8},{"price":1463.4,"quantity":816,"orderCount":11},{"price":1463.3,"quantity":588,"orderCount":9}],"sell":[{"price":1463.9,"quantity":317,"orderCount":7},{"price":1464,"quantity":1787,"orderCount":10},{"price":1464.1,"quantity":1016,"orderCount":8},{"price":1464.2,"quantity":373,"orderCount":6},{"price":1464.3,"quantity":723,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":45,"last_trade_time":1770614453,"low_trade_range":null,"last_price":1463.9,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":383937,"total_sell_quantity":721903,"volume":1983249,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:55.469Z] Live price: 1463.9
+[2026-02-09T05:21:04.900Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:21:05.461Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.5,"day_change_perc":0.9305210918114144,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.9,"quantity":75,"orderCount":4},{"price":1463.8,"quantity":647,"orderCount":7},{"price":1463.7,"quantity":1114,"orderCount":8},{"price":1463.6,"quantity":977,"orderCount":12},{"price":1463.5,"quantity":1386,"orderCount":16}],"sell":[{"price":1464.1,"quantity":500,"orderCount":1},{"price":1464.2,"quantity":55,"orderCount":1},{"price":1464.3,"quantity":121,"orderCount":3},{"price":1464.4,"quantity":454,"orderCount":7},{"price":1464.5,"quantity":5657,"orderCount":8}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":9,"last_trade_time":1770614460,"low_trade_range":null,"last_price":1464.3,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":386009,"total_sell_quantity":714456,"volume":1989632,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:21:05.462Z] Live price: 1464.3
+[2026-02-09T05:21:13.742Z] Live price: 1464
+[2026-02-09T05:21:23.686Z] Live price: 1464
+[2026-02-09T05:21:33.732Z] Live price: 1464.4
+[2026-02-09T05:21:43.719Z] Live price: 1464.4
+[2026-02-09T05:21:53.700Z] Live price: 1464.1
+[2026-02-09T05:22:03.735Z] Live price: 1464.4
+[2026-02-09T05:22:13.746Z] Live price: 1464.1
+[2026-02-09T05:22:23.768Z] Live price: 1464
+[2026-02-09T05:22:33.749Z] Live price: 1463.9
+[2026-02-09T05:22:43.765Z] Live price: 1464
+[2026-02-09T05:22:53.782Z] Live price: 1463.9
+[2026-02-09T05:22:53.786Z] New 3-min candle → {"time":"2026-02-09T05:22:53.786Z","open":1464,"high":1464.4,"low":1463.7,"close":1463.9,"average":"1464.05"}
+[2026-02-09T05:23:03.793Z] Live price: 1463.9
+[2026-02-09T05:23:13.796Z] Live price: 1463.9
+[2026-02-09T05:23:23.813Z] Live price: 1463.9
+[2026-02-09T05:23:33.815Z] Live price: 1464
+[2026-02-09T05:23:43.820Z] Live price: 1464.1
+[2026-02-09T05:23:53.842Z] Live price: 1464.2
+[2026-02-09T05:24:03.822Z] Live price: 1464.4
+[2026-02-09T05:24:13.841Z] Live price: 1464.1
+[2026-02-09T05:24:23.816Z] Live price: 1464.2
+[2026-02-09T05:24:33.873Z] Live price: 1464.2
+[2026-02-09T05:24:43.870Z] Live price: 1464.3
+[2026-02-09T05:24:53.894Z] Live price: 1464.3
+[2026-02-09T05:25:03.870Z] Live price: 1464.4
+[2026-02-09T05:25:13.876Z] Live price: 1464.5
+[2026-02-09T05:25:23.892Z] Live price: 1464.5
+[2026-02-09T05:25:33.922Z] Live price: 1464.5
+[2026-02-09T05:25:43.914Z] Live price: 1464.5
+[2026-02-09T05:25:53.913Z] Live price: 1464.5
+[2026-02-09T05:25:53.914Z] New 3-min candle → {"time":"2026-02-09T05:25:53.914Z","open":1463.9,"high":1464.5,"low":1463.9,"close":1464.5,"average":"1464.24"}
+[2026-02-09T05:26:03.935Z] Live price: 1464.5
+[2026-02-09T05:26:45.340Z] Live price: 1464.7
+[2026-02-09T05:26:55.284Z] Live price: 1464.5
+[2026-02-09T05:27:05.321Z] Live price: 1464.5
+[2026-02-09T05:27:15.307Z] Live price: 1464
+[2026-02-09T05:27:25.349Z] Live price: 1464
+[2026-02-09T05:27:35.354Z] Live price: 1464.2
+[2026-02-09T05:27:45.341Z] Live price: 1464.1
+[2026-02-09T05:27:55.317Z] Live price: 1464.2
+[2026-02-09T05:28:05.371Z] Live price: 1464.2
+[2026-02-09T05:28:15.379Z] Live price: 1464.3
+[2026-02-09T05:28:25.379Z] Live price: 1464.1
+[2026-02-09T05:28:35.396Z] Live price: 1464.2
+[2026-02-09T05:28:45.404Z] Live price: 1464.2
+[2026-02-09T05:28:55.374Z] Live price: 1464.3
+[2026-02-09T05:28:55.377Z] New 3-min candle → {"time":"2026-02-09T05:28:55.377Z","open":1464.5,"high":1464.7,"low":1464,"close":1464.3,"average":"1464.27"}
+[2026-02-09T05:29:05.411Z] Live price: 1464.5
+[2026-02-09T05:29:15.403Z] Live price: 1464.5
+[2026-02-09T05:29:25.438Z] Live price: 1464.5
+[2026-02-09T05:29:35.443Z] Live price: 1464.5
+[2026-02-09T05:29:45.427Z] Live price: 1464.5
+[2026-02-09T05:47:12.109Z] Live price: 1464.2
+[2026-02-09T05:47:12.161Z] New 3-min candle → {"time":"2026-02-09T05:47:12.161Z","open":1464.5,"high":1464.5,"low":1464.2,"close":1464.2,"average":"1464.45"}
+[2026-02-09T05:47:22.113Z] Live price: 1464.2
+[2026-02-09T05:47:32.044Z] Live price: 1464.1
+[2026-02-09T05:47:42.007Z] Live price: 1464.1
+[2026-02-09T05:47:52.023Z] Live price: 1464
+[2026-02-09T05:48:02.008Z] Live price: 1464
+[2026-02-09T05:48:12.050Z] Live price: 1464.1
+[2026-02-09T05:48:22.058Z] Live price: 1464.1
+[2026-02-09T05:48:32.059Z] Live price: 1464.1
+[2026-02-09T05:48:42.106Z] Live price: 1464
+[2026-02-09T05:48:52.101Z] Live price: 1464
+[2026-02-09T05:49:02.140Z] Live price: 1464.1
+[2026-02-09T05:49:12.090Z] Live price: 1464.1
+[2026-02-09T05:49:22.172Z] Live price: 1464.1
+[2026-02-09T05:49:32.093Z] Live price: 1464.1
+[2026-02-09T05:49:42.123Z] Live price: 1464.2
+[2026-02-09T05:49:52.131Z] Live price: 1464.1
+[2026-02-09T05:50:02.133Z] Live price: 1464.2
+[2026-02-09T05:50:12.141Z] Live price: 1464.2
+[2026-02-09T05:50:22.138Z] Live price: 1464.2
+[2026-02-09T05:50:22.141Z] New 3-min candle → {"time":"2026-02-09T05:50:22.141Z","open":1464.2,"high":1464.2,"low":1464,"close":1464.2,"average":"1464.11"}
+[2026-02-09T05:50:32.157Z] Live price: 1464.2
+[2026-02-09T05:50:42.151Z] Live price: 1464.3
+[2026-02-09T05:50:52.140Z] Live price: 1464.2
+[2026-02-09T05:51:02.183Z] Live price: 1464.3
+[2026-02-09T05:51:12.180Z] Live price: 1464.3
+[2026-02-09T05:51:22.183Z] Live price: 1464.4
+[2026-02-09T05:51:32.171Z] Live price: 1464.3
+[2026-02-09T05:51:42.240Z] Live price: 1464.6
+[2026-02-09T05:51:49.854Z] Price: 1464.8
+[2026-02-09T05:51:59.841Z] ▲ Price UP: 1464.9
+[2026-02-09T05:52:02.378Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:09.867Z] ▼ Price DOWN: 1464.7
+[2026-02-09T05:52:11.987Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:52:19.848Z] ▲ Price UP: 1464.9
+[2026-02-09T05:52:22.025Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:29.867Z] ▲ Price UP: 1465
+[2026-02-09T05:52:32.458Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:39.874Z] ■ No Change: 1465
+[2026-02-09T05:52:49.892Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:52:52.048Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:52:59.883Z] ▲ Price UP: 1465
+[2026-02-09T05:53:01.939Z] Email sent ✅ | Price UP
+[2026-02-09T05:53:09.897Z] ■ No Change: 1465
+[2026-02-09T05:53:19.896Z] ■ No Change: 1465
+[2026-02-09T05:53:29.924Z] ■ No Change: 1465
+[2026-02-09T05:53:29.926Z] New 3-min candle → {"time":"2026-02-09T05:53:29.926Z","open":1464.2,"high":1465,"low":1464.2,"close":1465,"average":"1464.67"}
+[2026-02-09T05:53:32.825Z] Email sent ✅ | New Candle
+[2026-02-09T05:53:39.938Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:53:41.920Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:53:49.924Z] ▲ Price UP: 1465
+[2026-02-09T05:53:52.111Z] Email sent ✅ | Price UP
+[2026-02-09T05:53:59.938Z] ■ No Change: 1465
+[2026-02-09T05:54:09.956Z] ■ No Change: 1465
+[2026-02-09T05:54:19.944Z] ■ No Change: 1465
+[2026-02-09T05:54:29.971Z] ■ No Change: 1465
+[2026-02-09T05:54:39.959Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:54:42.100Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:54:49.957Z] ■ No Change: 1464.9
+[2026-02-09T05:54:59.986Z] ▲ Price UP: 1465
+[2026-02-09T05:55:02.086Z] Email sent ✅ | Price UP
+[2026-02-09T05:55:09.997Z] ▼ Price DOWN: 1464.8
+[2026-02-09T05:55:12.714Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:55:20.023Z] ▲ Price UP: 1465
+[2026-02-09T05:55:22.296Z] Email sent ✅ | Price UP
+[2026-02-09T05:55:30.025Z] ▼ Price DOWN: 1464.8
+[2026-02-09T05:55:32.304Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:55:40.009Z] ■ No Change: 1464.8
+[2026-02-09T05:55:50.023Z] ▼ Price DOWN: 1464.7
+[2026-02-09T05:55:52.172Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:56:00.032Z] ■ No Change: 1464.7
+[2026-02-09T05:56:10.034Z] ■ No Change: 1464.7
+[2026-02-09T05:56:19.135Z] Live price: 1464.6
+[2026-02-09T05:56:29.148Z] Live price: 1464.6
+[2026-02-09T05:56:39.146Z] Live price: 1464.6
+[2026-02-09T05:56:39.149Z] New 3-min candle → {"time":"2026-02-09T05:56:39.149Z","open":1464.9,"high":1465,"low":1464.6,"close":1464.6,"average":"1464.84"}
+[2026-02-09T05:56:39.151Z] SELL SIGNAL | Last candle fell
+[2026-02-09T05:56:41.208Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T05:56:49.164Z] Live price: 1464
+[2026-02-09T05:56:59.171Z] Live price: 1464
+[2026-02-09T05:57:09.210Z] Live price: 1463.6
+[2026-02-09T05:57:19.180Z] Live price: 1463.8
+[2026-02-09T05:57:29.200Z] Live price: 1463.7
+[2026-02-09T05:57:39.199Z] Live price: 1463.6
+[2026-02-09T05:57:49.216Z] Live price: 1463.6
+[2026-02-09T05:57:59.261Z] Live price: 1463.6
+[2026-02-09T05:58:09.203Z] Live price: 1463.6
+[2026-02-09T05:58:19.866Z] Live price: 1463.5
+[2026-02-09T05:58:29.876Z] Live price: 1463.9
+[2026-02-09T05:58:39.874Z] Live price: 1463.9
+[2026-02-09T05:58:49.911Z] Live price: 1463.6
+[2026-02-09T05:58:59.886Z] Live price: 1463.6
+[2026-02-09T05:59:09.907Z] Live price: 1463.6
+[2026-02-09T05:59:19.904Z] Live price: 1463.6
+[2026-02-09T05:59:29.903Z] Live price: 1463.4
+[2026-02-09T05:59:39.915Z] Live price: 1463.4
+[2026-02-09T05:59:39.919Z] New 3-min candle → {"time":"2026-02-09T05:59:39.919Z","open":1464,"high":1464,"low":1463.4,"close":1463.4,"average":"1463.67"}
+[2026-02-09T05:59:39.922Z] SELL SIGNAL | Last candle fell
+[2026-02-09T05:59:42.092Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T05:59:49.914Z] Live price: 1463.2
+[2026-02-09T05:59:59.926Z] Live price: 1463.3
+[2026-02-09T06:00:09.951Z] Live price: 1463
+[2026-02-09T06:00:19.939Z] Live price: 1462.9
+[2026-02-09T06:00:29.938Z] Live price: 1462.8
+[2026-02-09T06:00:39.949Z] Live price: 1462.8
+[2026-02-09T06:00:49.938Z] Live price: 1462.8
+[2026-02-09T06:00:59.946Z] Live price: 1462.9
+[2026-02-09T06:01:09.981Z] Live price: 1462.9
+[2026-02-09T06:01:20.015Z] Live price: 1462.6
+[2026-02-09T06:01:29.975Z] Live price: 1462.5
+[2026-02-09T06:01:40.014Z] Live price: 1462.6
+[2026-02-09T06:01:50.001Z] Live price: 1462.7
+[2026-02-09T06:02:00.015Z] Live price: 1462.9
+[2026-02-09T06:02:10.023Z] Live price: 1462.9
+[2026-02-09T06:02:20.029Z] Live price: 1462.8
+[2026-02-09T06:02:30.078Z] Live price: 1462.6
+[2026-02-09T06:02:40.061Z] Live price: 1462.4
+[2026-02-09T06:02:40.065Z] New 3-min candle → {"time":"2026-02-09T06:02:40.065Z","open":1463.2,"high":1463.3,"low":1462.4,"close":1462.4,"average":"1462.81"}
+[2026-02-09T06:02:40.068Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:02:43.174Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:02:50.059Z] Live price: 1461.5
+[2026-02-09T06:03:00.640Z] Live price: 1461.2
+[2026-02-09T06:03:10.080Z] Live price: 1461.9
+[2026-02-09T06:03:21.396Z] Live price: 1461.6
+[2026-02-09T06:03:31.389Z] Live price: 1461.6
+[2026-02-09T06:03:41.391Z] Live price: 1461.3
+[2026-02-09T06:03:51.404Z] Live price: 1461.3
+[2026-02-09T06:04:01.407Z] Live price: 1461.3
+[2026-02-09T06:04:11.432Z] Live price: 1461.3
+[2026-02-09T06:04:21.443Z] Live price: 1461.3
+[2026-02-09T06:04:31.420Z] Live price: 1461.2
+[2026-02-09T06:04:41.437Z] Live price: 1461.3
+[2026-02-09T06:04:51.445Z] Live price: 1461.1
+[2026-02-09T06:05:01.470Z] Live price: 1461.5
+[2026-02-09T06:05:11.456Z] Live price: 1461.5
+[2026-02-09T06:05:21.494Z] Live price: 1461.6
+[2026-02-09T06:05:31.596Z] Live price: 1461.6
+[2026-02-09T06:05:41.526Z] Live price: 1461.6
+[2026-02-09T06:05:41.530Z] New 3-min candle → {"time":"2026-02-09T06:05:41.530Z","open":1461.5,"high":1461.9,"low":1461.1,"close":1461.6,"average":"1461.43"}
+[2026-02-09T06:05:41.536Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:05:44.910Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:05:51.508Z] Live price: 1461.4
+[2026-02-09T06:06:01.494Z] Live price: 1461.7
+[2026-02-09T06:06:11.509Z] Live price: 1461.7
+[2026-02-09T06:06:21.513Z] Live price: 1461.7
+[2026-02-09T06:06:31.521Z] Live price: 1461.3
+[2026-02-09T06:06:41.552Z] Live price: 1461.7
+[2026-02-09T06:06:51.543Z] Live price: 1461.7
+[2026-02-09T06:07:01.535Z] Live price: 1461.7
+[2026-02-09T06:07:11.547Z] Live price: 1461.3
+[2026-02-09T06:07:21.563Z] Live price: 1461.3
+[2026-02-09T06:07:31.593Z] Live price: 1461.7
+[2026-02-09T06:07:41.551Z] Live price: 1461.9
+[2026-02-09T06:07:51.676Z] Live price: 1461.9
+[2026-02-09T06:08:01.617Z] Live price: 1461.8
+[2026-02-09T06:08:11.610Z] Live price: 1461.9
+[2026-02-09T06:08:21.606Z] Live price: 1461.9
+[2026-02-09T06:08:31.638Z] Live price: 1461.9
+[2026-02-09T06:08:41.612Z] Live price: 1461.6
+[2026-02-09T06:08:41.615Z] New 3-min candle → {"time":"2026-02-09T06:08:41.615Z","open":1461.4,"high":1461.9,"low":1461.3,"close":1461.6,"average":"1461.67"}
+[2026-02-09T06:08:51.623Z] Live price: 1461
+[2026-02-09T06:09:01.618Z] Live price: 1461
+[2026-02-09T06:09:11.643Z] Live price: 1461
+[2026-02-09T06:09:21.683Z] Live price: 1461.5
+[2026-02-09T06:09:31.640Z] Live price: 1461.6
+[2026-02-09T06:09:41.645Z] Live price: 1461.6
+[2026-02-09T06:09:51.665Z] Live price: 1461.6
+[2026-02-09T06:10:01.666Z] Live price: 1461.6
+[2026-02-09T06:10:11.679Z] Live price: 1461.6
+[2026-02-09T06:10:21.694Z] Live price: 1461.8
+[2026-02-09T06:10:31.695Z] Live price: 1461.6
+[2026-02-09T06:10:41.707Z] Live price: 1461.8
+[2026-02-09T06:10:51.738Z] Live price: 1461.8
+[2026-02-09T06:11:01.713Z] Live price: 1462
+[2026-02-09T06:11:11.781Z] Live price: 1462.6
+[2026-02-09T06:11:21.746Z] Live price: 1462.6
+[2026-02-09T06:11:31.793Z] Live price: 1462.1
+[2026-02-09T06:11:41.804Z] Live price: 1462
+[2026-02-09T06:11:41.806Z] New 3-min candle → {"time":"2026-02-09T06:11:41.806Z","open":1461,"high":1462.6,"low":1461,"close":1462,"average":"1461.71"}
+[2026-02-09T06:11:51.771Z] Live price: 1462.1
+[2026-02-09T06:12:01.787Z] Live price: 1462.3
+[2026-02-09T06:12:11.782Z] Live price: 1462.8
+[2026-02-09T06:12:21.819Z] Live price: 1462.3
+[2026-02-09T06:12:31.826Z] Live price: 1462.7
+[2026-02-09T06:12:41.834Z] Live price: 1462.5
+[2026-02-09T06:12:51.795Z] Live price: 1462.3
+[2026-02-09T06:13:01.831Z] Live price: 1462.5
