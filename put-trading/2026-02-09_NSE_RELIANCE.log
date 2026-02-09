@@ -1,0 +1,175 @@
+[2026-02-09T04:18:00.591Z] API Token Error ❌ | Request failed with status code 401
+[2026-02-09T04:19:41.671Z] API Token Verified ✅
+[2026-02-09T04:19:42.367Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:19:45.449Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:12.582Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:17.181Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:26.308Z] API Token Verified ✅
+[2026-02-09T04:20:27.121Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:31.580Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:56.908Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:20:59.481Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:21:26.919Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:21:29.594Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:21:56.905Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:21:59.177Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:22:26.902Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:22:29.040Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:22:56.926Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:22:59.221Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:23:26.977Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:23:29.009Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:23:56.944Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:23:59.461Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:24:28.383Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:24:30.365Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:24:56.957Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:24:58.927Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:25:26.955Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:25:28.989Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:25:57.033Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:25:58.977Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:26:26.987Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:26:30.061Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:26:57.006Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:26:59.893Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:27:27.008Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:27:29.849Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:27:57.037Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:27:59.355Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:28:27.128Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:28:29.607Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:28:57.062Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:28:59.099Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:45:22.632Z] API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:45:24.949Z] Error email sent: API fetch error ❌ | Unexpected token o in JSON at position 1
+[2026-02-09T04:50:18.810Z] API Token Verified ✅
+[2026-02-09T04:50:18.821Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:50:19.373Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:50:19.374Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:50:19.374Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:50:19.375Z] New 3-min candle created: 1450.8
+[2026-02-09T04:50:19.375Z] SELL_CALL | Max volume: 310
+[2026-02-09T04:50:19.381Z] PUT ENTRY | Premium: 5
+[2026-02-09T04:50:48.835Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:50:49.422Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:50:49.422Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:50:49.422Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:50:49.424Z] SELL_CALL | Max volume: 4626
+[2026-02-09T04:51:18.852Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:51:19.397Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:51:19.397Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:51:19.397Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:51:48.859Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:51:49.387Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:51:49.388Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:51:49.389Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:52:10.018Z] API Token Verified ✅
+[2026-02-09T04:52:10.021Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:52:10.025Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:52:10.579Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:52:10.580Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:52:10.581Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:52:10.581Z] New 3-min candle created: 1450.8
+[2026-02-09T04:52:10.582Z] SELL_CALL | Max volume: 1311
+[2026-02-09T04:52:10.583Z] PUT ENTRY | Premium: 5
+[2026-02-09T04:52:10.596Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:52:10.596Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:52:10.597Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:52:10.597Z] SELL_CALL | Max volume: 2797
+[2026-02-09T04:53:21.009Z] API Token Verified ✅
+[2026-02-09T04:53:21.010Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:53:21.559Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:53:21.560Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:53:21.561Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:53:21.561Z] New 3-min candle created: 1450.8
+[2026-02-09T04:53:21.562Z] SELL_CALL | Max volume: 2310
+[2026-02-09T04:53:21.563Z] PUT ENTRY | Premium: 5
+[2026-02-09T04:54:11.065Z] API Token Verified ✅
+[2026-02-09T04:54:11.066Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:54:11.640Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:54:11.641Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:54:11.641Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:54:11.642Z] New 3-min candle created: 1450.8
+[2026-02-09T04:54:11.642Z] SELL_CALL | Max volume: 3179
+[2026-02-09T04:54:11.643Z] PUT ENTRY | Premium: 5
+[2026-02-09T04:54:51.463Z] API Token Verified ✅
+[2026-02-09T04:54:51.464Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:54:52.044Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:54:52.045Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:54:52.047Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:54:52.048Z] New 3-min candle created: 1450.8
+[2026-02-09T04:54:52.048Z] SELL_CALL | Max volume: 4415
+[2026-02-09T04:54:52.050Z] PUT ENTRY | Premium: 5
+[2026-02-09T04:55:21.480Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:55:22.056Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:55:22.057Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:55:22.058Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:55:51.492Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:55:52.037Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:55:52.066Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:55:52.068Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:56:21.507Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:56:22.061Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:56:22.062Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:56:22.063Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:56:51.511Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:56:52.067Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:56:52.067Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:56:52.068Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:57:21.519Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:57:22.082Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:57:22.083Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:57:22.083Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:57:51.522Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:57:53.101Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:57:53.102Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:57:53.102Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:57:53.104Z] New 3-min candle created: 1450.8
+[2026-02-09T04:58:21.526Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:58:22.116Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:58:22.116Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:58:22.117Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:58:51.531Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:58:52.115Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:58:52.116Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:58:52.117Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:59:21.534Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:59:22.134Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:59:22.135Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:59:22.135Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:59:51.546Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T04:59:52.086Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T04:59:52.087Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T04:59:52.089Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T05:00:21.555Z] API REQUEST → https://api.groww.in/v1/live-data/ohlc?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T05:00:22.121Z] API RESPONSE → {"status":"SUCCESS","payload":{"NSE_RELIANCE":{"open":1458,"high":1464.9,"low":1453,"close":1450.8}}}
+[2026-02-09T05:00:22.127Z] RAW STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T05:00:22.129Z] PARSED STOCK DATA → {"open":1458,"high":1464.9,"low":1453,"close":1450.8}
+[2026-02-09T05:00:47.700Z] API Token Verified ✅
+[2026-02-09T05:00:47.702Z] API REQUEST → https://api.groww.in/v1/live-data/quote?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T05:00:48.241Z] API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:00:52.148Z] Error email sent: API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:03:01.019Z] API Token Verified ✅
+[2026-02-09T05:03:01.020Z] API REQUEST → https://api.groww.in/v1/live-data/quote?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T05:03:01.580Z] API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:03:04.041Z] Error email sent: API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:03:31.029Z] API REQUEST → https://api.groww.in/v1/live-data/quote?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T05:03:31.576Z] API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:03:33.953Z] Error email sent: API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:04:01.044Z] API REQUEST → https://api.groww.in/v1/live-data/quote?segment=CASH&exchange_symbols=NSE_RELIANCE
+[2026-02-09T05:04:01.635Z] API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:04:03.752Z] Error email sent: API fetch error ❌ | Request failed with status code 400
+[2026-02-09T05:04:27.511Z] API Token Error ❌ | Request failed with status code 400
+[2026-02-09T05:04:31.369Z] Error email sent: API Token Error ❌ | Request failed with status code 400
+[2026-02-09T05:07:56.630Z] API Token Verified ✅
+[2026-02-09T05:07:56.633Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:07:57.291Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":12.200000000000045,"day_change_perc":0.8409153570443925,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1464.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463,"quantity":2821,"orderCount":4},{"price":1462.9,"quantity":230,"orderCount":3},{"price":1462.8,"quantity":1019,"orderCount":12},{"price":1462.7,"quantity":759,"orderCount":13},{"price":1462.6,"quantity":1527,"orderCount":15}],"sell":[{"price":1463.4,"quantity":179,"orderCount":1},{"price":1463.5,"quantity":2817,"orderCount":9},{"price":1463.6,"quantity":559,"orderCount":8},{"price":1463.7,"quantity":2228,"orderCount":8},{"price":1463.8,"quantity":4049,"orderCount":23}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":147,"last_trade_time":1770613674,"low_trade_range":null,"last_price":1463,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":388101,"total_sell_quantity":748349,"volume":1687775,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:07:57.292Z] PARSED DATA → {"open":1458,"high":1464.9,"low":1453,"close":1463,"volume":1687775}
+[2026-02-09T05:07:57.294Z] New 3-min candle created: 1463
+[2026-02-09T05:07:57.295Z] SELL_CALL | Max volume: 1687775
+[2026-02-09T05:07:57.301Z] PUT ENTRY | Premium: 5
+[2026-02-09T05:08:26.658Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:08:27.216Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13,"day_change_perc":0.8960573476702509,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1464.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.6,"quantity":173,"orderCount":2},{"price":1463.5,"quantity":257,"orderCount":4},{"price":1463.4,"quantity":420,"orderCount":7},{"price":1463.3,"quantity":781,"orderCount":7},{"price":1463.2,"quantity":961,"orderCount":11}],"sell":[{"price":1463.8,"quantity":2589,"orderCount":12},{"price":1463.9,"quantity":533,"orderCount":13},{"price":1464,"quantity":17683,"orderCount":152},{"price":1464.1,"quantity":237,"orderCount":4},{"price":1464.2,"quantity":3813,"orderCount":19}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":3,"last_trade_time":1770613705,"low_trade_range":null,"last_price":1463.8,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":395591,"total_sell_quantity":736071,"volume":1695858,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:08:27.218Z] PARSED DATA → {"open":1458,"high":1464.9,"low":1453,"close":1463.8,"volume":1695858}
+[2026-02-09T05:08:27.219Z] SELL_CALL | Max volume: 1695858
