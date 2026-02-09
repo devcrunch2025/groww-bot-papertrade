@@ -6,4 +6,9 @@ put-trading/.env.local
 put-trading/.env.development
 put-trading/.env.test
 put-trading/.env.production
-    
+put-trading - Copy (4)/node_modules/*
+put-trading - Copy (4)/dist
+put-trading - Copy (4)/.env
+put-trading - Copy (4)/.env.local
+put-trading - Copy (4)/.env.development
+put-trading - Copy (4)/node_modules/*

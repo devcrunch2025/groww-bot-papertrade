@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+.terminal {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Top bar */
+.topbar {
+    height: 60px;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 30px;
+}
+
+.price-box {
+    margin-left: auto;
+    font-size: 18px;
+}
+
+/* Main layout */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    height: calc(100vh - 60px);
+}
+
+/* Chart */
+.chart-panel {
+    background: #0f172a;
+    padding: 10px;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
+
+/* Side panels */
+.side-panels {
+    display: flex;
+    flex-direction: column;
+    background: #020617;
+    border-left: 1px solid #1e293b;
+}
+
+.panel {
+    padding: 15px;
+    border-bottom: 1px solid #1e293b;
+}
+
+.panel h3 {
+    margin-top: 0;
+}
+
+/* Signals table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 6px;
+    font-size: 13px;
+    border-bottom: 1px solid #1e293b;
+}
+
+tr.buy {
+    color: #22c55e;
+}
+
+tr.sell {
+    color: #ef4444;
+}

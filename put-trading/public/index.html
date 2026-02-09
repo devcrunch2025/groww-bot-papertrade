@@ -1,64 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pro Trading Terminal</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Trading Terminal</title>
+
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+    <!-- ✅ FIXED VERSION -->
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="terminal">
-
-    <!-- Top bar -->
-    <div class="topbar">
-        <div class="logo">Trading Terminal</div>
-        <select id="stockSelector">
-            <option value="NSE_RELIANCE">RELIANCE</option>
-            <option value="NSE_TCS">TCS</option>
-            <option value="NSE_INFOSYS">INFY</option>
-        </select>
-        <div class="price-box">
-            Live Price: <span id="price">--</span>
-        </div>
-    </div>
-
-    <!-- Main grid -->
-    <div class="main">
-
-        <!-- Chart area -->
-        <div class="chart-panel">
-            <div id="chart"></div>
-        </div>
-
-        <!-- Right side panels -->
-        <div class="side-panels">
-
-            <!-- Position -->
-            <div class="panel">
-                <h3>Position</h3>
-                <div id="position">No active trade</div>
-            </div>
-
-            <!-- Signals -->
-            <div class="panel">
-                <h3>Signals</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Signal</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody id="signalTable"></tbody>
-                </table>
-            </div>
-
-        </div>
-    </div>
-
+<div id="top">
+    <b id="symbol">--</b>
+    | Price: <span id="price">--</span>
 </div>
+
+<div id="chart"></div>
+
+<h3>Trade Signals</h3>
+<table id="signal-table">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Signal</th>
+            <th>Price</th>
+            <th>P/L</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
 <script src="app.js"></script>
 </body>
