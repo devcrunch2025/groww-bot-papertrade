@@ -4,8 +4,7 @@
     <title>Trading Terminal</title>
 
     <script src="/socket.io/socket.io.js"></script>
-
-    <!-- ✅ FIXED VERSION -->
+    <!-- Stable v3 for markers -->
     <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
 
     <link rel="stylesheet" href="style.css">
@@ -13,16 +12,24 @@
 <body>
 
 <div id="top">
-    <b id="symbol">--</b>
+    <b id="symbolLabel">--</b>
     | Price: <span id="price">--</span>
+
+    <span style="margin-left:20px">
+        Scrip:
+        <select id="symbolSelect">
+            <option value="NSE_RELIANCE">NSE_RELIANCE</option>
+            <option value="NSE_TCS">NSE_TCS</option>
+            <option value="NSE_INFOSYS">NSE_INFOSYS</option>
+        </select>
+
+        Date:
+        <input type="date" id="datePicker">
+        <button id="loadData">Load</button>
+    </span>
 </div>
 
 <div id="chart"></div>
-<br/>
-<br/>
-<br/>
-<br/>
-
 
 <h3>Trade Signals</h3>
 <table id="signal-table">

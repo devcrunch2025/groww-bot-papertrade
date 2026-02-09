@@ -16,7 +16,7 @@ const PROFIT_PERCENT = 5;
 const LOG_DIR = 'logs';
 if (!fs.existsSync(LOG_DIR)) fs.mkdirSync(LOG_DIR);
 
-const date = () => new Date().toISOString().split('T')[0];
+const date = () => new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }).split('T')[0];
 const tickFile = () => `${LOG_DIR}/${date()}_${STOCK}_ticks.json`;
 const candleFile = () => `${LOG_DIR}/${date()}_${STOCK}_candles.json`;
 const csvFile = () => `${LOG_DIR}/${date()}_${STOCK}_signals.csv`;
@@ -57,7 +57,7 @@ const read = f => fs.existsSync(f) ? JSON.parse(fs.readFileSync(f)) : [];
 const write = (f, d) => fs.writeFileSync(f, JSON.stringify(d, null, 2));
 const log = m => {
     console.log(m);
-    fs.appendFileSync(logFile(), `[${new Date().toISOString()}] ${m}\n`);
+    fs.appendFileSync(logFile(), `[${new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" })}] ${m}\n`);
 };
 
 // ---------------- FETCH PRICE ----------------
@@ -101,7 +101,7 @@ function buildCandle() {
 
     const prices = ticks.map(t => t.price);
     const candle = {
-        time: new Date().toISOString(),
+        time: new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }),
         open: prices[0],
         high: Math.max(...prices),
         low: Math.min(...prices),
@@ -127,7 +127,7 @@ async function tradeLogic(candles) {
     if (!position && c1.close < c2.close && c2.close < c3.close) {
         position = { entry: c3.close, qty: 1, half: false };
         log(`BUY @ ${c3.close}`);
-        csvWriter.writeRecords([{ time: new Date().toISOString(), signal: 'BUY', price: c3.close, pnl: '' }]);
+        csvWriter.writeRecords([{ time: new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }), signal: 'BUY', price: c3.close, pnl: '' }]);
         mail('BUY SIGNAL', `BUY @ ${c3.close}`);
     }
 
@@ -140,13 +140,13 @@ async function tradeLogic(candles) {
     if (!position.half && pct >= PROFIT_PERCENT) {
         position.half = true;
         log(`SELL 50% @ ${c3.close}`);
-        csvWriter.writeRecords([{ time: new Date().toISOString(), signal: 'SELL_50%', price: c3.close, pnl: diff.toFixed(2) }]);
+        csvWriter.writeRecords([{ time: new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }), signal: 'SELL_50%', price: c3.close, pnl: diff.toFixed(2) }]);
     }
 
     // STOP LOSS
     if (diff <= STOP_LOSS || (position.half && diff <= STOP_LOSS)) {
         log(`SELL @ ${c3.close} P/L ${diff.toFixed(2)}`);
-        csvWriter.writeRecords([{ time: new Date().toISOString(), signal: 'SELL', price: c3.close, pnl: diff.toFixed(2) }]);
+        csvWriter.writeRecords([{ time: new Date().toISOString("en-US", { timeZone: "Asia/Kolkata" }), signal: 'SELL', price: c3.close, pnl: diff.toFixed(2) }]);
         mail('SELL SIGNAL', `SELL @ ${c3.close} | P/L ${diff.toFixed(2)}`);
         position = null;
     }

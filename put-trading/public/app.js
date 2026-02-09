@@ -1,61 +1,33 @@
 const socket = io();
 
-// ---------------- CHART ----------------
+// ---------- CHART ----------
 const chart = LightweightCharts.createChart(
     document.getElementById('chart'),
     {
         layout: {
             backgroundColor: '#0f172a',
             textColor: '#e5e7eb',
-            fontSize: 20
-
+            fontSize: 13
         },
-
         grid: {
             vertLines: { color: '#1f2937' },
             horzLines: { color: '#1f2937' }
         },
-
         timeScale: {
             timeVisible: true,
-            secondsVisible: false,
-            borderColor: '#374151'
+            secondsVisible: false
         },
-
-        /* 🔥 THIS CONTROLS X-AXIS HEIGHT */
-        rightPriceScale: {
-            scaleMargins: {
-                top: 0.05,
-                bottom: 0.35   // ⬅️ increases X-axis display area
-            }
-        },
-
         localization: {
-            timeFormatter: (time) => {
-                const d = new Date(time * 1000);
-                return d.toLocaleTimeString([], {
+            timeFormatter: (time) =>
+                new Date(time * 1000).toLocaleTimeString('en-IN', {
                     hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
+                    minute: '2-digit',
+                    timeZone: 'Asia/Kolkata'
+                })
         }
     }
 );
 
-// chart.applyOptions({
-//     layout: {
-//         fontSize: 20    // ⬅️ makes time labels taller
-//     },
-//     timeScale: {
-//         timeVisible: true,
-//         secondsVisible: false,
-//         barSpacing: 20   // ⬅️ spreads labels vertically & horizontally
-//     }
-// });
-
-
-
-// ✅ v3 API (STABLE)
 const candleSeries = chart.addCandlestickSeries({
     upColor: '#22c55e',
     downColor: '#ef4444',
@@ -65,7 +37,7 @@ const candleSeries = chart.addCandlestickSeries({
     wickDownColor: '#ef4444'
 });
 
-// ---------------- MARKERS ----------------
+// ---------- MARKERS ----------
 function buildMarkers(signals) {
     return signals.map(s => ({
         time: Math.floor(new Date(s.Timestamp).getTime() / 1000),
@@ -76,7 +48,7 @@ function buildMarkers(signals) {
     }));
 }
 
-// ---------------- TABLE ----------------
+// ---------- TABLE ----------
 function updateSignalTable(signals) {
     const tbody = document.querySelector('#signal-table tbody');
     tbody.innerHTML = '';
@@ -86,7 +58,10 @@ function updateSignalTable(signals) {
         tr.style.color = s.Signal.includes('BUY') ? '#22c55e' : '#ef4444';
 
         tr.innerHTML = `
-            <td>${new Date(s.Timestamp).toLocaleTimeString()}</td>
+            <td>${new Date(s.Timestamp).toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</td>
             <td>${s.Signal}</td>
             <td>${s.Price}</td>
             <td>${s.ProfitOrLoss || ''}</td>
@@ -95,31 +70,52 @@ function updateSignalTable(signals) {
     });
 }
 
-// ---------------- LOAD HISTORY ----------------
-fetch('/api/history')
-    .then(r => r.json())
-    .then(d => {
-        candleSeries.setData(
-            d.candles.map(c => ({
-                time: Math.floor(new Date(c.time).getTime() / 1000),
-                open: c.open,
-                high: c.high,
-                low: c.low,
-                close: c.close
-            }))
-        );
+// ---------- LOAD DATA ----------
+function loadData(date, symbol) {
+    fetch(`/api/history?date=${date}&symbol=${symbol}`)
+        .then(r => r.json())
+        .then(d => {
+            document.getElementById('symbolLabel').innerText = d.symbol;
 
-        // ✅ THIS WORKS IN v3
-        candleSeries.setMarkers(buildMarkers(d.signals));
+            candleSeries.setData(
+                d.candles.map(c => ({
+                    time: Math.floor(new Date(c.time).getTime() / 1000),
+                    open: c.open,
+                    high: c.high,
+                    low: c.low,
+                    close: c.close
+                }))
+            );
 
-        updateSignalTable(d.signals);
-        chart.timeScale().fitContent();
-    });
+            candleSeries.setMarkers(buildMarkers(d.signals));
+            updateSignalTable(d.signals);
+            chart.timeScale().fitContent();
+        });
+}
 
-// ---------------- LIVE UPDATES ----------------
+// ---------- INIT ----------
+const datePicker = document.getElementById('datePicker');
+const symbolSelect = document.getElementById('symbolSelect');
+const loadBtn = document.getElementById('loadData');
+
+const todayStr = new Date().toISOString().split('T')[0];
+datePicker.value = todayStr;
+
+loadData(todayStr, symbolSelect.value);
+
+loadBtn.addEventListener('click', () =>
+    loadData(datePicker.value, symbolSelect.value)
+);
+
+// ---------- LIVE UPDATES (ONLY TODAY + DEFAULT SYMBOL) ----------
 socket.on('update', d => {
+    const selectedDate = datePicker.value;
+    const selectedSymbol = symbolSelect.value;
+    const todayStr = new Date().toISOString().split('T')[0];
 
-    document.getElementById('symbol').innerText = d.symbol;
+    if (selectedDate !== todayStr) return;
+    if (selectedSymbol !== d.symbol) return;
+
     document.getElementById('price').innerText = d.lastPrice ?? '--';
 
     if (d.candles.length) {
@@ -133,9 +129,6 @@ socket.on('update', d => {
         });
     }
 
-    // ✅ BUY / SELL ARROWS ON GRAPH
     candleSeries.setMarkers(buildMarkers(d.signals));
-
-    // ✅ TABLE
     updateSignalTable(d.signals);
 });

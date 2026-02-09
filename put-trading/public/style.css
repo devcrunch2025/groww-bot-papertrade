@@ -12,7 +12,7 @@ body {
 }
 
 #chart {
-    height: 520px;
+    height: 600px;
 }
 
 table {
@@ -31,7 +31,10 @@ th, td {
 th {
     background: #020617;
 }
-#chart {
-    height: 500;          /* give space for time scale */
-    
+
+select, input, button {
+    background: #020617;
+    color: #e5e7eb;
+    border: 1px solid #1e293b;
+    padding: 4px;
 }
