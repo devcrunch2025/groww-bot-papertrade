@@ -31,3 +31,7 @@ th, td {
 th {
     background: #020617;
 }
+#chart {
+    height: 500;          /* give space for time scale */
+    
+}

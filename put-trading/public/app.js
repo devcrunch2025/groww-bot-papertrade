@@ -6,14 +6,54 @@ const chart = LightweightCharts.createChart(
     {
         layout: {
             backgroundColor: '#0f172a',
-            textColor: '#e5e7eb'
+            textColor: '#e5e7eb',
+            fontSize: 20
+
         },
+
         grid: {
             vertLines: { color: '#1f2937' },
             horzLines: { color: '#1f2937' }
+        },
+
+        timeScale: {
+            timeVisible: true,
+            secondsVisible: false,
+            borderColor: '#374151'
+        },
+
+        /* 🔥 THIS CONTROLS X-AXIS HEIGHT */
+        rightPriceScale: {
+            scaleMargins: {
+                top: 0.05,
+                bottom: 0.35   // ⬅️ increases X-axis display area
+            }
+        },
+
+        localization: {
+            timeFormatter: (time) => {
+                const d = new Date(time * 1000);
+                return d.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
         }
     }
 );
+
+// chart.applyOptions({
+//     layout: {
+//         fontSize: 20    // ⬅️ makes time labels taller
+//     },
+//     timeScale: {
+//         timeVisible: true,
+//         secondsVisible: false,
+//         barSpacing: 20   // ⬅️ spreads labels vertically & horizontally
+//     }
+// });
+
+
 
 // ✅ v3 API (STABLE)
 const candleSeries = chart.addCandlestickSeries({
