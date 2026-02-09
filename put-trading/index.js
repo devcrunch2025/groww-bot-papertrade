@@ -1,13 +1,20 @@
 require('dotenv').config();
 const axios = require('axios');
 const fs = require('fs');
+const path = require('path');
 
 // --- SETTINGS ---
 const ACCESS_TOKEN = process.env.GROW_ACCESS_TOKEN;
 const STOCK = 'NSE_RELIANCE';
 
-const FETCH_INTERVAL = 10 * 1000;      // 10 sec
-const CANDLE_INTERVAL = 3 * 60 * 1000; // 3 minutes
+const FETCH_INTERVAL = 10 * 1000;       // 10 sec
+const CANDLE_INTERVAL = 3 * 60 * 1000;  // 3 minutes
+
+// --- LOG DIRECTORY ---
+const LOG_DIR = 'logs';
+if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR);
+}
 
 // --- FILE NAME HELPERS ---
 function getDate() {
@@ -15,20 +22,40 @@ function getDate() {
 }
 
 function getTickFile() {
-    return `${getDate()}_${STOCK}_ticks.json`;
+    return path.join(LOG_DIR, `${getDate()}_${STOCK}_ticks.json`);
+}
+
+function getCandleFile() {
+    return path.join(LOG_DIR, `${getDate()}_${STOCK}_candles.json`);
 }
 
 function getTimeFile() {
-    return `${getDate()}_${STOCK}_time.json`;
+    return path.join(LOG_DIR, `${getDate()}_${STOCK}_time.json`);
+}
+
+function getLogFile() {
+    return path.join(LOG_DIR, `${getDate()}_${STOCK}.log`);
+}
+
+// --- DEBUG LOG ---
+function logDebug(msg) {
+    const line = `[${new Date().toISOString()}] ${msg}\n`;
+    fs.appendFileSync(getLogFile(), line);
+    console.log(msg);
 }
 
 // --- INIT FILES ---
 function initFiles() {
     const tickFile = getTickFile();
+    const candleFile = getCandleFile();
     const timeFile = getTimeFile();
 
     if (!fs.existsSync(tickFile)) {
         fs.writeFileSync(tickFile, JSON.stringify([]));
+    }
+
+    if (!fs.existsSync(candleFile)) {
+        fs.writeFileSync(candleFile, JSON.stringify([]));
     }
 
     if (!fs.existsSync(timeFile)) {
@@ -37,28 +64,21 @@ function initFiles() {
 }
 
 // --- FILE HELPERS ---
-function readTicks() {
-    return JSON.parse(fs.readFileSync(getTickFile()));
+function readJSON(file) {
+    return JSON.parse(fs.readFileSync(file));
 }
 
-function writeTicks(data) {
-    fs.writeFileSync(getTickFile(), JSON.stringify(data));
-}
-
-function getLastCandleTime() {
-    return JSON.parse(fs.readFileSync(getTimeFile())).time;
-}
-
-function setLastCandleTime(time) {
-    fs.writeFileSync(getTimeFile(), JSON.stringify({ time }));
+function writeJSON(file, data) {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
 // --- API FETCH ---
 async function fetchLivePrice() {
     try {
         const symbol = STOCK.replace('NSE_', '');
-
         const url = `https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=${symbol}`;
+
+        //logDebug(`API REQUEST → ${url}`);
 
         const response = await axios.get(url, {
             headers: {
@@ -68,35 +88,44 @@ async function fetchLivePrice() {
             }
         });
 
+        //logDebug(`API RESPONSE → ${JSON.stringify(response.data)}`);
+
         if (response.data.status !== 'SUCCESS') {
-            console.log('API error:', response.data);
+            logDebug('API returned error status');
             return;
         }
 
         const price = response.data.payload.last_price;
-        console.log("Live price:", price);
+        logDebug(`Live price: ${price}`);
 
-        let ticks = readTicks();
+        const tickFile = getTickFile();
+        let ticks = readJSON(tickFile);
+
         ticks.push({
             time: new Date().toISOString(),
             price: price
         });
-        writeTicks(ticks);
+
+        writeJSON(tickFile, ticks);
 
         checkCandle();
 
     } catch (err) {
-        console.log("API error:", err.message);
+        logDebug(`API error ❌ ${err.message}`);
     }
 }
 
 // --- CANDLE CREATION ---
 function checkCandle() {
     const now = Date.now();
-    const lastCandleTime = getLastCandleTime();
-    const ticks = readTicks();
+    const timeFile = getTimeFile();
+    const tickFile = getTickFile();
+    const candleFile = getCandleFile();
 
-    if (now - lastCandleTime >= CANDLE_INTERVAL && ticks.length > 0) {
+    const lastTime = readJSON(timeFile).time;
+    const ticks = readJSON(tickFile);
+
+    if (now - lastTime >= CANDLE_INTERVAL && ticks.length > 0) {
         const prices = ticks.map(t => t.price);
 
         const open = prices[0];
@@ -114,16 +143,20 @@ function checkCandle() {
             average: avg.toFixed(2)
         };
 
-        console.log("New 3-min candle:", candle);
+        logDebug(`New 3-min candle → ${JSON.stringify(candle)}`);
+
+        let candles = readJSON(candleFile);
+        candles.push(candle);
+        writeJSON(candleFile, candles);
 
         // reset ticks
-        writeTicks([]);
-        setLastCandleTime(now);
+        writeJSON(tickFile, []);
+        writeJSON(timeFile, { time: now });
     }
 }
 
 // --- START ---
 console.log("Live JSON Candle Bot Started...");
 initFiles();
-fetchLivePrice(); // first fetch
+fetchLivePrice(); // immediate fetch
 setInterval(fetchLivePrice, FETCH_INTERVAL);
