@@ -149,3 +149,30 @@ console.log("Live JSON Candle Bot with BUY/SELL email Started...");
 initFiles();
 fetchLivePrice(); // first fetch immediately
 setInterval(fetchLivePrice, FETCH_INTERVAL);
+
+
+// --- SEND CSV HOURLY ---
+function sendCSVHourly() {
+    const csvFile = getCSVFile();
+    if (!fs.existsSync(csvFile)) {
+        logDebug('CSV file not found for hourly email.');
+        return;
+    }
+
+    const subject = `Paper Trading Report - ${STOCK} - ${getDate()}`;
+    const body = `Attached is the paper trading CSV for ${STOCK} as of ${new Date().toISOString()}.`;
+
+    transporter.sendMail({
+        from: EMAIL_USER,
+        to: EMAIL_TO,
+        subject,
+        text: body,
+        attachments: [{ filename: path.basename(csvFile), path: csvFile }]
+    }, (err) => {
+        if (err) logDebug(`Hourly CSV email failed ❌ ${err.message}`);
+        else logDebug('Hourly CSV email sent ✅');
+    });
+}
+
+// --- Schedule hourly email ---
+setInterval(sendCSVHourly, 60 * 60 * 1000); // every 1 hour
