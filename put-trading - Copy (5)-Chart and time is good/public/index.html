@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trading Terminal</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Stable v3 for markers -->
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="top">
+    <b id="symbolLabel">NSE_TATASTEEL</b>
+    |
+    Price: <span id="livePrice">--</span>
+
+    <span style="margin-left:20px">
+        Scrip:
+        <select id="symbolSelect">
+                        <option value="NSE_TATASTEEL">NSE_TATASTEEL</option>
+
+            
+        </select>
+
+        Date:
+        <input type="date" id="datePicker">
+        <button id="loadData">Load</button>
+    </span>
+</div>
+ 
+<div id="chart"></div>
+
+<h3>Trade Signals</h3>
+<table id="signal-table">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Signal</th>
+            <th>Price</th>
+            <th>P/L</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="app.js"></script>
+</body>
+</html>
+
+

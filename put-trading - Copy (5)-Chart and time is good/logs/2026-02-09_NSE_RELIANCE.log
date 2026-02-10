@@ -1,0 +1,1939 @@
+[2026-02-09T05:19:44.788Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:19:45.399Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.6,"quantity":706,"orderCount":6},{"price":1463.5,"quantity":631,"orderCount":7},{"price":1463.4,"quantity":764,"orderCount":10},{"price":1463.3,"quantity":532,"orderCount":6},{"price":1463.2,"quantity":657,"orderCount":10}],"sell":[{"price":1464,"quantity":25,"orderCount":2},{"price":1464.1,"quantity":68,"orderCount":1},{"price":1464.2,"quantity":311,"orderCount":4},{"price":1464.3,"quantity":468,"orderCount":6},{"price":1464.4,"quantity":523,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614381,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":363269,"total_sell_quantity":715329,"volume":1969661,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:19:45.402Z] Live price: 1464
+[2026-02-09T05:19:54.843Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:19:55.407Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.299999999999955,"day_change_perc":0.9167355941549459,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.5,"quantity":194,"orderCount":5},{"price":1463.4,"quantity":61,"orderCount":3},{"price":1463.3,"quantity":695,"orderCount":7},{"price":1463.2,"quantity":574,"orderCount":8},{"price":1463.1,"quantity":844,"orderCount":13}],"sell":[{"price":1464.1,"quantity":474,"orderCount":6},{"price":1464.2,"quantity":657,"orderCount":9},{"price":1464.3,"quantity":855,"orderCount":12},{"price":1464.4,"quantity":2522,"orderCount":23},{"price":1464.5,"quantity":1118,"orderCount":15}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":100,"last_trade_time":1770614391,"low_trade_range":null,"last_price":1464.1,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376078,"total_sell_quantity":711811,"volume":1973951,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:19:55.409Z] Live price: 1464.1
+[2026-02-09T05:20:04.851Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:05.383Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":10,"orderCount":3},{"price":1463.6,"quantity":3,"orderCount":2},{"price":1463.5,"quantity":6,"orderCount":1},{"price":1463.4,"quantity":145,"orderCount":4},{"price":1463.3,"quantity":299,"orderCount":6}],"sell":[{"price":1464,"quantity":744,"orderCount":16},{"price":1464.1,"quantity":391,"orderCount":8},{"price":1464.2,"quantity":1086,"orderCount":11},{"price":1464.3,"quantity":1094,"orderCount":14},{"price":1464.4,"quantity":2597,"orderCount":25}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614400,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376921,"total_sell_quantity":715746,"volume":1974497,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:05.384Z] Live price: 1464
+[2026-02-09T05:20:14.865Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:15.448Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":17,"orderCount":4},{"price":1463.6,"quantity":3,"orderCount":2},{"price":1463.5,"quantity":41,"orderCount":1},{"price":1463.4,"quantity":174,"orderCount":4},{"price":1463.3,"quantity":341,"orderCount":7}],"sell":[{"price":1464.1,"quantity":672,"orderCount":8},{"price":1464.2,"quantity":1130,"orderCount":11},{"price":1464.3,"quantity":1291,"orderCount":13},{"price":1464.4,"quantity":2497,"orderCount":22},{"price":1464.5,"quantity":1519,"orderCount":13}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614413,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":376428,"total_sell_quantity":716582,"volume":1980710,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:15.449Z] Live price: 1464
+[2026-02-09T05:20:24.870Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:25.436Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":12.900000000000091,"day_change_perc":0.8891645988420245,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":1,"orderCount":1},{"price":1463.6,"quantity":617,"orderCount":6},{"price":1463.5,"quantity":491,"orderCount":3},{"price":1463.4,"quantity":493,"orderCount":4},{"price":1463.3,"quantity":430,"orderCount":8}],"sell":[{"price":1464,"quantity":82,"orderCount":3},{"price":1464.1,"quantity":1045,"orderCount":9},{"price":1464.2,"quantity":958,"orderCount":10},{"price":1464.3,"quantity":1616,"orderCount":14},{"price":1464.4,"quantity":2383,"orderCount":20}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":87,"last_trade_time":1770614422,"low_trade_range":null,"last_price":1463.7,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":383088,"total_sell_quantity":720706,"volume":1981616,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:25.437Z] Live price: 1463.7
+[2026-02-09T05:20:34.876Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:35.423Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.200000000000045,"day_change_perc":0.9098428453267194,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":301,"orderCount":6},{"price":1463.6,"quantity":834,"orderCount":5},{"price":1463.5,"quantity":493,"orderCount":4},{"price":1463.4,"quantity":693,"orderCount":7},{"price":1463.3,"quantity":535,"orderCount":10}],"sell":[{"price":1464,"quantity":1277,"orderCount":8},{"price":1464.1,"quantity":658,"orderCount":7},{"price":1464.2,"quantity":768,"orderCount":10},{"price":1464.3,"quantity":1158,"orderCount":13},{"price":1464.4,"quantity":2504,"orderCount":24}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614432,"low_trade_range":null,"last_price":1464,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":381297,"total_sell_quantity":722650,"volume":1982127,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:35.424Z] Live price: 1464
+[2026-02-09T05:20:44.887Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:45.447Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":12.900000000000091,"day_change_perc":0.8891645988420245,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":216,"orderCount":7},{"price":1463.6,"quantity":777,"orderCount":5},{"price":1463.5,"quantity":816,"orderCount":6},{"price":1463.4,"quantity":753,"orderCount":9},{"price":1463.3,"quantity":527,"orderCount":9}],"sell":[{"price":1463.9,"quantity":479,"orderCount":3},{"price":1464,"quantity":1337,"orderCount":8},{"price":1464.1,"quantity":658,"orderCount":7},{"price":1464.2,"quantity":712,"orderCount":9},{"price":1464.3,"quantity":685,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":1,"last_trade_time":1770614438,"low_trade_range":null,"last_price":1463.7,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":382387,"total_sell_quantity":721790,"volume":1982308,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:45.448Z] Live price: 1463.7
+[2026-02-09T05:20:54.889Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:20:55.468Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.100000000000136,"day_change_perc":0.902950096498493,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.7,"quantity":301,"orderCount":2},{"price":1463.6,"quantity":699,"orderCount":4},{"price":1463.5,"quantity":860,"orderCount":8},{"price":1463.4,"quantity":816,"orderCount":11},{"price":1463.3,"quantity":588,"orderCount":9}],"sell":[{"price":1463.9,"quantity":317,"orderCount":7},{"price":1464,"quantity":1787,"orderCount":10},{"price":1464.1,"quantity":1016,"orderCount":8},{"price":1464.2,"quantity":373,"orderCount":6},{"price":1464.3,"quantity":723,"orderCount":11}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":45,"last_trade_time":1770614453,"low_trade_range":null,"last_price":1463.9,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":383937,"total_sell_quantity":721903,"volume":1983249,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:20:55.469Z] Live price: 1463.9
+[2026-02-09T05:21:04.900Z] API REQUEST → https://api.groww.in/v1/live-data/quote?exchange=NSE&segment=CASH&trading_symbol=RELIANCE
+[2026-02-09T05:21:05.461Z] API RESPONSE → {"status":"SUCCESS","payload":{"average_price":null,"bid_quantity":null,"bid_price":null,"day_change":13.5,"day_change_perc":0.9305210918114144,"upper_circuit_limit":1595.8,"lower_circuit_limit":1305.8,"ohlc":{"open":1458,"high":1465.9,"low":1453,"close":1450.8},"depth":{"buy":[{"price":1463.9,"quantity":75,"orderCount":4},{"price":1463.8,"quantity":647,"orderCount":7},{"price":1463.7,"quantity":1114,"orderCount":8},{"price":1463.6,"quantity":977,"orderCount":12},{"price":1463.5,"quantity":1386,"orderCount":16}],"sell":[{"price":1464.1,"quantity":500,"orderCount":1},{"price":1464.2,"quantity":55,"orderCount":1},{"price":1464.3,"quantity":121,"orderCount":3},{"price":1464.4,"quantity":454,"orderCount":7},{"price":1464.5,"quantity":5657,"orderCount":8}]},"high_trade_range":null,"implied_volatility":null,"last_trade_quantity":9,"last_trade_time":1770614460,"low_trade_range":null,"last_price":1464.3,"market_cap":null,"offer_price":null,"offer_quantity":null,"oi_day_change":0,"oi_day_change_percentage":0,"open_interest":null,"previous_open_interest":null,"total_buy_quantity":386009,"total_sell_quantity":714456,"volume":1989632,"week_52_high":1611.8,"week_52_low":1114.85}}
+[2026-02-09T05:21:05.462Z] Live price: 1464.3
+[2026-02-09T05:21:13.742Z] Live price: 1464
+[2026-02-09T05:21:23.686Z] Live price: 1464
+[2026-02-09T05:21:33.732Z] Live price: 1464.4
+[2026-02-09T05:21:43.719Z] Live price: 1464.4
+[2026-02-09T05:21:53.700Z] Live price: 1464.1
+[2026-02-09T05:22:03.735Z] Live price: 1464.4
+[2026-02-09T05:22:13.746Z] Live price: 1464.1
+[2026-02-09T05:22:23.768Z] Live price: 1464
+[2026-02-09T05:22:33.749Z] Live price: 1463.9
+[2026-02-09T05:22:43.765Z] Live price: 1464
+[2026-02-09T05:22:53.782Z] Live price: 1463.9
+[2026-02-09T05:22:53.786Z] New 3-min candle → {"time":"2026-02-09T05:22:53.786Z","open":1464,"high":1464.4,"low":1463.7,"close":1463.9,"average":"1464.05"}
+[2026-02-09T05:23:03.793Z] Live price: 1463.9
+[2026-02-09T05:23:13.796Z] Live price: 1463.9
+[2026-02-09T05:23:23.813Z] Live price: 1463.9
+[2026-02-09T05:23:33.815Z] Live price: 1464
+[2026-02-09T05:23:43.820Z] Live price: 1464.1
+[2026-02-09T05:23:53.842Z] Live price: 1464.2
+[2026-02-09T05:24:03.822Z] Live price: 1464.4
+[2026-02-09T05:24:13.841Z] Live price: 1464.1
+[2026-02-09T05:24:23.816Z] Live price: 1464.2
+[2026-02-09T05:24:33.873Z] Live price: 1464.2
+[2026-02-09T05:24:43.870Z] Live price: 1464.3
+[2026-02-09T05:24:53.894Z] Live price: 1464.3
+[2026-02-09T05:25:03.870Z] Live price: 1464.4
+[2026-02-09T05:25:13.876Z] Live price: 1464.5
+[2026-02-09T05:25:23.892Z] Live price: 1464.5
+[2026-02-09T05:25:33.922Z] Live price: 1464.5
+[2026-02-09T05:25:43.914Z] Live price: 1464.5
+[2026-02-09T05:25:53.913Z] Live price: 1464.5
+[2026-02-09T05:25:53.914Z] New 3-min candle → {"time":"2026-02-09T05:25:53.914Z","open":1463.9,"high":1464.5,"low":1463.9,"close":1464.5,"average":"1464.24"}
+[2026-02-09T05:26:03.935Z] Live price: 1464.5
+[2026-02-09T05:26:45.340Z] Live price: 1464.7
+[2026-02-09T05:26:55.284Z] Live price: 1464.5
+[2026-02-09T05:27:05.321Z] Live price: 1464.5
+[2026-02-09T05:27:15.307Z] Live price: 1464
+[2026-02-09T05:27:25.349Z] Live price: 1464
+[2026-02-09T05:27:35.354Z] Live price: 1464.2
+[2026-02-09T05:27:45.341Z] Live price: 1464.1
+[2026-02-09T05:27:55.317Z] Live price: 1464.2
+[2026-02-09T05:28:05.371Z] Live price: 1464.2
+[2026-02-09T05:28:15.379Z] Live price: 1464.3
+[2026-02-09T05:28:25.379Z] Live price: 1464.1
+[2026-02-09T05:28:35.396Z] Live price: 1464.2
+[2026-02-09T05:28:45.404Z] Live price: 1464.2
+[2026-02-09T05:28:55.374Z] Live price: 1464.3
+[2026-02-09T05:28:55.377Z] New 3-min candle → {"time":"2026-02-09T05:28:55.377Z","open":1464.5,"high":1464.7,"low":1464,"close":1464.3,"average":"1464.27"}
+[2026-02-09T05:29:05.411Z] Live price: 1464.5
+[2026-02-09T05:29:15.403Z] Live price: 1464.5
+[2026-02-09T05:29:25.438Z] Live price: 1464.5
+[2026-02-09T05:29:35.443Z] Live price: 1464.5
+[2026-02-09T05:29:45.427Z] Live price: 1464.5
+[2026-02-09T05:47:12.109Z] Live price: 1464.2
+[2026-02-09T05:47:12.161Z] New 3-min candle → {"time":"2026-02-09T05:47:12.161Z","open":1464.5,"high":1464.5,"low":1464.2,"close":1464.2,"average":"1464.45"}
+[2026-02-09T05:47:22.113Z] Live price: 1464.2
+[2026-02-09T05:47:32.044Z] Live price: 1464.1
+[2026-02-09T05:47:42.007Z] Live price: 1464.1
+[2026-02-09T05:47:52.023Z] Live price: 1464
+[2026-02-09T05:48:02.008Z] Live price: 1464
+[2026-02-09T05:48:12.050Z] Live price: 1464.1
+[2026-02-09T05:48:22.058Z] Live price: 1464.1
+[2026-02-09T05:48:32.059Z] Live price: 1464.1
+[2026-02-09T05:48:42.106Z] Live price: 1464
+[2026-02-09T05:48:52.101Z] Live price: 1464
+[2026-02-09T05:49:02.140Z] Live price: 1464.1
+[2026-02-09T05:49:12.090Z] Live price: 1464.1
+[2026-02-09T05:49:22.172Z] Live price: 1464.1
+[2026-02-09T05:49:32.093Z] Live price: 1464.1
+[2026-02-09T05:49:42.123Z] Live price: 1464.2
+[2026-02-09T05:49:52.131Z] Live price: 1464.1
+[2026-02-09T05:50:02.133Z] Live price: 1464.2
+[2026-02-09T05:50:12.141Z] Live price: 1464.2
+[2026-02-09T05:50:22.138Z] Live price: 1464.2
+[2026-02-09T05:50:22.141Z] New 3-min candle → {"time":"2026-02-09T05:50:22.141Z","open":1464.2,"high":1464.2,"low":1464,"close":1464.2,"average":"1464.11"}
+[2026-02-09T05:50:32.157Z] Live price: 1464.2
+[2026-02-09T05:50:42.151Z] Live price: 1464.3
+[2026-02-09T05:50:52.140Z] Live price: 1464.2
+[2026-02-09T05:51:02.183Z] Live price: 1464.3
+[2026-02-09T05:51:12.180Z] Live price: 1464.3
+[2026-02-09T05:51:22.183Z] Live price: 1464.4
+[2026-02-09T05:51:32.171Z] Live price: 1464.3
+[2026-02-09T05:51:42.240Z] Live price: 1464.6
+[2026-02-09T05:51:49.854Z] Price: 1464.8
+[2026-02-09T05:51:59.841Z] ▲ Price UP: 1464.9
+[2026-02-09T05:52:02.378Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:09.867Z] ▼ Price DOWN: 1464.7
+[2026-02-09T05:52:11.987Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:52:19.848Z] ▲ Price UP: 1464.9
+[2026-02-09T05:52:22.025Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:29.867Z] ▲ Price UP: 1465
+[2026-02-09T05:52:32.458Z] Email sent ✅ | Price UP
+[2026-02-09T05:52:39.874Z] ■ No Change: 1465
+[2026-02-09T05:52:49.892Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:52:52.048Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:52:59.883Z] ▲ Price UP: 1465
+[2026-02-09T05:53:01.939Z] Email sent ✅ | Price UP
+[2026-02-09T05:53:09.897Z] ■ No Change: 1465
+[2026-02-09T05:53:19.896Z] ■ No Change: 1465
+[2026-02-09T05:53:29.924Z] ■ No Change: 1465
+[2026-02-09T05:53:29.926Z] New 3-min candle → {"time":"2026-02-09T05:53:29.926Z","open":1464.2,"high":1465,"low":1464.2,"close":1465,"average":"1464.67"}
+[2026-02-09T05:53:32.825Z] Email sent ✅ | New Candle
+[2026-02-09T05:53:39.938Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:53:41.920Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:53:49.924Z] ▲ Price UP: 1465
+[2026-02-09T05:53:52.111Z] Email sent ✅ | Price UP
+[2026-02-09T05:53:59.938Z] ■ No Change: 1465
+[2026-02-09T05:54:09.956Z] ■ No Change: 1465
+[2026-02-09T05:54:19.944Z] ■ No Change: 1465
+[2026-02-09T05:54:29.971Z] ■ No Change: 1465
+[2026-02-09T05:54:39.959Z] ▼ Price DOWN: 1464.9
+[2026-02-09T05:54:42.100Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:54:49.957Z] ■ No Change: 1464.9
+[2026-02-09T05:54:59.986Z] ▲ Price UP: 1465
+[2026-02-09T05:55:02.086Z] Email sent ✅ | Price UP
+[2026-02-09T05:55:09.997Z] ▼ Price DOWN: 1464.8
+[2026-02-09T05:55:12.714Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:55:20.023Z] ▲ Price UP: 1465
+[2026-02-09T05:55:22.296Z] Email sent ✅ | Price UP
+[2026-02-09T05:55:30.025Z] ▼ Price DOWN: 1464.8
+[2026-02-09T05:55:32.304Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:55:40.009Z] ■ No Change: 1464.8
+[2026-02-09T05:55:50.023Z] ▼ Price DOWN: 1464.7
+[2026-02-09T05:55:52.172Z] Email sent ✅ | Price DOWN
+[2026-02-09T05:56:00.032Z] ■ No Change: 1464.7
+[2026-02-09T05:56:10.034Z] ■ No Change: 1464.7
+[2026-02-09T05:56:19.135Z] Live price: 1464.6
+[2026-02-09T05:56:29.148Z] Live price: 1464.6
+[2026-02-09T05:56:39.146Z] Live price: 1464.6
+[2026-02-09T05:56:39.149Z] New 3-min candle → {"time":"2026-02-09T05:56:39.149Z","open":1464.9,"high":1465,"low":1464.6,"close":1464.6,"average":"1464.84"}
+[2026-02-09T05:56:39.151Z] SELL SIGNAL | Last candle fell
+[2026-02-09T05:56:41.208Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T05:56:49.164Z] Live price: 1464
+[2026-02-09T05:56:59.171Z] Live price: 1464
+[2026-02-09T05:57:09.210Z] Live price: 1463.6
+[2026-02-09T05:57:19.180Z] Live price: 1463.8
+[2026-02-09T05:57:29.200Z] Live price: 1463.7
+[2026-02-09T05:57:39.199Z] Live price: 1463.6
+[2026-02-09T05:57:49.216Z] Live price: 1463.6
+[2026-02-09T05:57:59.261Z] Live price: 1463.6
+[2026-02-09T05:58:09.203Z] Live price: 1463.6
+[2026-02-09T05:58:19.866Z] Live price: 1463.5
+[2026-02-09T05:58:29.876Z] Live price: 1463.9
+[2026-02-09T05:58:39.874Z] Live price: 1463.9
+[2026-02-09T05:58:49.911Z] Live price: 1463.6
+[2026-02-09T05:58:59.886Z] Live price: 1463.6
+[2026-02-09T05:59:09.907Z] Live price: 1463.6
+[2026-02-09T05:59:19.904Z] Live price: 1463.6
+[2026-02-09T05:59:29.903Z] Live price: 1463.4
+[2026-02-09T05:59:39.915Z] Live price: 1463.4
+[2026-02-09T05:59:39.919Z] New 3-min candle → {"time":"2026-02-09T05:59:39.919Z","open":1464,"high":1464,"low":1463.4,"close":1463.4,"average":"1463.67"}
+[2026-02-09T05:59:39.922Z] SELL SIGNAL | Last candle fell
+[2026-02-09T05:59:42.092Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T05:59:49.914Z] Live price: 1463.2
+[2026-02-09T05:59:59.926Z] Live price: 1463.3
+[2026-02-09T06:00:09.951Z] Live price: 1463
+[2026-02-09T06:00:19.939Z] Live price: 1462.9
+[2026-02-09T06:00:29.938Z] Live price: 1462.8
+[2026-02-09T06:00:39.949Z] Live price: 1462.8
+[2026-02-09T06:00:49.938Z] Live price: 1462.8
+[2026-02-09T06:00:59.946Z] Live price: 1462.9
+[2026-02-09T06:01:09.981Z] Live price: 1462.9
+[2026-02-09T06:01:20.015Z] Live price: 1462.6
+[2026-02-09T06:01:29.975Z] Live price: 1462.5
+[2026-02-09T06:01:40.014Z] Live price: 1462.6
+[2026-02-09T06:01:50.001Z] Live price: 1462.7
+[2026-02-09T06:02:00.015Z] Live price: 1462.9
+[2026-02-09T06:02:10.023Z] Live price: 1462.9
+[2026-02-09T06:02:20.029Z] Live price: 1462.8
+[2026-02-09T06:02:30.078Z] Live price: 1462.6
+[2026-02-09T06:02:40.061Z] Live price: 1462.4
+[2026-02-09T06:02:40.065Z] New 3-min candle → {"time":"2026-02-09T06:02:40.065Z","open":1463.2,"high":1463.3,"low":1462.4,"close":1462.4,"average":"1462.81"}
+[2026-02-09T06:02:40.068Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:02:43.174Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:02:50.059Z] Live price: 1461.5
+[2026-02-09T06:03:00.640Z] Live price: 1461.2
+[2026-02-09T06:03:10.080Z] Live price: 1461.9
+[2026-02-09T06:03:21.396Z] Live price: 1461.6
+[2026-02-09T06:03:31.389Z] Live price: 1461.6
+[2026-02-09T06:03:41.391Z] Live price: 1461.3
+[2026-02-09T06:03:51.404Z] Live price: 1461.3
+[2026-02-09T06:04:01.407Z] Live price: 1461.3
+[2026-02-09T06:04:11.432Z] Live price: 1461.3
+[2026-02-09T06:04:21.443Z] Live price: 1461.3
+[2026-02-09T06:04:31.420Z] Live price: 1461.2
+[2026-02-09T06:04:41.437Z] Live price: 1461.3
+[2026-02-09T06:04:51.445Z] Live price: 1461.1
+[2026-02-09T06:05:01.470Z] Live price: 1461.5
+[2026-02-09T06:05:11.456Z] Live price: 1461.5
+[2026-02-09T06:05:21.494Z] Live price: 1461.6
+[2026-02-09T06:05:31.596Z] Live price: 1461.6
+[2026-02-09T06:05:41.526Z] Live price: 1461.6
+[2026-02-09T06:05:41.530Z] New 3-min candle → {"time":"2026-02-09T06:05:41.530Z","open":1461.5,"high":1461.9,"low":1461.1,"close":1461.6,"average":"1461.43"}
+[2026-02-09T06:05:41.536Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:05:44.910Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:05:51.508Z] Live price: 1461.4
+[2026-02-09T06:06:01.494Z] Live price: 1461.7
+[2026-02-09T06:06:11.509Z] Live price: 1461.7
+[2026-02-09T06:06:21.513Z] Live price: 1461.7
+[2026-02-09T06:06:31.521Z] Live price: 1461.3
+[2026-02-09T06:06:41.552Z] Live price: 1461.7
+[2026-02-09T06:06:51.543Z] Live price: 1461.7
+[2026-02-09T06:07:01.535Z] Live price: 1461.7
+[2026-02-09T06:07:11.547Z] Live price: 1461.3
+[2026-02-09T06:07:21.563Z] Live price: 1461.3
+[2026-02-09T06:07:31.593Z] Live price: 1461.7
+[2026-02-09T06:07:41.551Z] Live price: 1461.9
+[2026-02-09T06:07:51.676Z] Live price: 1461.9
+[2026-02-09T06:08:01.617Z] Live price: 1461.8
+[2026-02-09T06:08:11.610Z] Live price: 1461.9
+[2026-02-09T06:08:21.606Z] Live price: 1461.9
+[2026-02-09T06:08:31.638Z] Live price: 1461.9
+[2026-02-09T06:08:41.612Z] Live price: 1461.6
+[2026-02-09T06:08:41.615Z] New 3-min candle → {"time":"2026-02-09T06:08:41.615Z","open":1461.4,"high":1461.9,"low":1461.3,"close":1461.6,"average":"1461.67"}
+[2026-02-09T06:08:51.623Z] Live price: 1461
+[2026-02-09T06:09:01.618Z] Live price: 1461
+[2026-02-09T06:09:11.643Z] Live price: 1461
+[2026-02-09T06:09:21.683Z] Live price: 1461.5
+[2026-02-09T06:09:31.640Z] Live price: 1461.6
+[2026-02-09T06:09:41.645Z] Live price: 1461.6
+[2026-02-09T06:09:51.665Z] Live price: 1461.6
+[2026-02-09T06:10:01.666Z] Live price: 1461.6
+[2026-02-09T06:10:11.679Z] Live price: 1461.6
+[2026-02-09T06:10:21.694Z] Live price: 1461.8
+[2026-02-09T06:10:31.695Z] Live price: 1461.6
+[2026-02-09T06:10:41.707Z] Live price: 1461.8
+[2026-02-09T06:10:51.738Z] Live price: 1461.8
+[2026-02-09T06:11:01.713Z] Live price: 1462
+[2026-02-09T06:11:11.781Z] Live price: 1462.6
+[2026-02-09T06:11:21.746Z] Live price: 1462.6
+[2026-02-09T06:11:31.793Z] Live price: 1462.1
+[2026-02-09T06:11:41.804Z] Live price: 1462
+[2026-02-09T06:11:41.806Z] New 3-min candle → {"time":"2026-02-09T06:11:41.806Z","open":1461,"high":1462.6,"low":1461,"close":1462,"average":"1461.71"}
+[2026-02-09T06:11:51.771Z] Live price: 1462.1
+[2026-02-09T06:12:01.787Z] Live price: 1462.3
+[2026-02-09T06:12:11.782Z] Live price: 1462.8
+[2026-02-09T06:12:21.819Z] Live price: 1462.3
+[2026-02-09T06:12:31.826Z] Live price: 1462.7
+[2026-02-09T06:12:41.834Z] Live price: 1462.5
+[2026-02-09T06:12:51.795Z] Live price: 1462.3
+[2026-02-09T06:13:01.831Z] Live price: 1462.5
+[2026-02-09T06:13:11.858Z] Live price: 1462.5
+[2026-02-09T06:13:21.839Z] Live price: 1462.4
+[2026-02-09T06:13:31.847Z] Live price: 1462.6
+[2026-02-09T06:13:41.847Z] Live price: 1463.5
+[2026-02-09T06:13:51.853Z] Live price: 1463.6
+[2026-02-09T06:14:01.834Z] Live price: 1463.4
+[2026-02-09T06:14:11.874Z] Live price: 1463.4
+[2026-02-09T06:14:21.879Z] Live price: 1463.2
+[2026-02-09T06:14:31.881Z] Live price: 1463.2
+[2026-02-09T06:14:41.883Z] Live price: 1463.2
+[2026-02-09T06:14:41.885Z] New 3-min candle → {"time":"2026-02-09T06:14:41.885Z","open":1462.1,"high":1463.6,"low":1462.1,"close":1463.2,"average":"1462.81"}
+[2026-02-09T06:14:41.887Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:14:44.027Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:14:51.893Z] Live price: 1462.7
+[2026-02-09T06:15:01.883Z] Live price: 1462.6
+[2026-02-09T06:15:11.899Z] Live price: 1462.5
+[2026-02-09T06:15:21.931Z] Live price: 1462.4
+[2026-02-09T06:15:31.951Z] Live price: 1462.3
+[2026-02-09T06:15:41.929Z] Live price: 1462.4
+[2026-02-09T06:15:51.950Z] Live price: 1462.4
+[2026-02-09T06:16:01.969Z] Live price: 1462.4
+[2026-02-09T06:16:11.982Z] Live price: 1462.3
+[2026-02-09T06:16:22.039Z] Live price: 1462.4
+[2026-02-09T06:16:31.988Z] Live price: 1461.2
+[2026-02-09T06:16:42.005Z] Live price: 1461.5
+[2026-02-09T06:16:52.005Z] Live price: 1462
+[2026-02-09T06:17:02.029Z] Live price: 1462
+[2026-02-09T06:17:12.054Z] Live price: 1461.9
+[2026-02-09T06:17:22.094Z] Live price: 1461.3
+[2026-02-09T06:17:32.151Z] Live price: 1461.9
+[2026-02-09T06:17:42.029Z] Live price: 1461.9
+[2026-02-09T06:17:42.031Z] New 3-min candle → {"time":"2026-02-09T06:17:42.031Z","open":1462.7,"high":1462.7,"low":1461.2,"close":1461.9,"average":"1462.12"}
+[2026-02-09T06:17:42.033Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:17:44.148Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:17:52.058Z] Live price: 1461.9
+[2026-02-09T06:18:02.052Z] Live price: 1461.7
+[2026-02-09T06:18:12.109Z] Live price: 1461.9
+[2026-02-09T06:18:22.112Z] Live price: 1461.8
+[2026-02-09T06:18:32.094Z] Live price: 1461.9
+[2026-02-09T06:18:42.088Z] Live price: 1462
+[2026-02-09T06:18:52.111Z] Live price: 1462
+[2026-02-09T06:19:02.109Z] Live price: 1462
+[2026-02-09T06:19:12.110Z] Live price: 1462.4
+[2026-02-09T06:19:22.130Z] Live price: 1462.5
+[2026-02-09T06:19:32.129Z] Live price: 1462.5
+[2026-02-09T06:19:42.279Z] Live price: 1462.8
+[2026-02-09T06:19:52.150Z] Live price: 1462.7
+[2026-02-09T06:20:02.156Z] Live price: 1462.7
+[2026-02-09T06:20:12.172Z] Live price: 1462.7
+[2026-02-09T06:20:22.184Z] Live price: 1462.4
+[2026-02-09T06:20:32.183Z] Live price: 1462.4
+[2026-02-09T06:20:42.206Z] Live price: 1462.6
+[2026-02-09T06:20:42.209Z] New 3-min candle → {"time":"2026-02-09T06:20:42.209Z","open":1461.9,"high":1462.8,"low":1461.7,"close":1462.6,"average":"1462.27"}
+[2026-02-09T06:20:52.200Z] Live price: 1462.6
+[2026-02-09T06:21:02.220Z] Live price: 1462.6
+[2026-02-09T06:21:12.220Z] Live price: 1462.5
+[2026-02-09T06:21:22.238Z] Live price: 1462.5
+[2026-02-09T06:21:32.259Z] Live price: 1462.2
+[2026-02-09T06:21:42.300Z] Live price: 1462.2
+[2026-02-09T06:21:52.283Z] Live price: 1462.1
+[2026-02-09T06:22:02.265Z] Live price: 1462.2
+[2026-02-09T06:22:12.293Z] Live price: 1462.2
+[2026-02-09T06:22:22.290Z] Live price: 1462.2
+[2026-02-09T06:22:32.340Z] Live price: 1462.2
+[2026-02-09T06:22:42.288Z] Live price: 1462.2
+[2026-02-09T06:22:52.320Z] Live price: 1462.1
+[2026-02-09T06:23:02.312Z] Live price: 1462
+[2026-02-09T06:23:12.298Z] Live price: 1461.6
+[2026-02-09T06:23:22.340Z] Live price: 1461.6
+[2026-02-09T06:23:32.347Z] Live price: 1461.5
+[2026-02-09T06:23:42.356Z] Live price: 1461.3
+[2026-02-09T06:23:42.359Z] New 3-min candle → {"time":"2026-02-09T06:23:42.359Z","open":1462.6,"high":1462.6,"low":1461.3,"close":1461.3,"average":"1462.10"}
+[2026-02-09T06:23:42.360Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:23:44.477Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:23:52.363Z] Live price: 1461.6
+[2026-02-09T06:24:02.379Z] Live price: 1461.6
+[2026-02-09T06:24:12.366Z] Live price: 1461.6
+[2026-02-09T06:24:22.390Z] Live price: 1461.6
+[2026-02-09T06:24:32.423Z] Live price: 1461.6
+[2026-02-09T06:24:42.402Z] Live price: 1461.5
+[2026-02-09T06:24:52.467Z] Live price: 1461.6
+[2026-02-09T06:25:02.397Z] Live price: 1461.5
+[2026-02-09T06:25:12.427Z] Live price: 1461.5
+[2026-02-09T06:25:22.410Z] Live price: 1461.7
+[2026-02-09T06:25:32.422Z] Live price: 1461.6
+[2026-02-09T06:25:42.463Z] Live price: 1461.9
+[2026-02-09T06:25:52.424Z] Live price: 1461.9
+[2026-02-09T06:26:02.440Z] Live price: 1462
+[2026-02-09T06:26:12.445Z] Live price: 1462
+[2026-02-09T06:26:22.464Z] Live price: 1462
+[2026-02-09T06:26:32.508Z] Live price: 1461.9
+[2026-02-09T06:26:42.510Z] Live price: 1461.7
+[2026-02-09T06:26:42.513Z] New 3-min candle → {"time":"2026-02-09T06:26:42.513Z","open":1461.6,"high":1462,"low":1461.5,"close":1461.7,"average":"1461.71"}
+[2026-02-09T06:26:52.469Z] Live price: 1462
+[2026-02-09T06:27:02.499Z] Live price: 1462.1
+[2026-02-09T06:27:12.503Z] Live price: 1462.1
+[2026-02-09T06:27:22.550Z] Live price: 1462.2
+[2026-02-09T06:27:32.530Z] Live price: 1462.1
+[2026-02-09T06:27:42.522Z] Live price: 1462.1
+[2026-02-09T06:27:52.544Z] Live price: 1462.1
+[2026-02-09T06:28:02.552Z] Live price: 1462
+[2026-02-09T06:28:12.585Z] Live price: 1462.1
+[2026-02-09T06:28:22.550Z] Live price: 1462.1
+[2026-02-09T06:28:32.550Z] Live price: 1462.3
+[2026-02-09T06:28:42.563Z] Live price: 1462.3
+[2026-02-09T06:28:52.570Z] Live price: 1462.5
+[2026-02-09T06:29:02.582Z] Live price: 1462.5
+[2026-02-09T06:29:12.600Z] Live price: 1462.5
+[2026-02-09T06:29:22.624Z] Live price: 1462.4
+[2026-02-09T06:29:32.624Z] Live price: 1462.5
+[2026-02-09T06:29:42.637Z] Live price: 1462.4
+[2026-02-09T06:29:42.639Z] New 3-min candle → {"time":"2026-02-09T06:29:42.639Z","open":1462,"high":1462.5,"low":1462,"close":1462.4,"average":"1462.24"}
+[2026-02-09T06:29:42.642Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:29:44.728Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:29:52.646Z] Live price: 1462.5
+[2026-02-09T06:30:02.675Z] Live price: 1462.5
+[2026-02-09T06:30:12.662Z] Live price: 1462.5
+[2026-02-09T06:30:22.670Z] Live price: 1462.5
+[2026-02-09T06:30:32.685Z] Live price: 1462.6
+[2026-02-09T06:30:42.714Z] Live price: 1462.6
+[2026-02-09T06:30:52.703Z] Live price: 1462.6
+[2026-02-09T06:31:02.712Z] Live price: 1462.6
+[2026-02-09T06:31:12.714Z] Live price: 1462.5
+[2026-02-09T06:31:22.778Z] Live price: 1462.7
+[2026-02-09T06:31:32.749Z] Live price: 1462.8
+[2026-02-09T06:31:42.745Z] Live price: 1462.7
+[2026-02-09T06:31:52.740Z] Live price: 1462.9
+[2026-02-09T06:32:02.769Z] Live price: 1462.9
+[2026-02-09T06:32:12.764Z] Live price: 1462.8
+[2026-02-09T06:32:22.773Z] Live price: 1462.9
+[2026-02-09T06:32:32.810Z] Live price: 1462.9
+[2026-02-09T06:32:42.772Z] Live price: 1462.8
+[2026-02-09T06:32:42.775Z] New 3-min candle → {"time":"2026-02-09T06:32:42.775Z","open":1462.5,"high":1462.9,"low":1462.5,"close":1462.8,"average":"1462.68"}
+[2026-02-09T06:32:42.776Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:32:44.982Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:32:53.114Z] Live price: 1462.7
+[2026-02-09T06:33:02.833Z] Live price: 1462.8
+[2026-02-09T06:33:12.794Z] Live price: 1462.8
+[2026-02-09T06:33:22.800Z] Live price: 1462.7
+[2026-02-09T06:33:32.801Z] Live price: 1462.6
+[2026-02-09T06:33:42.831Z] Live price: 1462.8
+[2026-02-09T06:33:52.805Z] Live price: 1462.5
+[2026-02-09T06:34:02.832Z] Live price: 1462.6
+[2026-02-09T06:34:12.834Z] Live price: 1462.6
+[2026-02-09T06:34:22.828Z] Live price: 1462.5
+[2026-02-09T06:34:32.831Z] Live price: 1462.5
+[2026-02-09T06:34:42.841Z] Live price: 1462.5
+[2026-02-09T06:34:52.848Z] Live price: 1462.4
+[2026-02-09T06:35:02.864Z] Live price: 1462.4
+[2026-02-09T06:35:12.875Z] Live price: 1462.4
+[2026-02-09T06:35:22.891Z] Live price: 1462.4
+[2026-02-09T06:35:32.905Z] Live price: 1462.4
+[2026-02-09T06:35:43.001Z] Live price: 1462.2
+[2026-02-09T06:35:43.003Z] New 3-min candle → {"time":"2026-02-09T06:35:43.003Z","open":1462.7,"high":1462.8,"low":1462.2,"close":1462.2,"average":"1462.54"}
+[2026-02-09T06:35:43.006Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:35:45.077Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:35:52.913Z] Live price: 1462.2
+[2026-02-09T06:36:02.911Z] Live price: 1462.2
+[2026-02-09T06:36:12.913Z] Live price: 1462.2
+[2026-02-09T06:36:22.918Z] Live price: 1462.2
+[2026-02-09T06:36:32.924Z] Live price: 1462.2
+[2026-02-09T06:36:42.945Z] Live price: 1462.2
+[2026-02-09T06:36:52.961Z] Live price: 1462.1
+[2026-02-09T06:37:02.960Z] Live price: 1462.2
+[2026-02-09T06:37:12.962Z] Live price: 1462.1
+[2026-02-09T06:37:22.957Z] Live price: 1462.1
+[2026-02-09T06:37:32.971Z] Live price: 1462.1
+[2026-02-09T06:37:42.976Z] Live price: 1462.3
+[2026-02-09T06:37:52.960Z] Live price: 1462.3
+[2026-02-09T06:38:02.984Z] Live price: 1462.3
+[2026-02-09T06:38:12.995Z] Live price: 1462.3
+[2026-02-09T06:38:23.004Z] Live price: 1462.1
+[2026-02-09T06:38:33.021Z] Live price: 1462.1
+[2026-02-09T06:38:43.016Z] Live price: 1462.2
+[2026-02-09T06:38:43.019Z] New 3-min candle → {"time":"2026-02-09T06:38:43.019Z","open":1462.2,"high":1462.3,"low":1462.1,"close":1462.2,"average":"1462.19"}
+[2026-02-09T06:38:53.031Z] Live price: 1462.2
+[2026-02-09T06:39:03.048Z] Live price: 1462.2
+[2026-02-09T06:39:13.048Z] Live price: 1462.2
+[2026-02-09T06:39:23.068Z] Live price: 1462.2
+[2026-02-09T06:39:33.078Z] Live price: 1462.3
+[2026-02-09T06:39:43.091Z] Live price: 1462.3
+[2026-02-09T06:39:53.101Z] Live price: 1462.3
+[2026-02-09T06:40:03.112Z] Live price: 1462.5
+[2026-02-09T06:40:13.124Z] Live price: 1462.2
+[2026-02-09T06:40:23.132Z] Live price: 1462.2
+[2026-02-09T06:40:33.131Z] Live price: 1462.4
+[2026-02-09T06:40:43.146Z] Live price: 1462.4
+[2026-02-09T06:40:53.151Z] Live price: 1462.5
+[2026-02-09T06:41:03.184Z] Live price: 1462.5
+[2026-02-09T06:41:13.160Z] Live price: 1462.5
+[2026-02-09T06:41:23.172Z] Live price: 1462.5
+[2026-02-09T06:41:33.173Z] Live price: 1462.7
+[2026-02-09T06:41:43.197Z] Live price: 1462.7
+[2026-02-09T06:41:43.200Z] New 3-min candle → {"time":"2026-02-09T06:41:43.200Z","open":1462.2,"high":1462.7,"low":1462.2,"close":1462.7,"average":"1462.38"}
+[2026-02-09T06:41:53.201Z] Live price: 1462.9
+[2026-02-09T06:42:03.228Z] Live price: 1462.7
+[2026-02-09T06:42:13.222Z] Live price: 1462.9
+[2026-02-09T06:42:23.266Z] Live price: 1462.9
+[2026-02-09T06:42:33.251Z] Live price: 1462.9
+[2026-02-09T06:42:43.265Z] Live price: 1463
+[2026-02-09T06:42:53.261Z] Live price: 1463
+[2026-02-09T06:43:03.290Z] Live price: 1462.5
+[2026-02-09T06:43:13.300Z] Live price: 1462.6
+[2026-02-09T06:43:24.716Z] Live price: 1462.3
+[2026-02-09T06:43:33.325Z] Live price: 1462.1
+[2026-02-09T06:43:43.295Z] Live price: 1462
+[2026-02-09T06:43:53.311Z] Live price: 1462
+[2026-02-09T06:44:03.318Z] Live price: 1462.1
+[2026-02-09T06:44:13.346Z] Live price: 1461.8
+[2026-02-09T06:44:23.374Z] Live price: 1461.8
+[2026-02-09T06:44:33.361Z] Live price: 1462.2
+[2026-02-09T06:44:43.368Z] Live price: 1462.4
+[2026-02-09T06:44:43.371Z] New 3-min candle → {"time":"2026-02-09T06:44:43.371Z","open":1462.9,"high":1463,"low":1461.8,"close":1462.4,"average":"1462.45"}
+[2026-02-09T06:44:43.374Z] SELL SIGNAL | Last candle fell
+[2026-02-09T06:44:45.528Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T06:44:53.351Z] Live price: 1462.5
+[2026-02-09T06:45:03.366Z] Live price: 1462.5
+[2026-02-09T06:45:13.369Z] Live price: 1462.6
+[2026-02-09T06:45:23.371Z] Live price: 1462.7
+[2026-02-09T06:45:33.382Z] Live price: 1462.3
+[2026-02-09T06:45:43.395Z] Live price: 1462.7
+[2026-02-09T06:45:53.402Z] Live price: 1462.7
+[2026-02-09T06:46:03.446Z] Live price: 1462.6
+[2026-02-09T06:46:13.436Z] Live price: 1462.3
+[2026-02-09T06:46:23.426Z] Live price: 1462.5
+[2026-02-09T06:46:33.430Z] Live price: 1462.6
+[2026-02-09T06:46:43.441Z] Live price: 1462.6
+[2026-02-09T06:46:53.441Z] Live price: 1462.5
+[2026-02-09T06:47:03.460Z] Live price: 1462.5
+[2026-02-09T06:47:13.468Z] Live price: 1462.6
+[2026-02-09T06:47:23.509Z] Live price: 1462.1
+[2026-02-09T06:47:33.491Z] Live price: 1462.1
+[2026-02-09T06:47:43.498Z] Live price: 1462.6
+[2026-02-09T06:47:43.501Z] New 3-min candle → {"time":"2026-02-09T06:47:43.501Z","open":1462.5,"high":1462.7,"low":1462.1,"close":1462.6,"average":"1462.50"}
+[2026-02-09T06:47:53.486Z] Live price: 1462.7
+[2026-02-09T06:48:03.628Z] Live price: 1462.7
+[2026-02-09T06:48:13.506Z] Live price: 1462.6
+[2026-02-09T06:48:23.498Z] Live price: 1462.7
+[2026-02-09T06:48:33.508Z] Live price: 1462.9
+[2026-02-09T06:48:43.523Z] Live price: 1462.9
+[2026-02-09T06:48:53.511Z] Live price: 1463
+[2026-02-09T06:49:03.505Z] Live price: 1462.9
+[2026-02-09T06:49:13.514Z] Live price: 1462.9
+[2026-02-09T06:49:23.507Z] Live price: 1463
+[2026-02-09T06:49:33.520Z] Live price: 1463
+[2026-02-09T06:49:43.545Z] Live price: 1463
+[2026-02-09T06:49:53.541Z] Live price: 1463.4
+[2026-02-09T06:50:03.540Z] Live price: 1463.1
+[2026-02-09T06:50:13.565Z] Live price: 1463.2
+[2026-02-09T06:50:23.569Z] Live price: 1463.4
+[2026-02-09T06:50:33.603Z] Live price: 1463.3
+[2026-02-09T06:50:43.581Z] Live price: 1463.4
+[2026-02-09T06:50:43.584Z] New 3-min candle → {"time":"2026-02-09T06:50:43.584Z","open":1462.7,"high":1463.4,"low":1462.6,"close":1463.4,"average":"1463.01"}
+[2026-02-09T06:50:43.586Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:50:45.738Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:50:53.643Z] Live price: 1463.5
+[2026-02-09T06:51:03.622Z] Live price: 1463.5
+[2026-02-09T06:51:13.616Z] Live price: 1463.5
+[2026-02-09T06:51:25.077Z] Live price: 1463.4
+[2026-02-09T06:51:33.670Z] Live price: 1463.6
+[2026-02-09T06:51:43.700Z] Live price: 1463.7
+[2026-02-09T06:51:53.684Z] Live price: 1463.4
+[2026-02-09T06:52:03.700Z] Live price: 1463.8
+[2026-02-09T06:52:13.690Z] Live price: 1463.8
+[2026-02-09T06:52:23.712Z] Live price: 1463.7
+[2026-02-09T06:52:33.707Z] Live price: 1463.8
+[2026-02-09T06:52:43.756Z] Live price: 1463.8
+[2026-02-09T06:52:53.736Z] Live price: 1463.8
+[2026-02-09T06:53:03.743Z] Live price: 1463.8
+[2026-02-09T06:53:13.728Z] Live price: 1463.7
+[2026-02-09T06:53:23.746Z] Live price: 1463.8
+[2026-02-09T06:53:33.755Z] Live price: 1463.7
+[2026-02-09T06:53:43.790Z] Live price: 1463.8
+[2026-02-09T06:53:43.793Z] New 3-min candle → {"time":"2026-02-09T06:53:43.793Z","open":1463.5,"high":1463.8,"low":1463.4,"close":1463.8,"average":"1463.67"}
+[2026-02-09T06:53:43.795Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:53:45.748Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:53:53.766Z] Live price: 1463.8
+[2026-02-09T06:54:03.761Z] Live price: 1463.7
+[2026-02-09T06:54:13.793Z] Live price: 1463.7
+[2026-02-09T06:54:23.785Z] Live price: 1464
+[2026-02-09T06:54:33.811Z] Live price: 1464
+[2026-02-09T06:54:43.825Z] Live price: 1463.9
+[2026-02-09T06:54:55.252Z] Live price: 1464.2
+[2026-02-09T06:55:03.830Z] Live price: 1463.9
+[2026-02-09T06:55:13.839Z] Live price: 1463.9
+[2026-02-09T06:55:23.861Z] Live price: 1464.1
+[2026-02-09T06:55:33.862Z] Live price: 1463.9
+[2026-02-09T06:55:43.870Z] Live price: 1464
+[2026-02-09T06:55:53.872Z] Live price: 1464.1
+[2026-02-09T06:56:03.874Z] Live price: 1464.1
+[2026-02-09T06:56:13.897Z] Live price: 1464
+[2026-02-09T06:56:23.921Z] Live price: 1464
+[2026-02-09T06:56:33.909Z] Live price: 1464.2
+[2026-02-09T06:56:43.927Z] Live price: 1464.1
+[2026-02-09T06:56:43.930Z] New 3-min candle → {"time":"2026-02-09T06:56:43.930Z","open":1463.8,"high":1464.2,"low":1463.7,"close":1464.1,"average":"1463.98"}
+[2026-02-09T06:56:43.941Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T06:56:46.067Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T06:56:53.924Z] Live price: 1464.1
+[2026-02-09T06:57:03.945Z] Live price: 1464.2
+[2026-02-09T06:57:13.956Z] Live price: 1464.2
+[2026-02-09T06:57:23.960Z] Live price: 1464
+[2026-02-09T06:57:33.974Z] Live price: 1464.3
+[2026-02-09T06:57:43.991Z] Live price: 1464.2
+[2026-02-09T06:57:53.979Z] Live price: 1464
+[2026-02-09T06:58:03.972Z] Live price: 1464.3
+[2026-02-09T06:58:13.987Z] Live price: 1464.3
+[2026-02-09T06:58:23.997Z] Live price: 1464.3
+[2026-02-09T06:58:33.986Z] Live price: 1464.2
+[2026-02-09T06:58:44.009Z] Live price: 1464.2
+[2026-02-09T06:58:53.995Z] Live price: 1464
+[2026-02-09T06:59:04.032Z] Live price: 1464.2
+[2026-02-09T06:59:14.034Z] Live price: 1464
+[2026-02-09T06:59:24.044Z] Live price: 1464.1
+[2026-02-09T06:59:34.058Z] Live price: 1464.1
+[2026-02-09T06:59:44.081Z] Live price: 1464.1
+[2026-02-09T06:59:44.084Z] New 3-min candle → {"time":"2026-02-09T06:59:44.084Z","open":1464.1,"high":1464.3,"low":1464,"close":1464.1,"average":"1464.16"}
+[2026-02-09T06:59:54.064Z] Live price: 1464
+[2026-02-09T07:00:04.092Z] Live price: 1464
+[2026-02-09T07:00:14.095Z] Live price: 1463.6
+[2026-02-09T07:00:24.095Z] Live price: 1463.4
+[2026-02-09T07:00:34.116Z] Live price: 1463.3
+[2026-02-09T07:00:44.140Z] Live price: 1462.7
+[2026-02-09T07:00:54.142Z] Live price: 1463.3
+[2026-02-09T07:01:04.166Z] Live price: 1463.2
+[2026-02-09T07:01:14.164Z] Live price: 1462.9
+[2026-02-09T07:01:24.171Z] Live price: 1462.7
+[2026-02-09T07:01:34.160Z] Live price: 1462.9
+[2026-02-09T07:01:44.164Z] Live price: 1462.8
+[2026-02-09T07:01:54.182Z] Live price: 1462.7
+[2026-02-09T07:02:04.182Z] Live price: 1462.9
+[2026-02-09T07:02:14.206Z] Live price: 1463
+[2026-02-09T07:02:24.203Z] Live price: 1463
+[2026-02-09T07:02:34.240Z] Live price: 1463.4
+[2026-02-09T07:02:44.243Z] Live price: 1463.2
+[2026-02-09T07:02:44.246Z] New 3-min candle → {"time":"2026-02-09T07:02:44.246Z","open":1464,"high":1464,"low":1462.7,"close":1463.2,"average":"1463.17"}
+[2026-02-09T07:02:44.248Z] SELL SIGNAL | Last candle fell
+[2026-02-09T07:02:46.495Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T07:02:54.446Z] Live price: 1463.4
+[2026-02-09T07:03:04.252Z] Live price: 1463.4
+[2026-02-09T07:03:14.258Z] Live price: 1463.4
+[2026-02-09T09:10:35.685Z] Live price: 1461.6
+[2026-02-09T09:10:35.690Z] New 3-min candle → {"time":"2026-02-09T09:10:35.690Z","open":1463.4,"high":1463.4,"low":1461.6,"close":1461.6,"average":"1462.95"}
+[2026-02-09T09:10:45.670Z] Live price: 1461.6
+[2026-02-09T09:10:55.674Z] Live price: 1461.7
+[2026-02-09T09:11:05.686Z] Live price: 1461.6
+[2026-02-09T09:11:15.662Z] Live price: 1461.7
+[2026-02-09T09:11:25.688Z] Live price: 1461.6
+[2026-02-09T09:11:35.704Z] Live price: 1461.6
+[2026-02-09T09:11:45.686Z] Live price: 1461.5
+[2026-02-09T09:11:55.705Z] Live price: 1461.5
+[2026-02-09T09:12:05.691Z] Live price: 1461.3
+[2026-02-09T09:12:15.730Z] Live price: 1461.3
+[2026-02-09T09:12:25.717Z] Live price: 1461.5
+[2026-02-09T09:12:35.719Z] Live price: 1461.5
+[2026-02-09T09:12:45.721Z] Live price: 1461.6
+[2026-02-09T09:12:55.728Z] Live price: 1461.5
+[2026-02-09T09:13:05.785Z] Live price: 1461.5
+[2026-02-09T09:13:15.779Z] Live price: 1461.5
+[2026-02-09T09:13:25.769Z] Live price: 1461.5
+[2026-02-09T09:13:35.794Z] Live price: 1461.5
+[2026-02-09T09:13:35.797Z] New 3-min candle → {"time":"2026-02-09T09:13:35.796Z","open":1461.6,"high":1461.7,"low":1461.3,"close":1461.5,"average":"1461.53"}
+[2026-02-09T09:13:45.783Z] Live price: 1461.6
+[2026-02-09T09:13:55.828Z] Live price: 1461.6
+[2026-02-09T09:14:05.832Z] Live price: 1461.5
+[2026-02-09T09:14:15.816Z] Live price: 1461.5
+[2026-02-09T09:14:25.810Z] Live price: 1461.5
+[2026-02-09T09:14:35.848Z] Live price: 1461.5
+[2026-02-09T09:14:45.867Z] Live price: 1461.6
+[2026-02-09T09:14:55.874Z] Live price: 1461.5
+[2026-02-09T09:15:05.875Z] Live price: 1461.6
+[2026-02-09T09:15:15.910Z] Live price: 1461.4
+[2026-02-09T09:15:25.912Z] Live price: 1461.3
+[2026-02-09T09:15:35.948Z] Live price: 1461.3
+[2026-02-09T09:15:45.918Z] Live price: 1461.2
+[2026-02-09T09:15:55.946Z] Live price: 1460.9
+[2026-02-09T09:16:05.941Z] Live price: 1460.8
+[2026-02-09T09:16:15.967Z] Live price: 1460.7
+[2026-02-09T09:16:25.974Z] Live price: 1460.5
+[2026-02-09T09:16:35.970Z] Live price: 1460.7
+[2026-02-09T09:16:35.973Z] New 3-min candle → {"time":"2026-02-09T09:16:35.973Z","open":1461.6,"high":1461.6,"low":1460.5,"close":1460.7,"average":"1461.26"}
+[2026-02-09T09:16:46.027Z] Live price: 1460.6
+[2026-02-09T09:16:55.970Z] Live price: 1460.5
+[2026-02-09T09:17:05.990Z] Live price: 1460.5
+[2026-02-09T09:17:15.985Z] Live price: 1460.7
+[2026-02-09T09:17:26.050Z] Live price: 1460.7
+[2026-02-09T09:17:36.050Z] Live price: 1460.6
+[2026-02-09T09:17:46.030Z] Live price: 1460.7
+[2026-02-09T09:18:00.417Z] Live price: 1460.6
+[2026-02-09T09:18:06.051Z] Live price: 1460.7
+[2026-02-09T09:18:16.061Z] Live price: 1460.7
+[2026-02-09T09:18:26.078Z] Live price: 1460.9
+[2026-02-09T09:18:36.070Z] Live price: 1460.8
+[2026-02-09T09:18:46.105Z] Live price: 1461
+[2026-02-09T09:18:56.180Z] Live price: 1461
+[2026-02-09T09:19:06.130Z] Live price: 1461.2
+[2026-02-09T09:19:17.052Z] Live price: 1461.3
+[2026-02-09T09:19:26.168Z] Live price: 1461.3
+[2026-02-09T09:19:36.120Z] Live price: 1461.3
+[2026-02-09T09:19:36.123Z] New 3-min candle → {"time":"2026-02-09T09:19:36.123Z","open":1460.6,"high":1461.3,"low":1460.5,"close":1461.3,"average":"1460.84"}
+[2026-02-09T09:19:46.226Z] Live price: 1461.3
+[2026-02-09T09:19:59.472Z] Live price: 1461.1
+[2026-02-09T09:20:06.325Z] Live price: 1461.2
+[2026-02-09T09:20:16.162Z] Live price: 1461.1
+[2026-02-09T09:20:26.179Z] Live price: 1461.3
+[2026-02-09T09:20:36.168Z] Live price: 1461.3
+[2026-02-09T09:20:46.189Z] Live price: 1461.2
+[2026-02-09T09:20:56.148Z] Live price: 1461.3
+[2026-02-09T09:21:06.202Z] Live price: 1461.3
+[2026-02-09T09:21:16.183Z] Live price: 1461.2
+[2026-02-09T09:21:26.215Z] Live price: 1461.2
+[2026-02-09T09:21:36.223Z] Live price: 1461.3
+[2026-02-09T09:21:46.203Z] Live price: 1461.4
+[2026-02-09T09:21:56.191Z] Live price: 1461.3
+[2026-02-09T09:22:06.210Z] Live price: 1461.4
+[2026-02-09T09:22:16.237Z] Live price: 1461.5
+[2026-02-09T09:22:26.265Z] Live price: 1461.4
+[2026-02-09T09:22:36.276Z] Live price: 1461.5
+[2026-02-09T09:22:36.279Z] New 3-min candle → {"time":"2026-02-09T09:22:36.279Z","open":1461.3,"high":1461.5,"low":1461.1,"close":1461.5,"average":"1461.29"}
+[2026-02-09T09:22:36.281Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T09:22:38.662Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T09:22:46.229Z] Live price: 1461.3
+[2026-02-09T09:22:56.274Z] Live price: 1461.5
+[2026-02-09T09:23:07.661Z] Live price: 1461.2
+[2026-02-09T09:23:16.277Z] Live price: 1460.7
+[2026-02-09T09:23:26.280Z] Live price: 1460.4
+[2026-02-09T09:23:36.291Z] Live price: 1460.8
+[2026-02-09T09:23:46.291Z] Live price: 1460.6
+[2026-02-09T09:23:56.295Z] Live price: 1460.6
+[2026-02-09T09:24:06.304Z] Live price: 1460.7
+[2026-02-09T09:24:16.306Z] Live price: 1460.8
+[2026-02-09T09:24:26.331Z] Live price: 1460.9
+[2026-02-09T09:24:36.330Z] Live price: 1460.9
+[2026-02-09T09:24:46.349Z] Live price: 1460.8
+[2026-02-09T09:24:56.370Z] Live price: 1460.9
+[2026-02-09T09:25:06.376Z] Live price: 1460.9
+[2026-02-09T09:25:16.397Z] Live price: 1461
+[2026-02-09T09:25:26.409Z] Live price: 1461.1
+[2026-02-09T09:25:36.404Z] Live price: 1461
+[2026-02-09T09:25:36.407Z] New 3-min candle → {"time":"2026-02-09T09:25:36.407Z","open":1461.3,"high":1461.5,"low":1460.4,"close":1461,"average":"1460.89"}
+[2026-02-09T09:25:36.409Z] SELL SIGNAL | Last candle fell | Profit/Loss: -0.50
+[2026-02-09T09:25:38.446Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T09:25:46.448Z] Live price: 1461.2
+[2026-02-09T09:25:56.404Z] Live price: 1461.1
+[2026-02-09T09:26:06.466Z] Live price: 1461.2
+[2026-02-09T09:26:16.473Z] Live price: 1461.2
+[2026-02-09T09:26:26.470Z] Live price: 1461.1
+[2026-02-09T09:26:36.486Z] Live price: 1461.5
+[2026-02-09T09:26:46.457Z] Live price: 1461.5
+[2026-02-09T09:26:56.445Z] Live price: 1461.5
+[2026-02-09T09:27:06.507Z] Live price: 1461.4
+[2026-02-09T09:27:16.536Z] Live price: 1461.5
+[2026-02-09T09:27:26.533Z] Live price: 1461.6
+[2026-02-09T09:27:36.544Z] Live price: 1461.6
+[2026-02-09T09:27:46.545Z] Live price: 1461.8
+[2026-02-09T09:27:56.526Z] Live price: 1461.9
+[2026-02-09T09:28:06.547Z] Live price: 1461.6
+[2026-02-09T09:28:16.558Z] Live price: 1461.5
+[2026-02-09T09:28:26.573Z] Live price: 1461.3
+[2026-02-09T09:28:36.592Z] Live price: 1461.3
+[2026-02-09T09:28:36.596Z] New 3-min candle → {"time":"2026-02-09T09:28:36.596Z","open":1461.2,"high":1461.9,"low":1461.1,"close":1461.3,"average":"1461.43"}
+[2026-02-09T09:28:46.805Z] Live price: 1461.2
+[2026-02-09T09:28:56.625Z] Live price: 1461.5
+[2026-02-09T09:29:06.580Z] Live price: 1461.4
+[2026-02-09T09:29:16.632Z] Live price: 1461.4
+[2026-02-09T09:29:26.643Z] Live price: 1461.4
+[2026-02-09T09:29:36.614Z] Live price: 1461.4
+[2026-02-09T09:29:46.640Z] Live price: 1461.4
+[2026-02-09T09:29:56.691Z] Live price: 1461.6
+[2026-02-09T09:30:06.671Z] Live price: 1461.5
+[2026-02-09T09:30:18.026Z] Live price: 1461.5
+[2026-02-09T09:30:26.697Z] Live price: 1461.4
+[2026-02-09T09:30:36.704Z] Live price: 1461.6
+[2026-02-09T09:30:46.712Z] Live price: 1461.5
+[2026-02-09T09:30:56.694Z] Live price: 1461.6
+[2026-02-09T09:31:06.688Z] Live price: 1461.6
+[2026-02-09T09:31:16.693Z] Live price: 1461.5
+[2026-02-09T09:31:26.714Z] Live price: 1461.5
+[2026-02-09T09:31:36.746Z] Live price: 1461.5
+[2026-02-09T09:31:36.749Z] New 3-min candle → {"time":"2026-02-09T09:31:36.749Z","open":1461.2,"high":1461.6,"low":1461.2,"close":1461.5,"average":"1461.47"}
+[2026-02-09T09:31:36.751Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T09:31:39.010Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T09:31:46.739Z] Live price: 1461.5
+[2026-02-09T09:31:56.764Z] Live price: 1461.6
+[2026-02-09T09:32:06.786Z] Live price: 1461.6
+[2026-02-09T09:32:16.739Z] Live price: 1461.6
+[2026-02-09T09:32:26.779Z] Live price: 1461.5
+[2026-02-09T09:32:36.740Z] Live price: 1461.5
+[2026-02-09T09:32:46.755Z] Live price: 1461.5
+[2026-02-09T09:33:01.026Z] Live price: 1461.5
+[2026-02-09T09:33:06.774Z] Live price: 1461.4
+[2026-02-09T09:33:16.787Z] Live price: 1461.5
+[2026-02-09T09:33:28.163Z] Live price: 1461.5
+[2026-02-09T09:33:36.806Z] Live price: 1461.4
+[2026-02-09T09:33:46.790Z] Live price: 1461.4
+[2026-02-09T09:33:56.775Z] Live price: 1461.4
+[2026-02-09T09:34:06.821Z] Live price: 1461.4
+[2026-02-09T09:34:16.809Z] Live price: 1461.3
+[2026-02-09T09:34:26.819Z] Live price: 1461.4
+[2026-02-09T09:34:36.850Z] Live price: 1461.4
+[2026-02-09T09:34:36.852Z] New 3-min candle → {"time":"2026-02-09T09:34:36.852Z","open":1461.5,"high":1461.6,"low":1461.3,"close":1461.4,"average":"1461.47"}
+[2026-02-09T09:34:36.854Z] SELL SIGNAL | Last candle fell | Profit/Loss: -0.10
+[2026-02-09T09:34:40.534Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T09:34:46.834Z] Live price: 1461.3
+[2026-02-09T09:34:56.880Z] Live price: 1461.4
+[2026-02-09T09:35:06.837Z] Live price: 1461.4
+[2026-02-09T09:35:16.868Z] Live price: 1461.4
+[2026-02-09T09:35:27.050Z] Live price: 1461.4
+[2026-02-09T09:35:36.936Z] Live price: 1461.4
+[2026-02-09T09:35:48.311Z] Live price: 1461.4
+[2026-02-09T09:35:56.929Z] Live price: 1461.4
+[2026-02-09T09:36:07.053Z] Live price: 1461.4
+[2026-02-09T09:36:16.954Z] Live price: 1461.4
+[2026-02-09T09:36:26.966Z] Live price: 1461.4
+[2026-02-09T09:36:36.983Z] Live price: 1461.5
+[2026-02-09T09:36:46.952Z] Live price: 1461.5
+[2026-02-09T09:36:56.955Z] Live price: 1461.4
+[2026-02-09T09:37:06.952Z] Live price: 1461.5
+[2026-02-09T09:37:16.989Z] Live price: 1461.5
+[2026-02-09T09:37:26.975Z] Live price: 1461.6
+[2026-02-09T09:37:37.003Z] Live price: 1461.6
+[2026-02-09T09:37:37.004Z] New 3-min candle → {"time":"2026-02-09T09:37:37.004Z","open":1461.3,"high":1461.6,"low":1461.3,"close":1461.6,"average":"1461.44"}
+[2026-02-09T09:37:46.984Z] Live price: 1461.6
+[2026-02-09T09:37:57.004Z] Live price: 1461.7
+[2026-02-09T09:38:07.008Z] Live price: 1461.5
+[2026-02-09T09:38:17.110Z] Live price: 1461.6
+[2026-02-09T09:38:27.001Z] Live price: 1461.5
+[2026-02-09T09:38:37.038Z] Live price: 1461.4
+[2026-02-09T09:38:47.031Z] Live price: 1461.5
+[2026-02-09T09:38:57.040Z] Live price: 1461.6
+[2026-02-09T09:39:07.058Z] Live price: 1461.5
+[2026-02-09T09:39:18.449Z] Live price: 1461.6
+[2026-02-09T09:39:27.057Z] Live price: 1461.6
+[2026-02-09T09:39:37.069Z] Live price: 1461.5
+[2026-02-09T09:39:47.088Z] Live price: 1461.7
+[2026-02-09T09:39:57.095Z] Live price: 1461.6
+[2026-02-09T09:40:07.138Z] Live price: 1461.7
+[2026-02-09T09:40:17.111Z] Live price: 1461.8
+[2026-02-09T09:40:27.119Z] Live price: 1461.9
+[2026-02-09T09:40:37.160Z] Live price: 1461.8
+[2026-02-09T09:40:37.163Z] New 3-min candle → {"time":"2026-02-09T09:40:37.162Z","open":1461.6,"high":1461.9,"low":1461.4,"close":1461.8,"average":"1461.62"}
+[2026-02-09T09:40:37.165Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T09:40:39.613Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T09:40:47.121Z] Live price: 1461.8
+[2026-02-09T09:40:57.157Z] Live price: 1461.8
+[2026-02-09T09:41:07.146Z] Live price: 1461.7
+[2026-02-09T09:41:17.155Z] Live price: 1461.6
+[2026-02-09T09:41:27.180Z] Live price: 1461.6
+[2026-02-09T09:41:37.177Z] Live price: 1461.6
+[2026-02-09T09:41:47.210Z] Live price: 1461.5
+[2026-02-09T09:41:57.213Z] Live price: 1461.4
+[2026-02-09T09:42:07.185Z] Live price: 1461.5
+[2026-02-09T09:42:17.183Z] Live price: 1461.5
+[2026-02-09T09:42:27.219Z] Live price: 1461.5
+[2026-02-09T09:42:37.208Z] Live price: 1461.5
+[2026-02-09T09:42:47.212Z] Live price: 1461.5
+[2026-02-09T09:42:57.251Z] Live price: 1461.4
+[2026-02-09T09:43:07.249Z] Live price: 1461.3
+[2026-02-09T09:43:17.240Z] Live price: 1461.4
+[2026-02-09T09:43:27.252Z] Live price: 1461.3
+[2026-02-09T09:43:37.278Z] Live price: 1461.4
+[2026-02-09T09:43:37.281Z] New 3-min candle → {"time":"2026-02-09T09:43:37.281Z","open":1461.8,"high":1461.8,"low":1461.3,"close":1461.4,"average":"1461.52"}
+[2026-02-09T09:43:37.283Z] SELL SIGNAL | Last candle fell | Profit/Loss: -0.40
+[2026-02-09T09:43:39.265Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T09:43:47.278Z] Live price: 1461.5
+[2026-02-09T09:43:57.285Z] Live price: 1461.5
+[2026-02-09T09:44:07.313Z] Live price: 1461.5
+[2026-02-09T09:44:17.305Z] Live price: 1461.5
+[2026-02-09T09:44:27.311Z] Live price: 1461.5
+[2026-02-09T09:44:37.315Z] Live price: 1461.5
+[2026-02-09T09:44:47.321Z] Live price: 1461.5
+[2026-02-09T09:44:57.341Z] Live price: 1461.5
+[2026-02-09T09:45:07.360Z] Live price: 1461.5
+[2026-02-09T09:45:17.422Z] Live price: 1461.5
+[2026-02-09T09:45:27.389Z] Live price: 1461.6
+[2026-02-09T09:45:37.404Z] Live price: 1461.6
+[2026-02-09T09:45:47.451Z] Live price: 1461.6
+[2026-02-09T09:45:57.431Z] Live price: 1461.7
+[2026-02-09T09:46:07.477Z] Live price: 1461.7
+[2026-02-09T09:46:17.390Z] Live price: 1461.7
+[2026-02-09T09:46:27.410Z] Live price: 1461.8
+[2026-02-09T09:46:37.416Z] Live price: 1461.9
+[2026-02-09T09:46:37.418Z] New 3-min candle → {"time":"2026-02-09T09:46:37.418Z","open":1461.5,"high":1461.9,"low":1461.5,"close":1461.9,"average":"1461.59"}
+[2026-02-09T09:46:47.455Z] Live price: 1461.8
+[2026-02-09T09:46:57.533Z] Live price: 1461.9
+[2026-02-09T09:47:07.457Z] Live price: 1461.9
+[2026-02-09T09:47:17.472Z] Live price: 1461.8
+[2026-02-09T09:47:27.509Z] Live price: 1462
+[2026-02-09T09:47:37.470Z] Live price: 1462
+[2026-02-09T09:47:47.471Z] Live price: 1462
+[2026-02-09T09:48:00.661Z] Live price: 1462.1
+[2026-02-09T09:48:07.507Z] Live price: 1462.1
+[2026-02-09T09:48:17.519Z] Live price: 1462.2
+[2026-02-09T09:48:27.541Z] Live price: 1462.2
+[2026-02-09T09:48:37.528Z] Live price: 1462.1
+[2026-02-09T09:48:47.532Z] Live price: 1462.2
+[2026-02-09T09:48:57.510Z] Live price: 1462.3
+[2026-02-09T09:49:07.525Z] Live price: 1462.3
+[2026-02-09T09:49:17.564Z] Live price: 1462.4
+[2026-02-09T09:49:27.558Z] Live price: 1462.4
+[2026-02-09T09:49:37.856Z] Live price: 1462.4
+[2026-02-09T09:49:37.860Z] New 3-min candle → {"time":"2026-02-09T09:49:37.860Z","open":1461.8,"high":1462.4,"low":1461.8,"close":1462.4,"average":"1462.12"}
+[2026-02-09T09:49:37.862Z] BUY SIGNAL | Last 2 candles rising
+[2026-02-09T09:49:39.984Z] Email sent ✅ | BUY SIGNAL
+[2026-02-09T09:49:47.584Z] Live price: 1462.3
+[2026-02-09T09:49:57.671Z] Live price: 1462.5
+[2026-02-09T09:50:09.031Z] Live price: 1462.4
+[2026-02-09T09:50:17.665Z] Live price: 1462.5
+[2026-02-09T09:50:27.662Z] Live price: 1462.4
+[2026-02-09T09:50:37.657Z] Live price: 1462.4
+[2026-02-09T09:50:47.650Z] Live price: 1462.3
+[2026-02-09T09:50:57.646Z] Live price: 1462.3
+[2026-02-09T09:51:07.642Z] Live price: 1462.4
+[2026-02-09T09:51:17.672Z] Live price: 1462.4
+[2026-02-09T09:51:27.758Z] Live price: 1462.3
+[2026-02-09T09:51:37.709Z] Live price: 1462.4
+[2026-02-09T09:51:47.688Z] Live price: 1462.4
+[2026-02-09T09:51:57.686Z] Live price: 1462.5
+[2026-02-09T09:52:07.693Z] Live price: 1462.4
+[2026-02-09T09:52:17.695Z] Live price: 1462.2
+[2026-02-09T09:52:27.716Z] Live price: 1462.2
+[2026-02-09T09:52:37.715Z] Live price: 1462.2
+[2026-02-09T09:52:47.728Z] Live price: 1462.3
+[2026-02-09T09:52:47.730Z] New 3-min candle → {"time":"2026-02-09T09:52:47.730Z","open":1462.3,"high":1462.5,"low":1462.2,"close":1462.3,"average":"1462.36"}
+[2026-02-09T09:52:47.733Z] SELL SIGNAL | Last candle fell | Profit/Loss: -0.10
+[2026-02-09T09:52:49.717Z] Email sent ✅ | SELL SIGNAL
+[2026-02-09T09:52:57.771Z] Live price: 1462.2
+[2026-02-09T09:53:07.753Z] Live price: 1462.1
+[2026-02-09T09:53:17.811Z] Live price: 1462
+[2026-02-09T09:53:27.761Z] Live price: 1461.9
+[2026-02-09T09:53:37.813Z] Live price: 1462
+[2026-02-09T09:53:47.811Z] Live price: 1461.9
+[2026-02-09T09:53:57.790Z] Live price: 1461.8
+[2026-02-09T09:54:07.786Z] Live price: 1461.8
+[2026-02-09T09:54:17.789Z] Live price: 1461.7
+[2026-02-09T09:54:27.825Z] Live price: 1461.5
+[2026-02-09T09:54:37.813Z] Live price: 1461.5
+[2026-02-09T09:54:47.808Z] Live price: 1461.4
+[2026-02-09T09:54:57.830Z] Live price: 1461.3
+[2026-02-09T09:55:07.833Z] Live price: 1461.3
+[2026-02-09T09:55:17.975Z] Live price: 1461.3
+[2026-02-09T09:55:27.856Z] Live price: 1461.4
+[2026-02-09T09:55:37.883Z] Live price: 1461.3
+[2026-02-09T09:55:47.874Z] Live price: 1461.5
+[2026-02-09T09:55:47.876Z] New 3-min candle → {"time":"2026-02-09T09:55:47.876Z","open":1462.2,"high":1462.2,"low":1461.3,"close":1461.5,"average":"1461.66"}
+[2026-02-09T09:55:57.943Z] Live price: 1461.4
+[2026-02-09T09:56:07.888Z] Live price: 1461.5
+[2026-02-09T09:56:17.929Z] Live price: 1461.4
+[2026-02-09T09:56:27.912Z] Live price: 1461.4
+[2026-02-09T09:56:37.983Z] Live price: 1461.4
+[2026-02-09T09:56:47.963Z] Live price: 1461
+[2026-02-09T09:56:57.959Z] Live price: 1461
+[2026-02-09T09:57:07.957Z] Live price: 1460.9
+[2026-02-09T09:57:17.950Z] Live price: 1461
+[2026-02-09T09:57:27.934Z] Live price: 1461
+[2026-02-09T09:57:37.983Z] Live price: 1461.1
+[2026-02-09T09:57:47.949Z] Live price: 1461.1
+[2026-02-09T09:57:57.986Z] Live price: 1461.1
+[2026-02-09T09:58:07.994Z] Live price: 1461.3
+[2026-02-09T09:58:17.994Z] Live price: 1461.5
+[2026-02-09T09:58:27.989Z] Live price: 1461.1
+[2026-02-09T09:58:38.037Z] Live price: 1461.6
+[2026-02-09T09:58:48.007Z] Live price: 1461.6
+[2026-02-09T09:58:48.008Z] New 3-min candle → {"time":"2026-02-09T09:58:48.008Z","open":1461.4,"high":1461.6,"low":1460.9,"close":1461.6,"average":"1461.24"}
+[2026-02-09T09:58:58.015Z] Live price: 1462
+[2026-02-09T09:59:08.020Z] Live price: 1461
+[2026-02-09T09:59:18.055Z] Live price: 1461.9
+[2026-02-09T09:59:28.062Z] Live price: 1461.7
+[2026-02-09T09:59:38.061Z] Live price: 1461.1
+[2026-02-09T09:59:48.075Z] Live price: 1461.1
+[2026-02-09T09:59:58.063Z] Live price: 1461
+[2026-02-09T10:00:08.074Z] Live price: 1461.2
+[2026-02-09T10:00:18.069Z] Live price: 1461.2
+[2026-02-09T10:00:28.106Z] Live price: 1461.2
+[2026-02-09T10:00:38.121Z] Live price: 1461.2
+[2026-02-09T10:00:48.112Z] Live price: 1461.2
+[2026-02-09T10:00:58.114Z] Live price: 1461.2
+[2026-02-09T10:01:08.143Z] Live price: 1461.2
+[2026-02-09T10:01:18.111Z] Live price: 1461.6
+[2026-02-09T10:01:28.134Z] Live price: 1461.6
+[2026-02-09T10:01:38.154Z] Live price: 1461.6
+[2026-02-09T10:01:48.166Z] Live price: 1461.6
+[2026-02-09T10:01:48.168Z] New 3-min candle → {"time":"2026-02-09T10:01:48.168Z","open":1462,"high":1462,"low":1461,"close":1461.6,"average":"1461.37"}
+[2026-02-09T10:01:58.167Z] Live price: 1461.6
+[2026-02-09T10:02:08.158Z] Live price: 1461.6
+[2026-02-09T10:02:18.154Z] Live price: 1461.6
+[2026-02-09T10:02:28.206Z] Live price: 1461.6
+[2026-02-09T10:02:38.179Z] Live price: 1461.6
+[2026-02-09T10:02:48.200Z] Live price: 1461.6
+[2026-02-09T10:03:00.253Z] Live price: 1461.6
+[2026-02-09T10:03:08.238Z] Live price: 1461.6
+[2026-02-09T10:03:18.220Z] Live price: 1461.6
+[2026-02-09T10:03:28.244Z] Live price: 1461.6
+[2026-02-09T10:03:38.264Z] Live price: 1461.6
+[2026-02-09T10:03:48.261Z] Live price: 1461.6
+[2026-02-09T10:03:58.272Z] Live price: 1461.6
+[2026-02-09T10:04:08.250Z] Live price: 1461.6
+[2026-02-09T10:04:18.320Z] Live price: 1461.6
+[2026-02-09T10:04:28.306Z] Live price: 1461.6
+[2026-02-09T10:04:38.320Z] Live price: 1461.6
+[2026-02-09T10:04:48.322Z] Live price: 1461.6
+[2026-02-09T10:04:48.324Z] New 3-min candle → {"time":"2026-02-09T10:04:48.324Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:04:58.322Z] Live price: 1461.6
+[2026-02-09T10:05:08.320Z] Live price: 1461.6
+[2026-02-09T10:05:18.353Z] Live price: 1461.6
+[2026-02-09T10:05:28.342Z] Live price: 1461.6
+[2026-02-09T10:05:38.368Z] Live price: 1461.6
+[2026-02-09T10:05:48.352Z] Live price: 1461.6
+[2026-02-09T10:05:58.359Z] Live price: 1461.6
+[2026-02-09T10:06:08.357Z] Live price: 1461.6
+[2026-02-09T10:06:18.356Z] Live price: 1461.6
+[2026-02-09T10:06:28.392Z] Live price: 1461.6
+[2026-02-09T10:06:38.376Z] Live price: 1461.6
+[2026-02-09T10:06:48.386Z] Live price: 1461.6
+[2026-02-09T10:06:58.385Z] Live price: 1461.6
+[2026-02-09T10:07:08.374Z] Live price: 1461.6
+[2026-02-09T10:07:18.407Z] Live price: 1461.6
+[2026-02-09T10:07:28.397Z] Live price: 1461.6
+[2026-02-09T10:07:38.381Z] Live price: 1461.6
+[2026-02-09T10:07:48.429Z] Live price: 1461.6
+[2026-02-09T10:07:48.432Z] New 3-min candle → {"time":"2026-02-09T10:07:48.432Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:07:58.478Z] Live price: 1461.6
+[2026-02-09T10:08:08.483Z] Live price: 1461.6
+[2026-02-09T10:08:18.446Z] Live price: 1461.6
+[2026-02-09T10:08:28.443Z] Live price: 1461.6
+[2026-02-09T10:08:38.492Z] Live price: 1461.6
+[2026-02-09T10:08:48.468Z] Live price: 1461.6
+[2026-02-09T10:08:58.484Z] Live price: 1461.6
+[2026-02-09T10:09:08.481Z] Live price: 1461.6
+[2026-02-09T10:09:18.490Z] Live price: 1461.6
+[2026-02-09T10:09:28.526Z] Live price: 1461.6
+[2026-02-09T10:09:38.541Z] Live price: 1461.6
+[2026-02-09T10:09:48.536Z] Live price: 1461.6
+[2026-02-09T10:09:58.509Z] Live price: 1461.6
+[2026-02-09T10:10:08.549Z] Live price: 1461.6
+[2026-02-09T10:10:18.532Z] Live price: 1461.6
+[2026-02-09T10:10:28.552Z] Live price: 1461.6
+[2026-02-09T10:10:37.696Z] Hourly CSV email sent ✅
+[2026-02-09T10:10:38.558Z] Live price: 1461.6
+[2026-02-09T10:10:48.580Z] Live price: 1461.6
+[2026-02-09T10:10:48.582Z] New 3-min candle → {"time":"2026-02-09T10:10:48.582Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:10:58.547Z] Live price: 1461.6
+[2026-02-09T10:11:08.590Z] Live price: 1461.6
+[2026-02-09T10:11:18.580Z] Live price: 1461.6
+[2026-02-09T10:11:28.548Z] Live price: 1461.6
+[2026-02-09T10:11:38.603Z] Live price: 1461.6
+[2026-02-09T10:11:48.589Z] Live price: 1461.6
+[2026-02-09T10:11:58.620Z] Live price: 1461.6
+[2026-02-09T10:12:08.616Z] Live price: 1461.6
+[2026-02-09T10:12:18.649Z] Live price: 1461.6
+[2026-02-09T10:12:28.648Z] Live price: 1461.6
+[2026-02-09T10:12:38.657Z] Live price: 1461.6
+[2026-02-09T10:12:48.638Z] Live price: 1461.6
+[2026-02-09T10:12:58.632Z] Live price: 1461.6
+[2026-02-09T10:13:08.670Z] Live price: 1461.6
+[2026-02-09T10:13:18.678Z] Live price: 1461.6
+[2026-02-09T10:13:28.692Z] Live price: 1461.6
+[2026-02-09T10:13:38.693Z] Live price: 1461.6
+[2026-02-09T10:13:48.683Z] Live price: 1461.6
+[2026-02-09T10:13:48.686Z] New 3-min candle → {"time":"2026-02-09T10:13:48.686Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:13:58.710Z] Live price: 1461.6
+[2026-02-09T10:14:08.753Z] Live price: 1461.6
+[2026-02-09T10:14:18.710Z] Live price: 1461.6
+[2026-02-09T10:14:28.724Z] Live price: 1461.6
+[2026-02-09T10:14:38.713Z] Live price: 1461.6
+[2026-02-09T10:14:48.761Z] Live price: 1461.6
+[2026-02-09T10:14:58.766Z] Live price: 1461.6
+[2026-02-09T10:15:08.792Z] Live price: 1461.6
+[2026-02-09T10:15:18.805Z] Live price: 1461.6
+[2026-02-09T10:15:28.797Z] Live price: 1461.6
+[2026-02-09T10:15:38.823Z] Live price: 1461.6
+[2026-02-09T10:15:48.818Z] Live price: 1461.6
+[2026-02-09T10:15:58.788Z] Live price: 1461.6
+[2026-02-09T10:16:08.845Z] Live price: 1461.6
+[2026-02-09T10:16:18.819Z] Live price: 1461.6
+[2026-02-09T10:16:28.861Z] Live price: 1461.6
+[2026-02-09T10:16:38.833Z] Live price: 1461.6
+[2026-02-09T10:16:48.867Z] Live price: 1461.6
+[2026-02-09T10:16:48.870Z] New 3-min candle → {"time":"2026-02-09T10:16:48.870Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:16:58.834Z] Live price: 1461.6
+[2026-02-09T10:17:08.850Z] Live price: 1461.6
+[2026-02-09T10:17:18.893Z] Live price: 1461.6
+[2026-02-09T10:17:28.890Z] Live price: 1461.6
+[2026-02-09T10:17:38.893Z] Live price: 1461.6
+[2026-02-09T10:17:48.891Z] Live price: 1461.6
+[2026-02-09T10:18:00.576Z] Live price: 1461.6
+[2026-02-09T10:18:08.919Z] Live price: 1461.6
+[2026-02-09T10:18:18.909Z] Live price: 1461.6
+[2026-02-09T10:18:28.922Z] Live price: 1461.6
+[2026-02-09T10:18:38.935Z] Live price: 1461.6
+[2026-02-09T10:18:48.921Z] Live price: 1461.6
+[2026-02-09T10:18:59.045Z] Live price: 1461.6
+[2026-02-09T10:19:08.960Z] Live price: 1461.6
+[2026-02-09T10:19:18.970Z] Live price: 1461.6
+[2026-02-09T10:19:28.952Z] Live price: 1461.6
+[2026-02-09T10:19:38.983Z] Live price: 1461.6
+[2026-02-09T10:19:48.973Z] Live price: 1461.6
+[2026-02-09T10:19:48.976Z] New 3-min candle → {"time":"2026-02-09T10:19:48.976Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:19:58.983Z] Live price: 1461.6
+[2026-02-09T10:20:09.005Z] Live price: 1461.6
+[2026-02-09T10:20:19.001Z] Live price: 1461.6
+[2026-02-09T10:20:29.010Z] Live price: 1461.6
+[2026-02-09T10:20:39.058Z] Live price: 1461.6
+[2026-02-09T10:20:49.026Z] Live price: 1461.6
+[2026-02-09T10:20:59.060Z] Live price: 1461.6
+[2026-02-09T10:21:09.047Z] Live price: 1461.6
+[2026-02-09T10:21:19.031Z] Live price: 1461.6
+[2026-02-09T10:21:29.050Z] Live price: 1461.6
+[2026-02-09T10:21:39.079Z] Live price: 1461.6
+[2026-02-09T10:21:49.070Z] Live price: 1461.6
+[2026-02-09T10:21:59.203Z] Live price: 1461.6
+[2026-02-09T10:22:09.101Z] Live price: 1461.6
+[2026-02-09T10:22:19.100Z] Live price: 1461.6
+[2026-02-09T10:22:29.114Z] Live price: 1461.6
+[2026-02-09T10:22:39.093Z] Live price: 1461.6
+[2026-02-09T10:22:49.118Z] Live price: 1461.6
+[2026-02-09T10:22:49.120Z] New 3-min candle → {"time":"2026-02-09T10:22:49.120Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:22:59.130Z] Live price: 1461.6
+[2026-02-09T10:23:09.135Z] Live price: 1461.6
+[2026-02-09T10:23:19.155Z] Live price: 1461.6
+[2026-02-09T10:23:29.169Z] Live price: 1461.6
+[2026-02-09T10:23:39.163Z] Live price: 1461.6
+[2026-02-09T10:23:49.168Z] Live price: 1461.6
+[2026-02-09T10:23:59.188Z] Live price: 1461.6
+[2026-02-09T10:24:09.212Z] Live price: 1461.6
+[2026-02-09T10:24:19.216Z] Live price: 1461.6
+[2026-02-09T10:24:29.207Z] Live price: 1461.6
+[2026-02-09T10:24:39.223Z] Live price: 1461.6
+[2026-02-09T10:24:49.229Z] Live price: 1461.6
+[2026-02-09T10:24:59.196Z] Live price: 1461.6
+[2026-02-09T10:25:09.226Z] Live price: 1461.6
+[2026-02-09T10:25:19.255Z] Live price: 1461.6
+[2026-02-09T10:25:29.258Z] Live price: 1461.6
+[2026-02-09T10:25:39.269Z] Live price: 1461.6
+[2026-02-09T10:25:49.245Z] Live price: 1461.6
+[2026-02-09T10:25:49.248Z] New 3-min candle → {"time":"2026-02-09T10:25:49.248Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:25:59.284Z] Live price: 1461.6
+[2026-02-09T10:26:09.295Z] Live price: 1461.6
+[2026-02-09T10:26:19.304Z] Live price: 1461.6
+[2026-02-09T10:26:29.315Z] Live price: 1461.6
+[2026-02-09T10:26:39.333Z] Live price: 1461.6
+[2026-02-09T10:26:49.302Z] Live price: 1461.6
+[2026-02-09T10:26:59.305Z] Live price: 1461.6
+[2026-02-09T10:27:09.317Z] Live price: 1461.6
+[2026-02-09T10:27:19.338Z] Live price: 1461.6
+[2026-02-09T10:27:29.335Z] Live price: 1461.6
+[2026-02-09T10:27:39.343Z] Live price: 1461.6
+[2026-02-09T10:27:49.363Z] Live price: 1461.6
+[2026-02-09T10:27:59.382Z] Live price: 1461.6
+[2026-02-09T10:28:09.375Z] Live price: 1461.6
+[2026-02-09T10:28:19.357Z] Live price: 1461.6
+[2026-02-09T10:28:29.383Z] Live price: 1461.6
+[2026-02-09T10:28:39.384Z] Live price: 1461.6
+[2026-02-09T10:28:49.396Z] Live price: 1461.6
+[2026-02-09T10:28:49.399Z] New 3-min candle → {"time":"2026-02-09T10:28:49.399Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:28:59.413Z] Live price: 1461.6
+[2026-02-09T10:29:09.406Z] Live price: 1461.6
+[2026-02-09T10:29:19.413Z] Live price: 1461.6
+[2026-02-09T10:29:29.430Z] Live price: 1461.6
+[2026-02-09T10:29:39.424Z] Live price: 1461.6
+[2026-02-09T10:29:49.461Z] Live price: 1461.6
+[2026-02-09T10:29:59.436Z] Live price: 1461.6
+[2026-02-09T10:30:09.441Z] Live price: 1461.6
+[2026-02-09T10:30:19.464Z] Live price: 1461.6
+[2026-02-09T10:30:29.464Z] Live price: 1461.6
+[2026-02-09T10:30:39.504Z] Live price: 1461.6
+[2026-02-09T10:30:49.499Z] Live price: 1461.6
+[2026-02-09T10:30:59.482Z] Live price: 1461.6
+[2026-02-09T10:31:09.480Z] Live price: 1461.6
+[2026-02-09T10:31:19.512Z] Live price: 1461.6
+[2026-02-09T10:31:29.495Z] Live price: 1461.6
+[2026-02-09T10:31:39.503Z] Live price: 1461.6
+[2026-02-09T10:31:49.526Z] Live price: 1461.6
+[2026-02-09T10:31:49.530Z] New 3-min candle → {"time":"2026-02-09T10:31:49.529Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:31:59.535Z] Live price: 1461.6
+[2026-02-09T10:32:09.538Z] Live price: 1461.6
+[2026-02-09T10:32:19.561Z] Live price: 1461.6
+[2026-02-09T10:32:29.538Z] Live price: 1461.6
+[2026-02-09T10:32:39.574Z] Live price: 1461.6
+[2026-02-09T10:32:49.582Z] Live price: 1461.6
+[2026-02-09T10:33:00.688Z] Live price: 1461.6
+[2026-02-09T10:33:09.571Z] Live price: 1461.6
+[2026-02-09T10:33:19.605Z] Live price: 1461.6
+[2026-02-09T10:33:29.598Z] Live price: 1461.6
+[2026-02-09T10:33:39.598Z] Live price: 1461.6
+[2026-02-09T10:33:49.609Z] Live price: 1461.6
+[2026-02-09T10:33:59.634Z] Live price: 1461.6
+[2026-02-09T10:34:09.631Z] Live price: 1461.6
+[2026-02-09T10:34:19.632Z] Live price: 1461.6
+[2026-02-09T10:34:29.630Z] Live price: 1461.6
+[2026-02-09T10:34:39.668Z] Live price: 1461.6
+[2026-02-09T10:34:49.656Z] Live price: 1461.6
+[2026-02-09T10:34:49.660Z] New 3-min candle → {"time":"2026-02-09T10:34:49.659Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:34:59.698Z] Live price: 1461.6
+[2026-02-09T10:35:09.692Z] Live price: 1461.6
+[2026-02-09T10:35:19.717Z] Live price: 1461.6
+[2026-02-09T10:35:29.681Z] Live price: 1461.6
+[2026-02-09T10:35:39.766Z] Live price: 1461.6
+[2026-02-09T10:35:49.715Z] Live price: 1461.6
+[2026-02-09T10:35:59.746Z] Live price: 1461.6
+[2026-02-09T10:36:09.732Z] Live price: 1461.6
+[2026-02-09T10:36:19.746Z] Live price: 1461.6
+[2026-02-09T10:36:29.771Z] Live price: 1461.6
+[2026-02-09T10:36:39.768Z] Live price: 1461.6
+[2026-02-09T10:36:49.775Z] Live price: 1461.6
+[2026-02-09T10:36:59.781Z] Live price: 1461.6
+[2026-02-09T10:37:09.784Z] Live price: 1461.6
+[2026-02-09T10:37:19.786Z] Live price: 1461.6
+[2026-02-09T10:37:29.768Z] Live price: 1461.6
+[2026-02-09T10:37:39.814Z] Live price: 1461.6
+[2026-02-09T10:37:49.800Z] Live price: 1461.6
+[2026-02-09T10:37:49.802Z] New 3-min candle → {"time":"2026-02-09T10:37:49.802Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:37:59.827Z] Live price: 1461.6
+[2026-02-09T10:38:09.852Z] Live price: 1461.6
+[2026-02-09T10:38:19.821Z] Live price: 1461.6
+[2026-02-09T10:38:29.843Z] Live price: 1461.6
+[2026-02-09T10:38:39.830Z] Live price: 1461.6
+[2026-02-09T10:38:49.861Z] Live price: 1461.6
+[2026-02-09T10:38:59.831Z] Live price: 1461.6
+[2026-02-09T10:39:09.852Z] Live price: 1461.6
+[2026-02-09T10:39:19.893Z] Live price: 1461.6
+[2026-02-09T10:39:29.891Z] Live price: 1461.6
+[2026-02-09T10:39:39.927Z] Live price: 1461.6
+[2026-02-09T10:39:49.907Z] Live price: 1461.6
+[2026-02-09T10:39:59.903Z] Live price: 1461.6
+[2026-02-09T10:40:09.917Z] Live price: 1461.6
+[2026-02-09T10:40:19.913Z] Live price: 1461.6
+[2026-02-09T10:40:29.923Z] Live price: 1461.6
+[2026-02-09T10:40:39.934Z] Live price: 1461.6
+[2026-02-09T10:40:49.956Z] Live price: 1461.6
+[2026-02-09T10:40:49.958Z] New 3-min candle → {"time":"2026-02-09T10:40:49.958Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:40:59.963Z] Live price: 1461.6
+[2026-02-09T10:41:09.998Z] Live price: 1461.6
+[2026-02-09T10:41:19.999Z] Live price: 1461.6
+[2026-02-09T10:41:29.999Z] Live price: 1461.6
+[2026-02-09T10:41:39.974Z] Live price: 1461.6
+[2026-02-09T10:41:49.966Z] Live price: 1461.6
+[2026-02-09T10:42:00.005Z] Live price: 1461.6
+[2026-02-09T10:42:09.976Z] Live price: 1461.6
+[2026-02-09T10:42:20.027Z] Live price: 1461.6
+[2026-02-09T10:42:30.047Z] Live price: 1461.6
+[2026-02-09T10:42:40.022Z] Live price: 1461.6
+[2026-02-09T10:42:50.064Z] Live price: 1461.6
+[2026-02-09T10:43:00.027Z] Live price: 1461.6
+[2026-02-09T10:43:10.068Z] Live price: 1461.6
+[2026-02-09T10:43:20.087Z] Live price: 1461.6
+[2026-02-09T10:43:30.074Z] Live price: 1461.6
+[2026-02-09T10:43:40.092Z] Live price: 1461.6
+[2026-02-09T10:43:50.116Z] Live price: 1461.6
+[2026-02-09T10:43:50.119Z] New 3-min candle → {"time":"2026-02-09T10:43:50.118Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:44:00.115Z] Live price: 1461.6
+[2026-02-09T10:44:10.084Z] Live price: 1461.6
+[2026-02-09T10:44:20.122Z] Live price: 1461.6
+[2026-02-09T10:44:30.114Z] Live price: 1461.6
+[2026-02-09T10:44:40.114Z] Live price: 1461.6
+[2026-02-09T10:44:50.145Z] Live price: 1461.6
+[2026-02-09T10:45:00.130Z] Live price: 1461.6
+[2026-02-09T10:45:10.159Z] Live price: 1461.6
+[2026-02-09T10:45:20.146Z] Live price: 1461.6
+[2026-02-09T10:45:30.175Z] Live price: 1461.6
+[2026-02-09T10:45:40.214Z] Live price: 1461.6
+[2026-02-09T10:45:50.168Z] Live price: 1461.6
+[2026-02-09T10:46:00.164Z] Live price: 1461.6
+[2026-02-09T10:46:10.199Z] Live price: 1461.6
+[2026-02-09T10:46:20.225Z] Live price: 1461.6
+[2026-02-09T10:46:30.198Z] Live price: 1461.6
+[2026-02-09T10:46:40.209Z] Live price: 1461.6
+[2026-02-09T10:46:50.231Z] Live price: 1461.6
+[2026-02-09T10:46:50.234Z] New 3-min candle → {"time":"2026-02-09T10:46:50.234Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:47:00.235Z] Live price: 1461.6
+[2026-02-09T10:47:10.210Z] Live price: 1461.6
+[2026-02-09T10:47:20.238Z] Live price: 1461.6
+[2026-02-09T10:47:30.256Z] Live price: 1461.6
+[2026-02-09T10:47:40.223Z] Live price: 1461.6
+[2026-02-09T10:47:50.267Z] Live price: 1461.6
+[2026-02-09T10:48:01.442Z] Live price: 1461.6
+[2026-02-09T10:48:10.254Z] Live price: 1461.6
+[2026-02-09T10:48:20.289Z] Live price: 1461.6
+[2026-02-09T10:48:30.297Z] Live price: 1461.6
+[2026-02-09T10:48:40.299Z] Live price: 1461.6
+[2026-02-09T10:48:50.297Z] Live price: 1461.6
+[2026-02-09T10:49:00.331Z] Live price: 1461.6
+[2026-02-09T10:49:10.335Z] Live price: 1461.6
+[2026-02-09T10:49:20.330Z] Live price: 1461.6
+[2026-02-09T10:49:30.330Z] Live price: 1461.6
+[2026-02-09T10:49:40.360Z] Live price: 1461.6
+[2026-02-09T10:49:50.344Z] Live price: 1461.6
+[2026-02-09T10:49:50.348Z] New 3-min candle → {"time":"2026-02-09T10:49:50.348Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:50:00.374Z] Live price: 1461.6
+[2026-02-09T10:50:10.350Z] Live price: 1461.6
+[2026-02-09T10:50:22.818Z] Live price: 1461.6
+[2026-02-09T10:50:30.373Z] Live price: 1461.6
+[2026-02-09T10:50:40.403Z] Live price: 1461.6
+[2026-02-09T10:50:50.405Z] Live price: 1461.6
+[2026-02-09T10:51:00.415Z] Live price: 1461.6
+[2026-02-09T10:51:10.418Z] Live price: 1461.6
+[2026-02-09T10:51:20.431Z] Live price: 1461.6
+[2026-02-09T10:51:30.424Z] Live price: 1461.6
+[2026-02-09T10:51:40.433Z] Live price: 1461.6
+[2026-02-09T10:51:50.435Z] Live price: 1461.6
+[2026-02-09T10:52:00.455Z] Live price: 1461.6
+[2026-02-09T10:52:10.494Z] Live price: 1461.6
+[2026-02-09T10:52:20.481Z] Live price: 1461.6
+[2026-02-09T10:52:30.487Z] Live price: 1461.6
+[2026-02-09T10:52:41.526Z] Live price: 1461.6
+[2026-02-09T10:52:50.515Z] Live price: 1461.6
+[2026-02-09T10:52:50.517Z] New 3-min candle → {"time":"2026-02-09T10:52:50.517Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:53:00.514Z] Live price: 1461.6
+[2026-02-09T10:53:10.513Z] Live price: 1461.6
+[2026-02-09T10:53:20.563Z] Live price: 1461.6
+[2026-02-09T10:53:30.535Z] Live price: 1461.6
+[2026-02-09T10:53:40.574Z] Live price: 1461.6
+[2026-02-09T10:53:50.575Z] Live price: 1461.6
+[2026-02-09T10:54:00.577Z] Live price: 1461.6
+[2026-02-09T10:54:10.576Z] Live price: 1461.6
+[2026-02-09T10:54:20.552Z] Live price: 1461.6
+[2026-02-09T10:54:30.561Z] Live price: 1461.6
+[2026-02-09T10:54:40.585Z] Live price: 1461.6
+[2026-02-09T10:54:50.595Z] Live price: 1461.6
+[2026-02-09T10:55:00.604Z] Live price: 1461.6
+[2026-02-09T10:55:10.608Z] Live price: 1461.6
+[2026-02-09T10:55:20.611Z] Live price: 1461.6
+[2026-02-09T10:55:30.632Z] Live price: 1461.6
+[2026-02-09T10:55:40.632Z] Live price: 1461.6
+[2026-02-09T10:55:50.625Z] Live price: 1461.6
+[2026-02-09T10:55:50.628Z] New 3-min candle → {"time":"2026-02-09T10:55:50.628Z","open":1461.6,"high":1461.6,"low":1461.6,"close":1461.6,"average":"1461.60"}
+[2026-02-09T10:56:00.672Z] Live price: 1461.6
+[2026-02-09T10:56:10.636Z] Live price: 1461.6
+[2026-02-09T10:56:20.641Z] Live price: 1461.6
+[2026-02-09T10:56:30.647Z] Live price: 1461.6
+[2026-02-09T10:56:40.636Z] Live price: 1461.6
+[2026-02-09T10:56:50.655Z] Live price: 1461.6
+[2026-02-09T10:57:00.682Z] Live price: 1461.6
+[2026-02-09T10:57:10.667Z] Live price: 1461.6
+[2026-02-09T10:57:20.703Z] Live price: 1461.6
+[2026-02-09T10:57:30.697Z] Live price: 1461.6
+[2026-02-09T10:57:40.699Z] Live price: 1461.6
+[2026-02-09T10:57:50.719Z] Live price: 1461.6
+[2026-02-09T10:58:00.704Z] Live price: 1461.6
+[2026-02-09T10:58:10.738Z] Live price: 1461.6
+[2026-02-09T18:29:44.568Z] Live price: 1461.6
+[2026-02-09T18:29:44.575Z] New candle → {"time":"2026-02-09T18:29:44.573Z","close":1461.6}
+[2026-02-09T18:29:54.526Z] Live price: 1461.6
+[2026-02-09T18:30:04.602Z] Live price: 1461.6
+[2026-02-09T18:30:14.546Z] Live price: 1461.6
+[2026-02-09T18:30:24.589Z] Live price: 1461.6
+[2026-02-09T18:30:34.577Z] Live price: 1461.6
+[2026-02-09T18:30:44.588Z] Live price: 1461.6
+[2026-02-09T18:30:54.600Z] Live price: 1461.6
+[2026-02-09T18:31:04.615Z] Live price: 1461.6
+[2026-02-09T18:31:14.606Z] Live price: 1461.6
+[2026-02-09T18:31:24.617Z] Live price: 1461.6
+[2026-02-09T18:31:34.632Z] Live price: 1461.6
+[2026-02-09T18:31:44.604Z] Live price: 1461.6
+[2026-02-09T18:31:54.664Z] Live price: 1461.6
+[2026-02-09T18:32:04.603Z] Live price: 1461.6
+[2026-02-09T18:32:14.764Z] Live price: 1461.6
+[2026-02-09T18:32:24.663Z] Live price: 1461.6
+[2026-02-09T18:32:34.778Z] Live price: 1461.6
+[2026-02-09T18:32:44.695Z] Live price: 1461.6
+[2026-02-09T18:32:44.700Z] New candle → {"time":"2026-02-09T18:32:44.698Z","close":1461.6}
+[2026-02-09T18:32:54.694Z] Live price: 1461.6
+[2026-02-09T18:33:04.690Z] Live price: 1461.6
+[2026-02-09T18:33:14.712Z] Live price: 1461.6
+[2026-02-09T18:33:24.696Z] Live price: 1461.6
+[2026-02-09T18:33:34.121Z] Live price: 1461.6
+[2026-02-09T18:33:44.086Z] Live price: 1461.6
+[2026-02-09T18:33:54.138Z] Live price: 1461.6
+[2026-02-09T18:34:04.137Z] Live price: 1461.6
+[2026-02-09T18:34:14.146Z] Live price: 1461.6
+[2026-02-09T18:34:24.155Z] Live price: 1461.6
+[2026-02-09T18:34:34.185Z] Live price: 1461.6
+[2026-02-09T18:34:44.189Z] Live price: 1461.6
+[2026-02-09T18:34:54.169Z] Live price: 1461.6
+[2026-02-09T18:35:04.168Z] Live price: 1461.6
+[2026-02-09T18:35:14.154Z] Live price: 1461.6
+[2026-02-09T18:35:24.195Z] Live price: 1461.6
+[2026-02-09T18:35:34.197Z] Live price: 1461.6
+[2026-02-09T18:35:44.214Z] Live price: 1461.6
+[2026-02-09T18:35:54.190Z] Live price: 1461.6
+[2026-02-09T18:35:54.193Z] New candle → {"time":"2026-02-09T18:35:54.192Z","close":1461.6}
+[2026-02-09T18:36:04.198Z] Live price: 1461.6
+[2026-02-09T18:36:14.203Z] Live price: 1461.6
+[2026-02-09T18:36:24.253Z] Live price: 1461.6
+[2026-02-09T18:36:34.234Z] Live price: 1461.6
+[2026-02-09T18:36:44.237Z] Live price: 1461.6
+[2026-02-09T18:36:54.249Z] Live price: 1461.6
+[2026-02-09T18:37:04.251Z] Live price: 1461.6
+[2026-02-09T18:37:14.235Z] Live price: 1461.6
+[2026-02-09T18:37:24.278Z] Live price: 1461.6
+[2026-02-09T18:37:34.283Z] Live price: 1461.6
+[2026-02-09T18:37:44.284Z] Live price: 1461.6
+[2026-02-09T18:37:54.297Z] Live price: 1461.6
+[2026-02-09T18:38:04.309Z] Live price: 1461.6
+[2026-02-09T18:38:14.310Z] Live price: 1461.6
+[2026-02-09T18:38:24.329Z] Live price: 1461.6
+[2026-02-09T18:38:34.325Z] Live price: 1461.6
+[2026-02-09T18:38:44.329Z] Live price: 1461.6
+[2026-02-09T18:38:54.346Z] Live price: 1461.6
+[2026-02-09T18:38:54.350Z] New candle → {"time":"2026-02-09T18:38:54.348Z","close":1461.6}
+[2026-02-09T18:39:04.344Z] Live price: 1461.6
+[2026-02-09T18:39:14.352Z] Live price: 1461.6
+[2026-02-09T18:39:24.347Z] Live price: 1461.6
+[2026-02-09T18:39:34.366Z] Live price: 1461.6
+[2026-02-09T18:39:44.372Z] Live price: 1461.6
+[2026-02-09T18:41:59.160Z] Live price: 1461.6
+[2026-02-09T18:41:59.166Z] New candle → {"time":"2026-02-09T18:41:59.164Z","close":1461.6}
+[2026-02-09T18:42:09.107Z] Live price: 1461.6
+[2026-02-09T18:58:24.319Z] Live price: 1461.6
+[2026-02-09T18:58:24.326Z] New candle → {"time":"2026-02-09T18:58:24.325Z","close":1461.6}
+[2026-02-09T18:58:34.250Z] Live price: 1461.6
+[2026-02-09T18:58:44.233Z] Live price: 1461.6
+[2026-02-09T18:58:54.278Z] Live price: 1461.6
+[2026-02-09T18:59:04.307Z] Live price: 1461.6
+[2026-02-09T18:59:14.284Z] Live price: 1461.6
+[2026-02-09T18:59:24.279Z] Live price: 1461.6
+[2026-02-09T18:59:34.311Z] Live price: 1461.6
+[2026-02-09T18:59:44.319Z] Live price: 1461.6
+[2026-02-09T18:59:54.299Z] Live price: 1461.6
+[2026-02-09T19:00:04.326Z] Live price: 1461.6
+[2026-02-09T19:00:14.355Z] Live price: 1461.6
+[2026-02-09T19:00:24.336Z] Live price: 1461.6
+[2026-02-09T19:00:34.377Z] Live price: 1461.6
+[2026-02-09T19:00:44.358Z] Live price: 1461.6
+[2026-02-09T19:00:54.372Z] Live price: 1461.6
+[2026-02-09T19:01:04.388Z] Live price: 1461.6
+[2026-02-09T19:01:14.418Z] Live price: 1461.6
+[2026-02-09T19:01:24.388Z] Live price: 1461.6
+[2026-02-09T19:01:24.392Z] New candle → {"time":"2026-02-09T19:01:24.391Z","close":1461.6}
+[2026-02-09T19:01:34.402Z] Live price: 1461.6
+[2026-02-09T19:01:44.430Z] Live price: 1461.6
+[2026-02-09T19:01:54.429Z] Live price: 1461.6
+[2026-02-09T19:02:04.427Z] Live price: 1461.6
+[2026-02-09T19:02:14.444Z] Live price: 1461.6
+[2026-02-09T19:02:24.432Z] Live price: 1461.6
+[2026-02-09T19:02:34.450Z] Live price: 1461.6
+[2026-02-09T19:02:44.455Z] Live price: 1461.6
+[2026-02-09T19:02:54.468Z] Live price: 1461.6
+[2026-02-09T19:03:04.487Z] Live price: 1461.6
+[2026-02-09T19:03:14.474Z] Live price: 1461.6
+[2026-02-09T19:03:24.496Z] Live price: 1461.6
+[2026-02-09T19:03:58.639Z] Live price: 1461.6
+[2026-02-09T19:05:56.007Z] BOT STARTED
+[2026-02-09T19:06:06.651Z] Price: 1461.6
+[2026-02-09T19:06:16.617Z] Price: 1461.6
+[2026-02-09T19:06:26.610Z] Price: 1461.6
+[2026-02-09T19:06:36.591Z] Price: 1461.6
+[2026-02-09T19:06:46.625Z] Price: 1461.6
+[2026-02-09T19:06:56.608Z] Price: 1461.6
+[2026-02-09T19:07:06.617Z] Price: 1461.6
+[2026-02-09T19:07:16.632Z] Price: 1461.6
+[2026-02-09T19:07:26.656Z] Price: 1461.6
+[2026-02-09T19:07:36.657Z] Price: 1461.6
+[2026-02-09T19:07:46.670Z] Price: 1461.6
+[2026-02-09T19:07:56.678Z] Price: 1461.6
+[2026-02-09T19:08:06.675Z] Price: 1461.6
+[2026-02-09T19:08:16.725Z] Price: 1461.6
+[2026-02-09T19:08:27.943Z] Price: 1461.6
+[2026-02-09T19:08:38.127Z] Price: 1461.6
+[2026-02-09T19:08:46.711Z] Price: 1461.6
+[2026-02-09T19:08:56.735Z] Price: 1461.6
+[2026-02-09T19:09:06.798Z] Price: 1461.6
+[2026-02-09T19:09:16.758Z] Price: 1461.6
+[2026-02-09T19:09:28.161Z] Price: 1461.6
+[2026-02-09T19:09:36.773Z] Price: 1461.6
+[2026-02-09T19:09:46.763Z] Price: 1461.6
+[2026-02-09T19:09:56.789Z] Price: 1461.6
+[2026-02-09T19:10:06.823Z] Price: 1461.6
+[2026-02-09T19:10:16.837Z] Price: 1461.6
+[2026-02-09T19:10:26.873Z] Price: 1461.6
+[2026-02-09T19:10:36.831Z] Price: 1461.6
+[2026-02-09T19:10:46.852Z] Price: 1461.6
+[2026-02-09T19:10:56.860Z] Price: 1461.6
+[2026-02-09T19:11:06.863Z] Price: 1461.6
+[2026-02-09T19:11:16.985Z] Price: 1461.6
+[2026-02-09T19:11:26.860Z] Price: 1461.6
+[2026-02-09T19:11:36.887Z] Price: 1461.6
+[2026-02-09T19:11:46.923Z] Price: 1461.6
+[2026-02-09T19:11:57.062Z] Price: 1461.6
+[2026-02-09T19:12:07.072Z] Price: 1461.6
+[2026-02-09T19:12:16.931Z] Price: 1461.6
+[2026-02-09T19:12:26.995Z] Price: 1461.6
+[2026-02-09T19:12:37.040Z] Price: 1461.6
+[2026-02-09T19:12:46.960Z] Price: 1461.6
+[2026-02-09T19:12:56.936Z] Price: 1461.6
+[2026-02-09T19:13:06.944Z] Price: 1461.6
+[2026-02-09T19:13:16.969Z] Price: 1461.6
+[2026-02-09T19:13:27.015Z] Price: 1461.6
+[2026-02-09T19:13:36.986Z] Price: 1461.6
+[2026-02-09T19:13:46.994Z] Price: 1461.6
+[2026-02-09T19:13:57.011Z] Price: 1461.6
+[2026-02-09T19:14:06.997Z] Price: 1461.6
+[2026-02-09T19:14:16.992Z] Price: 1461.6
+[2026-02-09T19:14:27.007Z] Price: 1461.6
+[2026-02-09T19:14:37.040Z] Price: 1461.6
+[2026-02-09T19:14:47.048Z] Price: 1461.6
+[2026-02-09T19:14:57.047Z] Price: 1461.6
+[2026-02-09T19:15:07.048Z] Price: 1461.6
+[2026-02-09T19:15:17.121Z] Price: 1461.6
+[2026-02-09T19:15:27.098Z] Price: 1461.6
+[2026-02-09T19:15:40.596Z] BOT STARTED
+[2026-02-09T19:15:51.268Z] Price: 1461.6
+[2026-02-09T19:16:01.198Z] Price: 1461.6
+[2026-02-09T19:16:11.193Z] Price: 1461.6
+[2026-02-09T19:16:21.193Z] Price: 1461.6
+[2026-02-09T19:16:31.202Z] Price: 1461.6
+[2026-02-09T19:16:41.208Z] Price: 1461.6
+[2026-02-09T19:16:51.212Z] Price: 1461.6
+[2026-02-09T19:17:01.239Z] Price: 1461.6
+[2026-02-09T19:17:11.245Z] Price: 1461.6
+[2026-02-09T19:17:21.241Z] Price: 1461.6
+[2026-02-09T19:17:31.257Z] Price: 1461.6
+[2026-02-09T19:17:41.268Z] Price: 1461.6
+[2026-02-09T19:17:51.315Z] Price: 1461.6
+[2026-02-09T19:18:01.409Z] Price: 1461.6
+[2026-02-09T19:18:11.277Z] Price: 1461.6
+[2026-02-09T19:18:21.292Z] Price: 1461.6
+[2026-02-09T19:18:31.340Z] Price: 1461.6
+[2026-02-09T19:18:41.326Z] Price: 1461.6
+[2026-02-09T19:18:51.322Z] Price: 1461.6
+[2026-02-09T19:19:01.351Z] Price: 1461.6
+[2026-02-09T19:19:11.361Z] Price: 1461.6
+[2026-02-09T19:19:21.947Z] BOT STARTED
+[2026-02-09T19:19:32.589Z] Price: 1461.6
+[2026-02-09T19:19:42.515Z] Price: 1461.6
+[2026-02-09T19:19:52.555Z] Price: 1461.6
+[2026-02-09T19:20:02.529Z] Price: 1461.6
+[2026-02-09T19:20:12.547Z] Price: 1461.6
+[2026-02-09T19:20:22.618Z] Price: 1461.6
+[2026-02-09T19:20:32.560Z] Price: 1461.6
+[2026-02-09T19:20:42.593Z] Price: 1461.6
+[2026-02-09T19:20:52.586Z] Price: 1461.6
+[2026-02-09T19:21:02.689Z] Price: 1461.6
+[2026-02-09T19:21:12.623Z] Price: 1461.6
+[2026-02-09T19:21:22.596Z] Price: 1461.6
+[2026-02-09T19:21:32.658Z] Price: 1461.6
+[2026-02-09T19:21:42.639Z] Price: 1461.6
+[2026-02-09T19:21:52.719Z] Price: 1461.6
+[2026-02-09T19:22:02.659Z] Price: 1461.6
+[2026-02-09T19:22:12.643Z] Price: 1461.6
+[2026-02-09T19:22:22.675Z] Price: 1461.6
+[2026-02-09T19:22:32.634Z] Price: 1461.6
+[2026-02-09T19:22:42.688Z] Price: 1461.6
+[2026-02-09T19:22:52.698Z] Price: 1461.6
+[2026-02-09T19:23:02.713Z] Price: 1461.6
+[2026-02-09T19:23:12.702Z] Price: 1461.6
+[2026-02-09T19:23:22.753Z] Price: 1461.6
+[2026-02-09T19:23:32.723Z] Price: 1461.6
+[2026-02-09T19:23:42.774Z] Price: 1461.6
+[2026-02-09T19:23:52.850Z] Price: 1461.6
+[2026-02-09T19:24:02.725Z] Price: 1461.6
+[2026-02-09T19:24:12.725Z] Price: 1461.6
+[2026-02-09T19:24:22.778Z] Price: 1461.6
+[2026-02-09T19:24:32.781Z] Price: 1461.6
+[2026-02-09T19:24:42.792Z] Price: 1461.6
+[2026-02-09T19:24:52.770Z] Price: 1461.6
+[2026-02-09T19:25:02.889Z] Price: 1461.6
+[2026-02-09T19:25:12.896Z] Price: 1461.6
+[2026-02-09T19:25:22.909Z] Price: 1461.6
+[2026-02-09T19:25:32.814Z] Price: 1461.6
+[2026-02-09T19:25:42.830Z] Price: 1461.6
+[2026-02-09T19:25:52.865Z] Price: 1461.6
+[2026-02-09T19:26:02.873Z] Price: 1461.6
+[2026-02-09T19:26:12.901Z] Price: 1461.6
+[2026-02-09T19:26:22.877Z] Price: 1461.6
+[2026-02-09T19:26:32.868Z] Price: 1461.6
+[2026-02-09T19:26:42.862Z] Price: 1461.6
+[2026-02-09T19:26:52.888Z] Price: 1461.6
+[2026-02-09T19:27:03.007Z] Price: 1461.6
+[2026-02-09T19:27:12.899Z] Price: 1461.6
+[2026-02-09T19:27:22.914Z] Price: 1461.6
+[2026-02-09T19:27:32.905Z] Price: 1461.6
+[2026-02-09T19:27:42.937Z] Price: 1461.6
+[2026-02-09T19:27:52.925Z] Price: 1461.6
+[2026-02-09T19:28:02.963Z] Price: 1461.6
+[2026-02-09T19:28:12.976Z] Price: 1461.6
+[2026-02-09T19:28:22.952Z] Price: 1461.6
+[2026-02-09T19:28:32.995Z] Price: 1461.6
+[2026-02-09T19:28:42.988Z] Price: 1461.6
+[2026-02-09T19:28:53.000Z] Price: 1461.6
+[2026-02-09T19:29:03.744Z] Price: 1461.6
+[2026-02-09T19:29:13.021Z] Price: 1461.6
+[2026-02-09T19:29:23.030Z] Price: 1461.6
+[2026-02-09T19:29:33.047Z] Price: 1461.6
+[2026-02-09T19:29:43.037Z] Price: 1461.6
+[2026-02-09T19:29:53.050Z] Price: 1461.6
+[2026-02-09T19:30:03.056Z] Price: 1461.6
+[2026-02-09T19:30:13.097Z] Price: 1461.6
+[2026-02-09T19:30:23.081Z] Price: 1461.6
+[2026-02-09T19:30:33.080Z] Price: 1461.6
+[2026-02-09T19:30:43.213Z] Price: 1461.6
+[2026-02-09T19:30:53.105Z] Price: 1461.6
+[2026-02-09T19:31:03.115Z] Price: 1461.6
+[2026-02-09T19:31:13.140Z] Price: 1461.6
+[2026-02-09T19:31:23.124Z] Price: 1461.6
+[2026-02-09T19:31:33.134Z] Price: 1461.6
+[2026-02-09T19:31:43.143Z] Price: 1461.6
+[2026-02-09T19:31:53.173Z] Price: 1461.6
+[2026-02-09T19:32:03.143Z] Price: 1461.6
+[2026-02-09T19:32:13.159Z] Price: 1461.6
+[2026-02-09T19:32:23.196Z] Price: 1461.6
+[2026-02-09T19:32:32.963Z] BOT STARTED
+[2026-02-09T19:32:43.646Z] Price: 1461.6
+[2026-02-09T19:32:53.557Z] Price: 1461.6
+[2026-02-09T19:33:03.519Z] Price: 1461.6
+[2026-02-09T19:33:13.526Z] Price: 1461.6
+[2026-02-09T19:33:23.583Z] Price: 1461.6
+[2026-02-09T19:33:33.559Z] Price: 1461.6
+[2026-02-09T19:33:43.582Z] Price: 1461.6
+[2026-02-09T19:33:53.564Z] Price: 1461.6
+[2026-02-09T19:34:03.601Z] Price: 1461.6
+[2026-02-09T19:34:13.626Z] Price: 1461.6
+[2026-02-09T19:34:26.516Z] BOT STARTED
+[2026-02-09T19:34:37.184Z] Price: 1461.6
+[2026-02-09T19:34:47.109Z] Price: 1461.6
+[2026-02-09T19:34:57.110Z] Price: 1461.6
+[2026-02-09T19:35:07.176Z] Price: 1461.6
+[2026-02-09T19:35:17.156Z] Price: 1461.6
+[2026-02-09T19:35:27.148Z] Price: 1461.6
+[2026-02-09T19:35:37.143Z] Price: 1461.6
+[2026-02-09T19:35:47.178Z] Price: 1461.6
+[2026-02-09T19:35:57.205Z] Price: 1461.6
+[2026-02-09T19:36:07.172Z] Price: 1461.6
+[2026-02-09T19:36:17.402Z] Price: 1461.6
+[2026-02-09T19:36:27.162Z] Price: 1461.6
+[2026-02-09T19:36:37.187Z] Price: 1461.6
+[2026-02-09T19:36:47.199Z] Price: 1461.6
+[2026-02-09T19:36:57.226Z] Price: 1461.6
+[2026-02-09T19:37:07.347Z] Price: 1461.6
+[2026-02-09T19:37:17.231Z] Price: 1461.6
+[2026-02-09T19:37:27.238Z] Price: 1461.6
+[2026-02-09T19:37:37.226Z] Price: 1461.6
+[2026-02-09T19:37:47.245Z] Price: 1461.6
+[2026-02-09T19:37:57.261Z] Price: 1461.6
+[2026-02-09T19:38:07.260Z] Price: 1461.6
+[2026-02-09T19:38:17.263Z] Price: 1461.6
+[2026-02-09T19:38:27.257Z] Price: 1461.6
+[2026-02-09T19:38:37.292Z] Price: 1461.6
+[2026-02-09T19:38:47.281Z] Price: 1461.6
+[2026-02-09T19:38:57.279Z] Price: 1461.6
+[2026-02-09T19:39:07.295Z] Price: 1461.6
+[2026-02-09T19:39:17.303Z] Price: 1461.6
+[2026-02-09T19:39:27.322Z] Price: 1461.6
+[2026-02-09T19:39:37.307Z] Price: 1461.6
+[2026-02-09T19:39:47.379Z] Price: 1461.6
+[2026-02-09T19:39:57.350Z] Price: 1461.6
+[2026-02-09T19:40:07.356Z] Price: 1461.6
+[2026-02-09T19:40:17.359Z] Price: 1461.6
+[2026-02-09T19:40:27.383Z] Price: 1461.6
+[2026-02-09T19:40:37.474Z] Price: 1461.6
+[2026-02-09T19:40:47.373Z] Price: 1461.6
+[2026-02-09T19:40:57.416Z] Price: 1461.6
+[2026-02-09T19:41:07.437Z] Price: 1461.6
+[2026-02-09T19:41:17.452Z] Price: 1461.6
+[2026-02-09T19:41:27.415Z] Price: 1461.6
+[2026-02-09T19:41:37.509Z] Price: 1461.6
+[2026-02-09T19:41:47.640Z] Price: 1461.6
+[2026-02-09T19:41:57.452Z] Price: 1461.6
+[2026-02-09T19:42:07.480Z] Price: 1461.6
+[2026-02-09T19:42:17.458Z] Price: 1461.6
+[2026-02-09T19:42:27.438Z] Price: 1461.6
+[2026-02-09T19:42:37.479Z] Price: 1461.6
+[2026-02-09T19:42:47.472Z] Price: 1461.6
+[2026-02-09T19:42:57.466Z] Price: 1461.6
+[2026-02-09T19:43:07.473Z] Price: 1461.6
+[2026-02-09T19:43:17.500Z] Price: 1461.6
+[2026-02-09T19:43:27.512Z] Price: 1461.6
+[2026-02-09T19:43:40.635Z] BOT STARTED
+[2026-02-09T19:43:51.323Z] Price: 1461.6
+[2026-02-09T19:44:01.247Z] Price: 1461.6
+[2026-02-09T19:44:11.229Z] Price: 1461.6
+[2026-02-09T19:44:21.221Z] Price: 1461.6
+[2026-02-09T19:44:31.229Z] Price: 1461.6
+[2026-02-09T19:44:41.253Z] Price: 1461.6
+[2026-02-09T19:44:50.174Z] BOT STARTED
+[2026-02-09T19:45:00.802Z] Price: 1461.6
+[2026-02-09T19:45:10.787Z] Price: 1461.6
+[2026-02-09T19:45:20.754Z] Price: 1461.6
+[2026-02-09T19:45:30.781Z] Price: 1461.6
+[2026-02-09T19:45:40.782Z] Price: 1461.6
+[2026-02-09T19:45:50.768Z] Price: 1461.6
+[2026-02-09T19:46:00.761Z] Price: 1461.6
+[2026-02-09T19:46:10.792Z] Price: 1461.6
+[2026-02-09T19:46:20.785Z] Price: 1461.6
+[2026-02-09T19:46:30.801Z] Price: 1461.6
+[2026-02-09T19:46:40.798Z] Price: 1461.6
+[2026-02-09T19:46:50.814Z] Price: 1461.6
+[2026-02-09T19:47:00.823Z] Price: 1461.6
+[2026-02-09T19:47:10.812Z] Price: 1461.6
+[2026-02-09T19:47:20.817Z] Price: 1461.6
+[2026-02-09T19:47:30.816Z] Price: 1461.6
+[2026-02-09T19:47:40.843Z] Price: 1461.6
+[2026-02-09T19:47:50.842Z] Price: 1461.6
+[2026-02-09T19:48:01.152Z] Price: 1461.6
+[2026-02-09T19:48:10.939Z] Price: 1461.6
+[2026-02-09T19:48:20.866Z] Price: 1461.6
+[2026-02-09T19:48:30.887Z] Price: 1461.6
+[2026-02-09T19:48:40.884Z] Price: 1461.6
+[2026-02-09T19:48:49.667Z] BOT STARTED
+[2026-02-09T19:49:00.377Z] Price: 1461.6
+[2026-02-09T19:49:10.225Z] Price: 1461.6
+[2026-02-09T19:49:20.248Z] Price: 1461.6
+[2026-02-09T19:49:30.256Z] Price: 1461.6
+[2026-02-09T19:49:40.272Z] Price: 1461.6
+[2026-02-09T19:49:45.854Z] BOT STARTED
+[2026-02-09T19:49:56.546Z] Price: 1461.6
+[2026-02-09T19:50:06.441Z] Price: 1461.6
+[2026-02-09T19:50:16.418Z] Price: 1461.6
+[2026-02-09T19:50:26.441Z] Price: 1461.6
+[2026-02-09T19:50:36.426Z] Price: 1461.6
+[2026-02-09T19:50:46.447Z] Price: 1461.6
+[2026-02-09T19:50:58.435Z] Price: 1461.6
+[2026-02-09T19:51:06.458Z] Price: 1461.6
+[2026-02-09T19:51:16.487Z] Price: 1461.6
+[2026-02-09T19:51:26.493Z] Price: 1461.6
+[2026-02-09T19:51:36.492Z] Price: 1461.6
+[2026-02-09T19:51:46.472Z] Price: 1461.6
+[2026-02-09T19:51:56.494Z] Price: 1461.6
+[2026-02-09T19:52:06.471Z] Price: 1461.6
+[2026-02-09T19:52:16.514Z] Price: 1461.6
+[2026-02-09T19:52:26.523Z] Price: 1461.6
+[2026-02-09T19:52:36.538Z] Price: 1461.6
+[2026-02-09T19:52:46.521Z] Price: 1461.6
+[2026-02-09T19:52:56.521Z] Price: 1461.6
+[2026-02-09T19:53:01.734Z] BOT STARTED
+[2026-02-09T19:53:12.546Z] Price: 1461.6
+[2026-02-09T19:53:22.300Z] Price: 1461.6
+[2026-02-09T19:53:32.328Z] Price: 1461.6
+[2026-02-09T19:53:42.364Z] Price: 1461.6
+[2026-02-09T19:53:52.355Z] Price: 1461.6
+[2026-02-09T19:54:02.381Z] Price: 1461.6
+[2026-02-09T19:54:12.402Z] Price: 1461.6
+[2026-02-09T19:54:22.399Z] Price: 1461.6
+[2026-02-09T19:54:32.381Z] Price: 1461.6
+[2026-02-09T19:54:42.394Z] Price: 1461.6
+[2026-02-09T19:54:52.415Z] Price: 1461.6
+[2026-02-09T19:55:02.420Z] Price: 1461.6
+[2026-02-09T19:55:12.451Z] Price: 1461.6
+[2026-02-09T19:55:22.425Z] Price: 1461.6
+[2026-02-09T19:55:32.418Z] Price: 1461.6
+[2026-02-09T19:55:42.422Z] Price: 1461.6
+[2026-02-09T19:55:52.432Z] Price: 1461.6
+[2026-02-09T19:56:02.444Z] Price: 1461.6
+[2026-02-09T19:56:12.432Z] Price: 1461.6
+[2026-02-09T19:56:22.461Z] Price: 1461.6
+[2026-02-09T19:56:35.225Z] Price: 1461.6
+[2026-02-09T19:56:42.476Z] Price: 1461.6
+[2026-02-09T19:56:52.479Z] Price: 1461.6
+[2026-02-09T19:57:02.470Z] Price: 1461.6
+[2026-02-09T19:57:12.556Z] Price: 1461.6
+[2026-02-09T19:57:22.503Z] Price: 1461.6
+[2026-02-09T19:57:32.511Z] Price: 1461.6
+[2026-02-09T19:57:42.536Z] Price: 1461.6
+[2026-02-09T19:57:52.510Z] Price: 1461.6
+[2026-02-09T19:58:02.517Z] Price: 1461.6
+[2026-02-09T19:58:12.532Z] Price: 1461.6
+[2026-02-09T19:58:22.534Z] Price: 1461.6
+[2026-02-09T19:58:32.574Z] Price: 1461.6
+[2026-02-09T19:58:42.568Z] Price: 1461.6
+[2026-02-09T19:58:52.590Z] Price: 1461.6
+[2026-02-09T19:59:02.597Z] Price: 1461.6
+[2026-02-09T19:59:12.603Z] Price: 1461.6
+[2026-02-09T19:59:20.449Z] BOT STARTED
+[2026-02-09T19:59:31.133Z] Price: 1461.6
+[2026-02-09T19:59:41.122Z] Price: 1461.6
+[2026-02-09T19:59:51.131Z] Price: 1461.6
+[2026-02-09T20:00:01.036Z] Price: 1461.6
+[2026-02-09T20:00:11.048Z] Price: 1461.6
+[2026-02-09T20:00:21.017Z] Price: 1461.6
+[2026-02-09T20:00:31.050Z] Price: 1461.6
+[2026-02-09T20:00:41.095Z] Price: 1461.6
+[2026-02-09T20:00:51.073Z] Price: 1461.6
+[2026-02-09T20:01:01.077Z] Price: 1461.6
+[2026-02-09T20:01:11.113Z] Price: 1461.6
+[2026-02-09T20:01:21.094Z] Price: 1461.6
+[2026-02-09T20:01:31.097Z] Price: 1461.6
+[2026-02-09T20:01:41.086Z] Price: 1461.6
+[2026-02-09T20:01:51.086Z] Price: 1461.6
+[2026-02-09T20:02:01.108Z] Price: 1461.6
+[2026-02-09T20:02:11.118Z] Price: 1461.6
+[2026-02-09T20:02:21.118Z] Price: 1461.6
+[2026-02-09T20:02:31.128Z] Price: 1461.6
+[2026-02-09T20:02:41.120Z] Price: 1461.6
+[2026-02-09T20:02:51.148Z] Price: 1461.6
+[2026-02-09T20:03:01.444Z] Price: 1461.6
+[2026-02-09T20:03:11.204Z] Price: 1461.6
+[2026-02-09T20:03:21.167Z] Price: 1461.6
+[2026-02-09T20:03:31.158Z] Price: 1461.6
+[2026-02-09T20:03:41.212Z] Price: 1461.6
+[2026-02-09T20:03:51.182Z] Price: 1461.6
+[2026-02-09T20:04:01.198Z] Price: 1461.6
+[2026-02-09T20:04:11.237Z] Price: 1461.6
+[2026-02-09T20:04:21.209Z] Price: 1461.6
+[2026-02-09T20:04:31.174Z] Price: 1461.6
+[2026-02-09T20:04:43.360Z] BOT STARTED
+[2026-02-09T20:04:54.031Z] Price: 1461.6
+[2026-02-09T20:05:04.041Z] Price: 1461.6
+[2026-02-09T20:05:13.940Z] Price: 1461.6
+[2026-02-09T20:05:23.944Z] Price: 1461.6
+[2026-02-09T20:05:33.970Z] Price: 1461.6
+[2026-02-09T20:05:43.971Z] Price: 1461.6
+[2026-02-09T20:05:53.994Z] Price: 1461.6
+[2026-02-09T20:06:04.018Z] Price: 1461.6
+[2026-02-09T20:06:14.098Z] Price: 1461.6
+[2026-02-09T20:06:24.002Z] Price: 1461.6
+[2026-02-09T20:06:33.999Z] Price: 1461.6
+[2026-02-09T20:06:44.017Z] Price: 1461.6
+[2026-02-09T20:06:54.048Z] Price: 1461.6
+[2026-02-09T20:07:04.041Z] Price: 1461.6
+[2026-02-09T20:07:14.055Z] Price: 1461.6
+[2026-02-09T20:07:24.038Z] Price: 1461.6
+[2026-02-09T20:07:34.063Z] Price: 1461.6
+[2026-02-09T20:07:44.064Z] Price: 1461.6
+[2026-02-09T20:07:54.082Z] Price: 1461.6
+[2026-02-09T20:08:04.072Z] Price: 1461.6
+[2026-02-09T20:08:14.187Z] Price: 1461.6
+[2026-02-09T20:08:24.091Z] Price: 1461.6
+[2026-02-09T20:08:34.088Z] Price: 1461.6
+[2026-02-09T20:08:44.120Z] Price: 1461.6
+[2026-02-09T20:08:54.112Z] Price: 1461.6
+[2026-02-09T20:09:04.121Z] Price: 1461.6
+[2026-02-09T20:09:14.132Z] Price: 1461.6
+[2026-02-09T20:09:25.323Z] BOT STARTED
+[2026-02-09T20:09:35.995Z] Price: 1461.6
+[2026-02-09T20:09:45.881Z] Price: 1461.6
+[2026-02-09T20:09:55.875Z] Price: 1461.6
+[2026-02-09T20:10:00.682Z] BOT STARTED
+[2026-02-09T20:10:11.335Z] Price: 1461.6
+[2026-02-09T20:10:21.417Z] Price: 1461.6
+[2026-02-09T20:10:31.261Z] Price: 1461.6
+[2026-02-09T20:10:41.257Z] Price: 1461.6
+[2026-02-09T20:10:51.280Z] Price: 1461.6
+[2026-02-09T20:11:01.267Z] Price: 1461.6
+[2026-02-09T20:11:11.278Z] Price: 1461.6
+[2026-02-09T20:11:21.285Z] Price: 1461.6
+[2026-02-09T20:11:31.302Z] Price: 1461.6
+[2026-02-09T20:11:41.288Z] Price: 1461.6
+[2026-02-09T20:11:51.306Z] Price: 1461.6
+[2026-02-09T20:12:01.309Z] Price: 1461.6
+[2026-02-09T20:12:11.275Z] Price: 1461.6
+[2026-02-09T20:12:21.322Z] Price: 1461.6
+[2026-02-09T20:12:31.334Z] Price: 1461.6
+[2026-02-09T20:12:41.328Z] Price: 1461.6
+[2026-02-09T20:12:51.335Z] Price: 1461.6
+[2026-02-09T20:13:01.347Z] Price: 1461.6
+[2026-02-09T20:13:11.352Z] Price: 1461.6
+[2026-02-09T20:13:21.355Z] Price: 1461.6
+[2026-02-09T20:13:31.465Z] Price: 1461.6
+[2026-02-09T20:13:45.590Z] BOT STARTED
+[2026-02-09T20:13:56.280Z] Price: 1461.6
+[2026-02-09T20:14:06.189Z] Price: 1461.6
+[2026-02-09T20:14:16.164Z] Price: 1461.6
+[2026-02-09T20:14:26.158Z] Price: 1461.6
+[2026-02-09T20:14:36.185Z] Price: 1461.6
+[2026-02-09T20:14:46.192Z] Price: 1461.6
+[2026-02-09T20:14:56.214Z] Price: 1461.6
+[2026-02-09T20:15:06.191Z] Price: 1461.6
+[2026-02-09T20:15:16.230Z] Price: 1461.6
+[2026-02-09T20:15:26.212Z] Price: 1461.6
+[2026-02-09T20:15:36.239Z] Price: 1461.6
+[2026-02-09T20:15:46.231Z] Price: 1461.6
+[2026-02-09T20:15:56.268Z] Price: 1461.6
+[2026-02-09T20:16:06.268Z] Price: 1461.6
+[2026-02-09T20:16:16.257Z] Price: 1461.6
+[2026-02-09T20:16:26.306Z] Price: 1461.6
+[2026-02-09T20:16:36.295Z] Price: 1461.6
+[2026-02-09T20:16:50.184Z] BOT STARTED
+[2026-02-09T20:17:02.283Z] Price: 1461.6
+[2026-02-09T20:17:10.762Z] Price: 1461.6
+[2026-02-09T20:17:20.770Z] Price: 1461.6
+[2026-02-09T20:17:30.767Z] Price: 1461.6
+[2026-02-09T20:17:40.767Z] Price: 1461.6
+[2026-02-09T20:17:50.534Z] BOT STARTED
+[2026-02-09T20:18:01.265Z] Price: 1461.6
+[2026-02-09T20:18:12.090Z] BOT STARTED
+[2026-02-09T20:18:22.748Z] Price: 1461.6
+[2026-02-09T20:18:32.666Z] Price: 1461.6
+[2026-02-09T20:18:42.674Z] Price: 1461.6
+[2026-02-09T20:18:52.704Z] Price: 1461.6
+[2026-02-09T20:19:02.687Z] Price: 1461.6
+[2026-02-09T20:19:12.727Z] Price: 1461.6
+[2026-02-09T20:19:22.737Z] Price: 1461.6
+[2026-02-09T20:19:32.721Z] Price: 1461.6
+[2026-02-09T20:19:43.153Z] BOT STARTED
+[2026-02-09T20:19:53.815Z] Price: 1461.6
+[2026-02-09T20:20:03.717Z] Price: 1461.6
+[2026-02-09T20:20:13.751Z] Price: 1461.6
+[2026-02-09T20:20:23.744Z] Price: 1461.6
+[2026-02-09T20:20:33.742Z] Price: 1461.6
+[2026-02-09T20:20:41.907Z] BOT STARTED
+[2026-02-09T20:20:52.706Z] Price: 1461.6
+[2026-02-09T20:21:02.491Z] Price: 1461.6
+[2026-02-09T20:21:12.485Z] Price: 1461.6
+[2026-02-09T20:21:22.505Z] Price: 1461.6
+[2026-02-09T20:21:32.509Z] Price: 1461.6
+[2026-02-09T20:21:42.531Z] Price: 1461.6
+[2026-02-09T20:21:52.540Z] Price: 1461.6
+[2026-02-09T20:22:02.548Z] Price: 1461.6
+[2026-02-09T20:22:12.558Z] Price: 1461.6
+[2026-02-09T20:22:22.564Z] Price: 1461.6
+[2026-02-09T20:22:32.588Z] Price: 1461.6
+[2026-02-09T20:22:42.623Z] Price: 1461.6
+[2026-02-09T20:22:52.582Z] Price: 1461.6
+[2026-02-09T20:23:02.627Z] Price: 1461.6
+[2026-02-09T20:23:12.608Z] Price: 1461.6
+[2026-02-09T20:23:22.657Z] Price: 1461.6
+[2026-02-09T20:23:32.637Z] Price: 1461.6
+[2026-02-09T20:23:42.637Z] Price: 1461.6
+[2026-02-09T20:23:52.619Z] Price: 1461.6
+[2026-02-09T20:24:02.629Z] Price: 1461.6
+[2026-02-09T20:24:12.645Z] Price: 1461.6
+[2026-02-09T20:24:22.671Z] Price: 1461.6
+[2026-02-09T20:24:32.649Z] Price: 1461.6
+[2026-02-09T20:24:42.656Z] Price: 1461.6
+[2026-02-09T20:24:52.671Z] Price: 1461.6
+[2026-02-09T20:25:02.676Z] Price: 1461.6
+[2026-02-09T20:25:12.691Z] Price: 1461.6
+[2026-02-09T20:25:22.702Z] Price: 1461.6
+[2026-02-09T20:25:32.707Z] Price: 1461.6
+[2026-02-09T20:25:42.709Z] Price: 1461.6
+[2026-02-09T20:25:52.738Z] Price: 1461.6
+[2026-02-09T20:26:02.735Z] Price: 1461.6
+[2026-02-09T20:26:12.740Z] Price: 1461.6
+[2026-02-09T20:26:22.759Z] Price: 1461.6
+[2026-02-09T20:26:32.756Z] Price: 1461.6
+[2026-02-09T20:26:42.773Z] Price: 1461.6
+[2026-02-09T20:26:52.772Z] Price: 1461.6
+[2026-02-09T20:27:02.805Z] Price: 1461.6
+[2026-02-09T20:27:12.809Z] Price: 1461.6
+[2026-02-09T20:27:22.924Z] Price: 1461.6
+[2026-02-09T20:27:32.834Z] Price: 1461.6
+[2026-02-09T20:27:42.929Z] Price: 1461.6
+[2026-02-09T20:27:52.862Z] Price: 1461.6
+[2026-02-09T20:28:02.872Z] Price: 1461.6
+[2026-02-09T20:36:20.501Z] BOT STARTED
+[2026-02-09T20:36:31.231Z] Price: 1461.6
+[2026-02-09T20:36:41.130Z] Price: 1461.6
+[2026-02-09T20:36:51.225Z] Price: 1461.6
+[2026-02-09T20:37:01.109Z] Price: 1461.6
+[2026-02-09T20:37:11.155Z] Price: 1461.6
+[2026-02-09T20:37:21.133Z] Price: 1461.6
+[2026-02-09T20:37:31.202Z] Price: 1461.6
+[2026-02-09T20:37:41.122Z] Price: 1461.6
+[2026-02-09T20:37:51.147Z] Price: 1461.6
+[2026-02-09T20:38:01.152Z] Price: 1461.6
+[2026-02-09T20:38:11.169Z] Price: 1461.6
+[2026-02-09T20:38:21.172Z] Price: 1461.6
+[2026-02-09T20:38:31.208Z] Price: 1461.6
+[2026-02-09T20:38:41.183Z] Price: 1461.6
+[2026-02-09T20:38:51.195Z] Price: 1461.6
+[2026-02-09T20:39:01.267Z] Price: 1461.6
+[2026-02-09T20:39:11.206Z] Price: 1461.6
+[2026-02-09T20:39:21.207Z] Price: 1461.6
+[2026-02-09T20:39:27.691Z] BOT STARTED
+[2026-02-09T20:39:38.346Z] Price: 1461.6
+[2026-02-09T20:39:48.266Z] Price: 1461.6
+[2026-02-09T20:39:58.288Z] Price: 1461.6
+[2026-02-09T20:40:08.285Z] Price: 1461.6
+[2026-02-09T20:40:18.427Z] Price: 1461.6
+[2026-02-09T20:40:28.302Z] Price: 1461.6
+[2026-02-09T20:40:38.305Z] Price: 1461.6
+[2026-02-09T20:40:48.309Z] Price: 1461.6
+[2026-02-09T20:40:58.324Z] Price: 1461.6
+[2026-02-09T20:41:08.336Z] Price: 1461.6
+[2026-02-09T20:41:18.327Z] Price: 1461.6
+[2026-02-09T20:41:28.316Z] Price: 1461.6
+[2026-02-09T20:41:38.327Z] Price: 1461.6
+[2026-02-09T20:41:48.313Z] Price: 1461.6
+[2026-02-09T20:41:58.339Z] Price: 1461.6
+[2026-02-09T20:42:08.363Z] Price: 1461.6
+[2026-02-09T20:42:18.360Z] Price: 1461.6
+[2026-02-09T20:42:28.378Z] Price: 1461.6
+[2026-02-09T20:42:38.374Z] Price: 1461.6
