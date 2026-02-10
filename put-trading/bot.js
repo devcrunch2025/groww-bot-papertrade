@@ -8,7 +8,7 @@ const { createObjectCsvWriter } = require('csv-writer');
 // ---------------- CONFIG ----------------
 const STOCK = 'NSE_TATASTEEL';
 const FETCH_INTERVAL = 10_000;      // 10 sec
-const CANDLE_INTERVAL = 180_000;    // 3 min
+const CANDLE_INTERVAL = 60_000;    // 1 min
 const STOP_LOSS = -0.5;
 const PROFIT_PERCENT = 5;
 
