@@ -127,10 +127,6 @@ symbolSelect.addEventListener('change', () => historyLoaded = false);
 
 // ---------------- SOCKET UPDATE ----------------
 socket.on('update', d => {
-
-    const strategy = document.getElementById('strategySelect').value;
-if (strategy !== 'default') return;
-
     if (datePicker.value !== todayStr) return;
     if (symbolSelect.value !== d.symbol) return;
 
@@ -148,11 +144,6 @@ if (strategy !== 'default') return;
         });
         lastPrice = d.lastPrice;
     }
-
-    if (!d.signals.length) {
-    alert('EDGE: No signals for this date (not enough candles)');
-}
-
 
     if (!d.candles.length) return;
 
@@ -199,58 +190,5 @@ if (strategy !== 'default') return;
 
     candleSeries.setMarkers(buildMarkers(d.signals));
     updateSignalTable(d.signals);
-
-
-    const selectedStrategy = document.getElementById('strategySelect').value;
-if (selectedStrategy !== 'default') return;
-
  
 });
-function getStrategyApi(strategy, date, symbol) {
-    if (strategy === 'edge') {
-        return `/api/strategy/edge?date=${date}&symbol=${symbol}`;
-    }
-    return `/api/history?date=${date}&symbol=${symbol}`; // your existing endpoint
-}
-async function loadStrategyData() {
-
-    // 🔥 CLEAR OLD MARKERS FIRST
-candleSeries.setMarkers([]);
-
-    const date = datePicker.value;
-    const symbol = symbolSelect.value;
-    const strategy = document.getElementById('strategySelect').value;
-
-    historyLoaded = false;
-
-    const url = getStrategyApi(strategy, date, symbol);
-    const res = await fetch(url);
-    const d = await res.json();
-
-    symbolLabel.innerText = symbol;
-
-    // ---- Candles ----
-    candleSeries.setData(
-        d.candles.map(c => ({
-            time: istToUnixSeconds(c.time),
-            open: c.open,
-            high: c.high,
-            low: c.low,
-            close: c.close
-        }))
-    );
-
-    // ---- Markers ----
-    candleSeries.setMarkers(buildMarkers(d.signals));
-
-    // ---- Table ----
-    updateSignalTable(d.signals);
-
-    chart.timeScale().fitContent();
-    historyLoaded = true;
-}
-document.getElementById('strategySelect')
-    .addEventListener('change', loadStrategyData);
-
-datePicker.addEventListener('change', loadStrategyData);
-symbolSelect.addEventListener('change', loadStrategyData);

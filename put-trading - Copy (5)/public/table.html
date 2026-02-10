@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trading Dashboard</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+        .card {
+            background: #222;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #444;
+        }
+        .buy { color: #00ff88; }
+        .sell { color: #ff4d4d; }
+    </style>
+</head>
+<body>
+
+<h1>Live Trading Dashboard</h1>
+
+<div class="card">
+    <h2>Live Price</h2>
+    <div id="price">--</div>
+</div>
+
+<div class="card">
+    <h2>Recent Candles</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Close</th>
+            </tr>
+        </thead>
+        <tbody id="candles"></tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Trade Signals</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Signal</th>
+                <th>Price</th>
+                <th>P/L</th>
+            </tr>
+        </thead>
+        <tbody id="signals"></tbody>
+    </table>
+</div>
+
+<script>
+const socket = io();
+
+socket.on('update', data => {
+    document.getElementById('price').innerText =
+        data.lastPrice || '--';
+
+    // Candles
+    const candleBody = document.getElementById('candles');
+    candleBody.innerHTML = '';
+    data.candles.forEach(c => {
+        candleBody.innerHTML += `
+            <tr>
+                <td>${c.time}</td>
+                <td>${c.close}</td>
+            </tr>
+        `;
+    });
+
+    // Signals
+    const signalBody = document.getElementById('signals');
+    signalBody.innerHTML = '';
+    data.signals.forEach(s => {
+        const cls = s.Signal?.includes('SELL') ? 'sell' : 'buy';
+        signalBody.innerHTML += `
+            <tr class="${cls}">
+                <td>${s.Timestamp}</td>
+                <td>${s.Signal}</td>
+                <td>${s.Price}</td>
+                <td>${s.ProfitOrLoss || ''}</td>
+            </tr>
+        `;
+    });
+});
+</script>
+
+</body>
+</html>

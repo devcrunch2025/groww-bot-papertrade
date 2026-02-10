@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    background: #0f172a;
+    color: #e5e7eb;
+    font-family: Arial, sans-serif;
+}
+
+#top {
+    padding: 10px;
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+}
+
+#chart {
+    height: 400px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+th, td {
+    border-bottom: 1px solid #1e293b;
+    padding: 6px;
+    text-align: center;
+}
+
+th {
+    background: #020617;
+}
+
+select, input, button {
+    background: #020617;
+    color: #e5e7eb;
+    border: 1px solid #1e293b;
+    padding: 4px;
+}
+#livePrice {
+    font-weight: bold;
+    padding-left: 4px;
+}
+
+.price-up {
+    color: #22c55e; /* green */
+}
+
+.price-down {
+    color: #ef4444; /* red */
+}

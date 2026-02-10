@@ -1,15 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-
-const app = express();                 // ✅ app FIRST
-
-require('./routes/strategy_edge')(app);
-
 const http = require('http');
 const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
 
+const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
