@@ -7,7 +7,7 @@ const { createObjectCsvWriter } = require('csv-writer');
 
 // --- SETTINGS ---
 const ACCESS_TOKEN = process.env.GROW_ACCESS_TOKEN;
-const STOCK = 'NSE_RELIANCE';
+const STOCK = 'NSE_TATASTEEL';
 const FETCH_INTERVAL = 10 * 1000;
 const CANDLE_INTERVAL = 3 * 60 * 1000;
 

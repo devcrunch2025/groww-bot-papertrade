@@ -1,50 +1,81 @@
 require('dotenv').config();
 const express = require('express');
 const http = require('http');
+const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
-const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// ---------------- CONFIG ----------------
+const PORT = 3000;
 const LOG_DIR = 'logs';
-const DEFAULT_SYMBOL = 'NSE_RELIANCE';
+const SYMBOL = 'NSE_TATASTEEL';
 
+// ---------------- MIDDLEWARE ----------------
 app.use(express.static('public'));
 
+// ---------------- HELPERS ----------------
 const today = () => new Date().toISOString().split('T')[0];
 
-// ---------- FILE HELPERS ----------
-const candleFile = (date, symbol) =>
-    path.join(LOG_DIR, `${date}_${symbol}_candles.json`);
-
-const signalFile = (date, symbol) =>
-    path.join(LOG_DIR, `${date}_${symbol}_signals.csv`);
-
 function readCandles(date, symbol) {
-    const f = candleFile(date, symbol);
-    return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f)) : [];
+    const file = path.join(LOG_DIR, `${date}_${symbol}_candles.json`);
+    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) : [];
 }
 
 function readSignals(date, symbol) {
-    const f = signalFile(date, symbol);
-    if (!fs.existsSync(f)) return [];
+    const file = path.join(LOG_DIR, `${date}_${symbol}_signals.csv`);
+    if (!fs.existsSync(file)) return [];
 
-    const lines = fs.readFileSync(f, 'utf8').trim().split('\n');
-    lines.shift(); // header
-
-    return lines.map(l => {
-        const [Timestamp, Signal, Price, ProfitOrLoss] = l.split(',');
-        return { Timestamp, Signal, Price, ProfitOrLoss };
-    });
+    return fs.readFileSync(file, 'utf8')
+        .trim()
+        .split('\n')
+        .slice(1)
+        .map(l => {
+            const [Timestamp, Signal, Price, ProfitOrLoss] =
+                l.split(',').map(v => v.trim());
+            return { Timestamp, Signal, Price, ProfitOrLoss };
+        });
 }
 
-// ---------- API ----------
+// ---------------- SOCKET ----------------
+io.on('connection', socket => {
+    console.log('✅ Client connected:', socket.id);
+
+    socket.on('disconnect', () => {
+        console.log('❌ Client disconnected:', socket.id);
+    });
+});
+
+// ---------------- REALTIME EMIT ----------------
+setInterval(() => {
+    try {
+        const date = today();
+        const candles = readCandles(date, SYMBOL);
+        const signals = readSignals(date, SYMBOL);
+
+        io.emit('update', {
+            symbol: SYMBOL,
+            candles,
+            signals,
+            lastPrice: candles.length
+                ? candles[candles.length - 1].close
+                : null
+        });
+
+        console.log(`📡 Emitted ${candles.length} candles, ${signals.length} signals`);
+
+    } catch (err) {
+        console.error('Socket emit error:', err.message);
+    }
+}, 3000);
+
+// ---------------- API (HISTORY LOAD) ----------------
 app.get('/api/history', (req, res) => {
     const date = req.query.date || today();
-    const symbol = req.query.symbol || DEFAULT_SYMBOL;
+    const symbol = req.query.symbol || SYMBOL;
 
     res.json({
         symbol,
@@ -53,19 +84,7 @@ app.get('/api/history', (req, res) => {
     });
 });
 
-// ---------- LIVE SOCKET (TODAY + DEFAULT SYMBOL ONLY) ----------
-setInterval(() => {
-    const d = today();
-    const candles = readCandles(d, DEFAULT_SYMBOL);
-
-    io.emit('update', {
-        symbol: DEFAULT_SYMBOL,
-        candles,
-        signals: readSignals(d, DEFAULT_SYMBOL),
-        lastPrice: candles.at(-1)?.close ?? null
-    });
-}, 2000);
-
-server.listen(3000, () =>
-    console.log('Dashboard running → http://localhost:3000')
-);
+// ---------------- START ----------------
+server.listen(PORT, () => {
+    console.log(`🚀 Dashboard running at http://localhost:${PORT}`);
+});

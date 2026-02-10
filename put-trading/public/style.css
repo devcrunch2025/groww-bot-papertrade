@@ -12,7 +12,7 @@ body {
 }
 
 #chart {
-    height: 600px;
+    height: 400px;
 }
 
 table {
@@ -37,4 +37,16 @@ select, input, button {
     color: #e5e7eb;
     border: 1px solid #1e293b;
     padding: 4px;
+}
+#livePrice {
+    font-weight: bold;
+    padding-left: 4px;
+}
+
+.price-up {
+    color: #22c55e; /* green */
+}
+
+.price-down {
+    color: #ef4444; /* red */
 }
