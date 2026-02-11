@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();                 // ✅ app FIRST
 
 require('./routes/strategy_edge')(app);
+require('./routes/strategy_simple')(app);
+
 
 const http = require('http');
 const { Server } = require('socket.io');

@@ -124,6 +124,11 @@ if (!datePicker.value) datePicker.value = todayStr;
 
 datePicker.addEventListener('change', () => historyLoaded = false);
 symbolSelect.addEventListener('change', () => historyLoaded = false);
+// symbolSelect.addEventListener('change', () => historyLoaded = false);
+// strategySelect.addEventListener('change', loadData);
+
+
+
 
 // ---------------- SOCKET UPDATE ----------------
 socket.on('update', d => {
@@ -150,7 +155,7 @@ if (strategy !== 'default') return;
     }
 
     if (!d.signals.length) {
-    alert('EDGE: No signals for this date (not enough candles)');
+   // alert('EDGE: No signals for this date (not enough candles)');
 }
 
 
@@ -206,10 +211,43 @@ if (selectedStrategy !== 'default') return;
 
  
 });
+
+function loadData() {
+
+    const date = datePicker.value;
+    const symbol = symbolSelect.value;
+    const strategy = strategySelect.value;
+
+    fetch(`/api/strategy/${strategy}?date=${date}&symbol=${symbol}`)
+        .then(res => res.json())
+        .then(data => {
+
+            candleSeries.setData(
+                data.candles.map(c => ({
+                    time: istToUnixSeconds(c.time),
+                    open: c.open,
+                    high: c.high,
+                    low: c.low,
+                    close: c.close
+                }))
+            );
+
+            candleSeries.setMarkers(buildMarkers(data.signals || []));
+            updateSignalTable(data.signals || []);
+            chart.timeScale().fitContent();
+        });
+}
+
 function getStrategyApi(strategy, date, symbol) {
     if (strategy === 'edge') {
         return `/api/strategy/edge?date=${date}&symbol=${symbol}`;
     }
+    if (strategy === 'simple') {
+        return `/api/strategy/simple?date=${date}&symbol=${symbol}`;
+    }
+
+    strategy = 'v2'; // default strategy
+    
     return `/api/history?date=${date}&symbol=${symbol}`; // your existing endpoint
 }
 async function loadStrategyData() {
