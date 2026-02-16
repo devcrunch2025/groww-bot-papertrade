@@ -14,3 +14,5 @@ put-trading - Copy (4)/.env.development
 put-trading - Copy (4)/node_modules/*
 put-trading - Copy (5)/node_modules/*
 put-trading - Copy (5)/dist 
+top5-intrady/node_modules/*
+.env

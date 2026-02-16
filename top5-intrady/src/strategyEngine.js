@@ -1,0 +1,1230 @@
+const yahooFinance = require("yahoo-finance2").default;
+
+const CANDIDATE_SYMBOLS = [
+  "RELIANCE.NS",
+  "TCS.NS",
+  "HDFCBANK.NS",
+  "ICICIBANK.NS",
+  "SBIN.NS",
+  "INFY.NS",
+  "ITC.NS",
+  "LT.NS",
+  "AXISBANK.NS",
+  "KOTAKBANK.NS",
+  "BHARTIARTL.NS",
+  "MARUTI.NS",
+  "BAJFINANCE.NS",
+  "ASIANPAINT.NS",
+  "SUNPHARMA.NS",
+  "TITAN.NS",
+  "WIPRO.NS",
+  "HCLTECH.NS",
+  "ONGC.NS",
+  "NTPC.NS",
+];
+
+const STRATEGY_CONFIG = {
+  totalCapital: 10000,
+  maxDailyLossPercent: 1,
+  topN: 5,
+  selectionLimit: 0,
+  buyContinuousRiseMinutes: 10,
+  shortContinuousFallMinutes: 10,
+  allowRepeatEntryOnContinuousTrend: true,
+  perStockStopLossPercent: 0.5,
+  firstProfitTargetPercent: 1,
+  firstProfitExitPercent: 50,
+  remainderHardTargetPercent: 1,
+  trailingStopPercent: 1,
+  timeExitMinutes: 12,
+  moveStopToEntryAfterFirstExit: true,
+  marketScreenerCount: 250,
+  marketOpenTimeIST: "09:15",
+  marketCloseTimeIST: "15:30",
+  squareOffTimeIST: "15:20",
+  weekdaysOnly: true,
+};
+
+const state = {
+  symbols: [],
+  marketUniverse: [],
+  marketSource: "fallback",
+  dailyControl: {
+    date: null,
+    cutoffHit: false,
+  },
+  historyBySymbol: new Map(),
+  openPositions: new Map(),
+  trades: [],
+  lastRun: null,
+  lastError: null,
+  cycleCount: 0,
+};
+
+const YAHOO_CHART_BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart";
+const YAHOO_SCREENER_BASE_URL = "https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved";
+
+function percentChange(base, current) {
+  if (!base || !current) {
+    return 0;
+  }
+  return ((current - base) / base) * 100;
+}
+
+function round2(value) {
+  return Number(value.toFixed(2));
+}
+
+function capitalPerPosition() {
+  return STRATEGY_CONFIG.totalCapital / STRATEGY_CONFIG.topN;
+}
+
+function calculateUnits(price) {
+  if (typeof price !== "number" || price <= 0) {
+    return 0;
+  }
+  return Math.floor(capitalPerPosition() / price);
+}
+
+function minutesBetween(entryTime, now) {
+  if (!entryTime || !now) {
+    return 0;
+  }
+  return (new Date(now).getTime() - new Date(entryTime).getTime()) / (1000 * 60);
+}
+
+function getMaxDailyLossAmount() {
+  return (STRATEGY_CONFIG.totalCapital * STRATEGY_CONFIG.maxDailyLossPercent) / 100;
+}
+
+function toMinuteLabel(value) {
+  return new Date(value).toISOString();
+}
+
+function toDateStringInIST(value = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const parts = formatter.formatToParts(value);
+  const getPart = (type) => parts.find((item) => item.type === type)?.value || "";
+  const year = getPart("year");
+  const month = getPart("month");
+  const day = getPart("day");
+  return `${year}-${month}-${day}`;
+}
+
+function normalizeDateToIST(value) {
+  return toDateStringInIST(new Date(value));
+}
+
+function getIstDateParts(value = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(value);
+  const getPart = (type) => parts.find((item) => item.type === type)?.value || "";
+  const weekday = getPart("weekday");
+  const hour = Number(getPart("hour"));
+  const minute = Number(getPart("minute"));
+
+  return {
+    weekday,
+    hour,
+    minute,
+    minutesOfDay: hour * 60 + minute,
+  };
+}
+
+function parseTimeToMinutes(timeText) {
+  const match = /^(\d{2}):(\d{2})$/.exec(timeText || "");
+  if (!match) {
+    return 0;
+  }
+  return Number(match[1]) * 60 + Number(match[2]);
+}
+
+function getMarketPhase(now = new Date()) {
+  const parts = getIstDateParts(now);
+  const openMinutes = parseTimeToMinutes(STRATEGY_CONFIG.marketOpenTimeIST);
+  const closeMinutes = parseTimeToMinutes(STRATEGY_CONFIG.marketCloseTimeIST);
+  const squareOffMinutes = parseTimeToMinutes(STRATEGY_CONFIG.squareOffTimeIST);
+
+  const isWeekend = parts.weekday === "Sat" || parts.weekday === "Sun";
+  if (STRATEGY_CONFIG.weekdaysOnly && isWeekend) {
+    return "closed";
+  }
+
+  if (parts.minutesOfDay < openMinutes) {
+    return "pre-open";
+  }
+  if (parts.minutesOfDay >= closeMinutes) {
+    return "closed";
+  }
+  if (parts.minutesOfDay >= squareOffMinutes) {
+    return "square-off";
+  }
+  return "open";
+}
+
+function resetDailyControlIfNeeded(now = new Date()) {
+  const today = toDateStringInIST(now);
+  if (state.dailyControl.date !== today) {
+    state.dailyControl.date = today;
+    state.dailyControl.cutoffHit = false;
+  }
+}
+
+function getDailyRealizedPnl(dateString) {
+  return state.trades
+    .filter((trade) => (trade.action === "SELL" || trade.action === "COVER") && normalizeDateToIST(trade.time) === dateString)
+    .reduce((sum, trade) => sum + (trade.pnl || 0), 0);
+}
+
+function getUnrealizedPnlFromQuoteMap(quoteMap) {
+  let total = 0;
+  for (const position of state.openPositions.values()) {
+    const quote = quoteMap.get(position.symbol);
+    if (!quote) {
+      continue;
+    }
+
+    total += position.side === "LONG"
+      ? (quote.price - position.entryPrice) * position.remainingUnits
+      : (position.entryPrice - quote.price) * position.remainingUnits;
+  }
+  return total;
+}
+
+function shouldTriggerDailyCutoff(dateString, quoteMap) {
+  const dailyRealized = getDailyRealizedPnl(dateString);
+  const unrealized = getUnrealizedPnlFromQuoteMap(quoteMap);
+  const dailyNet = dailyRealized + unrealized;
+
+  return dailyNet <= -getMaxDailyLossAmount();
+}
+
+function parseDateString(dateString) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateString || "");
+  if (!match) {
+    throw new Error("Invalid date format. Use YYYY-MM-DD");
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  if (!year || month < 1 || month > 12 || day < 1 || day > 31) {
+    throw new Error("Invalid date value. Use valid YYYY-MM-DD");
+  }
+
+  return { year, month, day };
+}
+
+function getNseEpochRangeForDate(dateString) {
+  const { year, month, day } = parseDateString(dateString);
+  const startIso = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}T00:00:00+05:30`;
+  const start = new Date(startIso);
+  const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+
+  return {
+    period1: Math.floor(start.getTime() / 1000),
+    period2: Math.floor(end.getTime() / 1000),
+  };
+}
+
+function getPreviousMarketDateInIST(baseDate = new Date()) {
+  const date = new Date(baseDate);
+  date.setDate(date.getDate() - 1);
+
+  while (true) {
+    const parts = getIstDateParts(date);
+    if (parts.weekday !== "Sat" && parts.weekday !== "Sun") {
+      return toDateStringInIST(date);
+    }
+    date.setDate(date.getDate() - 1);
+  }
+}
+
+function hasContinuousUptrend(points, lookbackMinutes) {
+  if (points.length < lookbackMinutes + 1) {
+    return false;
+  }
+
+  const recent = points.slice(-1 * (lookbackMinutes + 1));
+  for (let index = 1; index < recent.length; index += 1) {
+    if (recent[index].price <= recent[index - 1].price) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function hasContinuousDowntrend(points, lookbackMinutes) {
+  if (points.length < lookbackMinutes + 1) {
+    return false;
+  }
+
+  const recent = points.slice(-1 * (lookbackMinutes + 1));
+  for (let index = 1; index < recent.length; index += 1) {
+    if (recent[index].price >= recent[index - 1].price) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function uniqueSymbols(symbols) {
+  return Array.from(new Set(symbols.filter(Boolean)));
+}
+
+async function fetchScreenerSymbols(screenId, count = 100) {
+  const url = `${YAHOO_SCREENER_BASE_URL}?formatted=true&scrIds=${encodeURIComponent(screenId)}&count=${count}&start=0`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Screener fetch failed for ${screenId}: HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const quotes = payload?.finance?.result?.[0]?.quotes || [];
+  return quotes
+    .map((item) => item?.symbol)
+    .filter((symbol) => typeof symbol === "string" && /\.(NS|BO)$/.test(symbol));
+}
+
+async function getAutomaticMarketSymbols() {
+  try {
+    const settled = await Promise.allSettled([
+      fetchScreenerSymbols("day_gainers", STRATEGY_CONFIG.marketScreenerCount),
+      fetchScreenerSymbols("day_losers", STRATEGY_CONFIG.marketScreenerCount),
+      fetchScreenerSymbols("most_actives", STRATEGY_CONFIG.marketScreenerCount),
+    ]);
+
+    const symbols = uniqueSymbols(
+      settled
+        .filter((item) => item.status === "fulfilled")
+        .flatMap((item) => item.value)
+    );
+
+    if (symbols.length >= STRATEGY_CONFIG.topN) {
+      state.marketUniverse = symbols;
+      state.marketSource = "yahoo-screener";
+      return symbols;
+    }
+  } catch (error) {
+    state.lastError = error.message || String(error);
+  }
+
+  state.marketUniverse = [...CANDIDATE_SYMBOLS];
+  state.marketSource = "fallback-static";
+  return CANDIDATE_SYMBOLS;
+}
+
+async function fetchMinuteHistoryForDate(symbol, dateString) {
+  const { period1, period2 } = getNseEpochRangeForDate(dateString);
+  const url = `${YAHOO_CHART_BASE_URL}/${encodeURIComponent(symbol)}?period1=${period1}&period2=${period2}&interval=1m&includePrePost=false&events=history`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`History fetch failed for ${symbol} on ${dateString}: HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const result = payload?.chart?.result?.[0];
+  const timestamps = result?.timestamp || [];
+  const closes = result?.indicators?.quote?.[0]?.close || [];
+
+  const points = [];
+  for (let index = 0; index < timestamps.length; index += 1) {
+    const close = closes[index];
+    if (typeof close !== "number") {
+      continue;
+    }
+
+    points.push({
+      time: new Date(timestamps[index] * 1000),
+      price: close,
+    });
+  }
+
+  return points;
+}
+
+async function fetchDailyHistoryForDate(symbol, dateString) {
+  const { period1, period2 } = getNseEpochRangeForDate(dateString);
+  const historyStart = period1 - (45 * 24 * 60 * 60);
+  const url = `${YAHOO_CHART_BASE_URL}/${encodeURIComponent(symbol)}?period1=${historyStart}&period2=${period2}&interval=1d&includePrePost=false&events=history`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Daily history fetch failed for ${symbol} on ${dateString}: HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const result = payload?.chart?.result?.[0];
+  const timestamps = result?.timestamp || [];
+  const quote = result?.indicators?.quote?.[0] || {};
+
+  const candles = [];
+  for (let index = 0; index < timestamps.length; index += 1) {
+    const open = quote.open?.[index];
+    const high = quote.high?.[index];
+    const low = quote.low?.[index];
+    const close = quote.close?.[index];
+    const volume = quote.volume?.[index];
+
+    if ([open, high, low, close].some((value) => typeof value !== "number")) {
+      continue;
+    }
+
+    candles.push({
+      date: toDateStringInIST(new Date(timestamps[index] * 1000)),
+      open,
+      high,
+      low,
+      close,
+      volume: typeof volume === "number" ? volume : 0,
+    });
+  }
+
+  return candles;
+}
+
+function average(values) {
+  const valid = values.filter((value) => typeof value === "number" && Number.isFinite(value));
+  if (valid.length === 0) {
+    return 0;
+  }
+  return valid.reduce((sum, value) => sum + value, 0) / valid.length;
+}
+
+function scorePremarketCandidate(symbol, candle, previousCandles) {
+  const dayRange = Math.max(0.0001, candle.high - candle.low);
+  const closeStrength = (candle.close - candle.low) / dayRange;
+  const dayChangePercent = percentChange(candle.open, candle.close);
+  const rangePercent = percentChange(candle.close, candle.high) - percentChange(candle.close, candle.low);
+  const prevClose = previousCandles.length > 0 ? previousCandles[previousCandles.length - 1].close : candle.close;
+  const trendUp = candle.close > prevClose ? 1 : 0;
+  const trendDown = candle.close < prevClose ? 1 : 0;
+  const volumeAvg = average(previousCandles.map((item) => item.volume));
+  const volumeSpike = volumeAvg > 0 ? candle.volume / volumeAvg : 1;
+
+  const longScore =
+    (closeStrength * 40) +
+    (Math.max(dayChangePercent, 0) * 8) +
+    (Math.max(rangePercent, 0) * 2) +
+    (Math.min(volumeSpike, 3) * 10) +
+    (trendUp * 8);
+
+  const shortScore =
+    ((1 - closeStrength) * 40) +
+    (Math.max(-dayChangePercent, 0) * 8) +
+    (Math.max(rangePercent, 0) * 2) +
+    (Math.min(volumeSpike, 3) * 10) +
+    (trendDown * 8);
+
+  return {
+    symbol,
+    close: round2(candle.close),
+    dayChangePercent: round2(dayChangePercent),
+    rangePercent: round2(Math.abs(rangePercent)),
+    closeStrength: round2(closeStrength * 100),
+    volumeSpike: round2(volumeSpike),
+    longScore: round2(longScore),
+    shortScore: round2(shortScore),
+  };
+}
+
+function scorePremarketCandidateFromQuote(symbol, quote) {
+  const previousClose =
+    typeof quote.regularMarketPreviousClose === "number"
+      ? quote.regularMarketPreviousClose
+      : quote.previousClose;
+  const open =
+    typeof quote.regularMarketOpen === "number"
+      ? quote.regularMarketOpen
+      : previousClose;
+  const high =
+    typeof quote.regularMarketDayHigh === "number"
+      ? quote.regularMarketDayHigh
+      : quote.regularMarketPrice;
+  const low =
+    typeof quote.regularMarketDayLow === "number"
+      ? quote.regularMarketDayLow
+      : quote.regularMarketPrice;
+  const close =
+    typeof quote.regularMarketPrice === "number"
+      ? quote.regularMarketPrice
+      : typeof quote.postMarketPrice === "number"
+        ? quote.postMarketPrice
+        : quote.preMarketPrice;
+
+  if (
+    typeof open !== "number" ||
+    typeof high !== "number" ||
+    typeof low !== "number" ||
+    typeof close !== "number"
+  ) {
+    return null;
+  }
+
+  const volume =
+    typeof quote.regularMarketVolume === "number"
+      ? quote.regularMarketVolume
+      : typeof quote.averageDailyVolume3Month === "number"
+        ? quote.averageDailyVolume3Month
+        : 0;
+
+  return scorePremarketCandidate(
+    symbol,
+    { open, high, low, close, volume },
+    []
+  );
+}
+
+async function runPremarketShortlist(dateString) {
+  const shortlistDate = dateString || getPreviousMarketDateInIST();
+  const symbols = await getAutomaticMarketSymbols();
+
+  const settled = await Promise.allSettled(symbols.map(async (symbol) => {
+    const candles = await fetchDailyHistoryForDate(symbol, shortlistDate);
+    const targetIndex = candles.findIndex((item) => item.date === shortlistDate);
+    if (targetIndex < 0) {
+      return null;
+    }
+
+    const target = candles[targetIndex];
+    const previousCandles = candles.slice(Math.max(0, targetIndex - 5), targetIndex);
+    return scorePremarketCandidate(symbol, target, previousCandles);
+  }));
+
+  const scored = settled
+    .filter((item) => item.status === "fulfilled" && item.value)
+    .map((item) => item.value);
+
+  let scoredCandidates = scored;
+  let source = state.marketSource;
+
+  if (scoredCandidates.length === 0) {
+    const quoteSettled = await Promise.allSettled(
+      symbols.map((symbol) => yahooFinance.quote(symbol))
+    );
+
+    scoredCandidates = quoteSettled
+      .filter((item) => item.status === "fulfilled" && item.value)
+      .map((item) => scorePremarketCandidateFromQuote(item.value.symbol, item.value))
+      .filter(Boolean);
+
+    source = `${state.marketSource}-quote-fallback`;
+  }
+
+  const longCandidates = [...scoredCandidates]
+    .sort((a, b) => b.longScore - a.longScore)
+    .slice(0, 10);
+
+  const shortCandidates = [...scoredCandidates]
+    .sort((a, b) => b.shortScore - a.shortScore)
+    .slice(0, 10);
+
+  return {
+    date: shortlistDate,
+    source,
+    universeSize: symbols.length,
+    evaluated: scoredCandidates.length,
+    longCandidates,
+    shortCandidates,
+  };
+}
+
+function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
+  const trades = [];
+  const history = [];
+  let openPosition = null;
+
+  function logEntry(side, price, time) {
+    const units = calculateUnits(price);
+    if (units <= 0) {
+      return;
+    }
+
+    openPosition = {
+      symbol,
+      side,
+      entryPrice: price,
+      units,
+      remainingUnits: units,
+      partialBooked: false,
+      maxFavorablePercent: 0,
+      entryTime: time,
+    };
+
+    const action = side === "LONG" ? "BUY" : "SELL_SHORT";
+    const reason = side === "LONG"
+      ? "Continuous uptrend for 10+ minutes"
+      : "Continuous downtrend for 10+ minutes";
+
+    trades.push({
+      action,
+      symbol,
+      price: round2(price),
+      units,
+      time,
+      reason,
+    });
+  }
+
+  function logExit(price, time, reason, unitsOverride) {
+    const units = typeof unitsOverride === "number" && unitsOverride > 0
+      ? Math.min(unitsOverride, openPosition ? openPosition.remainingUnits : 0)
+      : openPosition
+        ? openPosition.remainingUnits
+        : 0;
+    if (!openPosition || units <= 0) {
+      return;
+    }
+
+    const isLong = openPosition.side === "LONG";
+    const action = isLong ? "SELL" : "COVER";
+    const pnl = isLong
+      ? (price - openPosition.entryPrice) * units
+      : (openPosition.entryPrice - price) * units;
+
+    openPosition.remainingUnits -= units;
+    trades.push({
+      action,
+      symbol,
+      price: round2(price),
+      units,
+      time,
+      reason,
+      pnl: round2(pnl),
+    });
+
+    if (openPosition.remainingUnits <= 0) {
+      openPosition = null;
+    }
+  }
+
+  for (const point of points) {
+    history.push(point);
+
+    if (!openPosition) {
+      if (hasContinuousUptrend(history, config.buyContinuousRiseMinutes)) {
+        logEntry("LONG", point.price, point.time);
+      } else if (hasContinuousDowntrend(history, config.shortContinuousFallMinutes)) {
+        logEntry("SHORT", point.price, point.time);
+      }
+    }
+
+    if (!openPosition) {
+      continue;
+    }
+
+    const movePercent = percentChange(openPosition.entryPrice, point.price);
+    const isLong = openPosition.side === "LONG";
+    const favorablePercent = isLong ? movePercent : -movePercent;
+    openPosition.maxFavorablePercent = Math.max(openPosition.maxFavorablePercent || 0, favorablePercent);
+
+    const elapsedMinutes = minutesBetween(openPosition.entryTime, point.time);
+    const partialBookedAtStart = openPosition.partialBooked;
+
+    if (!openPosition.partialBooked && elapsedMinutes >= config.timeExitMinutes && favorablePercent < config.firstProfitTargetPercent) {
+      logExit(point.price, point.time, `Time exit (${config.timeExitMinutes} min) before target`);
+      continue;
+    }
+
+    if (!openPosition.partialBooked && favorablePercent <= -config.perStockStopLossPercent) {
+      logExit(point.price, point.time, `Per-stock stop loss hit (${config.perStockStopLossPercent}%)`);
+      continue;
+    }
+
+    if (!openPosition.partialBooked && favorablePercent >= config.firstProfitTargetPercent) {
+      const unitsToExit = Math.max(1, Math.floor((openPosition.units * config.firstProfitExitPercent) / 100));
+      logExit(point.price, point.time, `First target hit (${config.firstProfitTargetPercent}%), booked ${config.firstProfitExitPercent}%`, unitsToExit);
+      if (openPosition) {
+        openPosition.partialBooked = true;
+      }
+      continue;
+    }
+
+    if (openPosition && openPosition.partialBooked) {
+      if (config.moveStopToEntryAfterFirstExit && favorablePercent <= 0) {
+        logExit(point.price, point.time, "No-loss mode stop at entry after first booking");
+        continue;
+      }
+
+      const trailingStopLevel = openPosition.maxFavorablePercent - config.trailingStopPercent;
+      if (openPosition.maxFavorablePercent > 0 && favorablePercent <= trailingStopLevel) {
+        logExit(point.price, point.time, `Trailing stop hit (${config.trailingStopPercent}%)`);
+        continue;
+      }
+
+      if (partialBookedAtStart && favorablePercent >= config.remainderHardTargetPercent) {
+        logExit(point.price, point.time, `Final target hit (${config.remainderHardTargetPercent}%)`);
+        continue;
+      }
+    }
+  }
+
+  const realizedPnl = trades
+    .filter((trade) => trade.action === "SELL" || trade.action === "COVER")
+    .reduce((sum, trade) => sum + (trade.pnl || 0), 0);
+
+  const lastPrice = points.length > 0 ? points[points.length - 1].price : null;
+  const unrealizedPnl = openPosition && typeof lastPrice === "number"
+    ? openPosition.side === "LONG"
+      ? (lastPrice - openPosition.entryPrice) * openPosition.remainingUnits
+      : (openPosition.entryPrice - lastPrice) * openPosition.remainingUnits
+    : 0;
+
+  return {
+    symbol,
+    points,
+    trades,
+    openPosition,
+    realizedPnl: round2(realizedPnl),
+    unrealizedPnl: round2(unrealizedPnl),
+    totalPnl: round2(realizedPnl + unrealizedPnl),
+  };
+}
+
+function buildTrialResult(date, candidates) {
+  const simulations = candidates.map((candidate) =>
+    simulateHistoryForSymbol(candidate.symbol, candidate.points, STRATEGY_CONFIG)
+  );
+
+  const allTrades = simulations
+    .flatMap((simulation) => simulation.trades)
+    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+
+  const totalRealizedPnl = simulations.reduce((sum, simulation) => sum + simulation.realizedPnl, 0);
+  const totalUnrealizedPnl = simulations.reduce((sum, simulation) => sum + simulation.unrealizedPnl, 0);
+
+  const selectedSymbols = candidates.map((candidate) => ({
+    symbol: candidate.symbol,
+    intradayChangePercent: round2(candidate.intradayChangePercent),
+    candles: candidate.points.length,
+  }));
+
+  const perSymbol = simulations.map((simulation) => ({
+    symbol: simulation.symbol,
+    realizedPnl: simulation.realizedPnl,
+    unrealizedPnl: simulation.unrealizedPnl,
+    totalPnl: simulation.totalPnl,
+    trades: simulation.trades,
+    openPosition: simulation.openPosition
+      ? {
+          symbol: simulation.openPosition.symbol,
+          side: simulation.openPosition.side,
+          entryPrice: round2(simulation.openPosition.entryPrice),
+          remainingUnits: simulation.openPosition.remainingUnits,
+          entryTime: simulation.openPosition.entryTime,
+        }
+      : null,
+    chart: {
+      prices: simulation.points.map((point) => ({
+        time: toMinuteLabel(point.time),
+        price: round2(point.price),
+      })),
+      buyMarkers: simulation.trades
+        .filter((trade) => trade.action === "BUY" || trade.action === "COVER")
+        .map((trade) => ({ time: toMinuteLabel(trade.time), price: trade.price, units: trade.units })),
+      sellMarkers: simulation.trades
+        .filter((trade) => trade.action === "SELL" || trade.action === "SELL_SHORT")
+        .map((trade) => ({ time: toMinuteLabel(trade.time), price: trade.price, units: trade.units })),
+    },
+  }));
+
+  return {
+    date,
+    config: STRATEGY_CONFIG,
+    selectedSymbols,
+    summary: {
+      symbolsTested: selectedSymbols.length,
+      totalTrades: allTrades.length,
+      totalRealizedPnl: round2(totalRealizedPnl),
+      totalUnrealizedPnl: round2(totalUnrealizedPnl),
+      totalPnl: round2(totalRealizedPnl + totalUnrealizedPnl),
+    },
+    trades: allTrades,
+    perSymbol,
+  };
+}
+
+async function runHistoryTrialForDate(dateString) {
+  const targetDate = dateString || toDateStringInIST();
+  const marketSymbols = await getAutomaticMarketSymbols();
+
+  const settled = await Promise.allSettled(
+    marketSymbols.map(async (symbol) => {
+      const points = await fetchMinuteHistoryForDate(symbol, targetDate);
+      if (points.length < 2) {
+        return null;
+      }
+
+      const first = points[0].price;
+      const last = points[points.length - 1].price;
+
+      return {
+        symbol,
+        points,
+        intradayChangePercent: percentChange(first, last),
+      };
+    })
+  );
+
+  const candidates = settled
+    .filter((item) => item.status === "fulfilled" && item.value)
+    .map((item) => item.value)
+    .sort((a, b) => b.intradayChangePercent - a.intradayChangePercent);
+
+  const limitedCandidates = STRATEGY_CONFIG.selectionLimit > 0
+    ? candidates.slice(0, STRATEGY_CONFIG.selectionLimit)
+    : candidates;
+
+  return buildTrialResult(targetDate, limitedCandidates);
+}
+
+async function runTodayHistoryTrial() {
+  return runHistoryTrialForDate(toDateStringInIST());
+}
+
+async function getLatestAndPrevClose(symbol) {
+  const quote = await yahooFinance.quote(symbol);
+  const marketPrice =
+    typeof quote.regularMarketPrice === "number"
+      ? quote.regularMarketPrice
+      : typeof quote.postMarketPrice === "number"
+        ? quote.postMarketPrice
+        : quote.preMarketPrice;
+  const previousClose =
+    typeof quote.regularMarketPreviousClose === "number"
+      ? quote.regularMarketPreviousClose
+      : quote.previousClose;
+
+  if (typeof marketPrice !== "number" || typeof previousClose !== "number") {
+    return null;
+  }
+
+  return {
+    symbol,
+    price: marketPrice,
+    prevClose: previousClose,
+    changePercent: percentChange(previousClose, marketPrice),
+    quoteTime: quote.regularMarketTime ? new Date(quote.regularMarketTime * 1000) : new Date(),
+  };
+}
+
+async function selectTopIntraday(symbols = CANDIDATE_SYMBOLS, topN = STRATEGY_CONFIG.topN) {
+  const sourceSymbols = Array.isArray(symbols) && symbols.length > 0
+    ? symbols
+    : await getAutomaticMarketSymbols();
+  const settled = await Promise.allSettled(sourceSymbols.map((symbol) => getLatestAndPrevClose(symbol)));
+
+  const valid = settled
+    .filter((item) => item.status === "fulfilled" && item.value)
+    .map((item) => item.value)
+    .sort((a, b) => b.changePercent - a.changePercent);
+
+  if (STRATEGY_CONFIG.selectionLimit > 0) {
+    return valid.slice(0, STRATEGY_CONFIG.selectionLimit);
+  }
+
+  return valid;
+}
+
+async function getQuotesBySymbols(symbols) {
+  const unique = uniqueSymbols(symbols);
+  const settled = await Promise.allSettled(unique.map((symbol) => getLatestAndPrevClose(symbol)));
+
+  const quoteMap = new Map();
+  settled.forEach((item) => {
+    if (item.status === "fulfilled" && item.value) {
+      quoteMap.set(item.value.symbol, item.value);
+    }
+  });
+
+  return quoteMap;
+}
+
+function appendPricePoint(symbol, price, time = new Date()) {
+  if (!state.historyBySymbol.has(symbol)) {
+    state.historyBySymbol.set(symbol, []);
+  }
+
+  const history = state.historyBySymbol.get(symbol);
+  history.push({ time, price });
+
+  if (history.length > 120) {
+    history.shift();
+  }
+}
+
+function isContinuousUptrend(symbol, lookbackMinutes) {
+  const history = state.historyBySymbol.get(symbol) || [];
+  if (history.length < lookbackMinutes + 1) {
+    return false;
+  }
+
+  const points = history.slice(-1 * (lookbackMinutes + 1));
+  for (let i = 1; i < points.length; i += 1) {
+    if (points[i].price <= points[i - 1].price) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isContinuousDowntrend(symbol, lookbackMinutes) {
+  const history = state.historyBySymbol.get(symbol) || [];
+  if (history.length < lookbackMinutes + 1) {
+    return false;
+  }
+
+  const points = history.slice(-1 * (lookbackMinutes + 1));
+  for (let i = 1; i < points.length; i += 1) {
+    if (points[i].price >= points[i - 1].price) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function executeEntry(symbol, price, time, side) {
+  if (state.openPositions.has(symbol)) {
+    return;
+  }
+
+  const units = calculateUnits(price);
+  if (units <= 0) {
+    return;
+  }
+
+  state.openPositions.set(symbol, {
+    symbol,
+    side,
+    entryPrice: price,
+    units,
+    remainingUnits: units,
+    partialBooked: false,
+    maxFavorablePercent: 0,
+    entryTime: time,
+  });
+
+  const action = side === "LONG" ? "BUY" : "SELL_SHORT";
+  const reason = side === "LONG"
+    ? "Continuous uptrend for 10+ minutes"
+    : "Continuous downtrend for 10+ minutes";
+
+  state.trades.push({
+    action,
+    symbol,
+    price: round2(price),
+    units,
+    time,
+    reason,
+  });
+}
+
+function executeExit(position, price, time, reason, unitsOverride) {
+  const units = typeof unitsOverride === "number" && unitsOverride > 0
+    ? Math.min(unitsOverride, position ? position.remainingUnits : 0)
+    : position
+      ? position.remainingUnits
+      : 0;
+  if (units <= 0 || !position) {
+    return;
+  }
+
+  const isLong = position.side === "LONG";
+  position.remainingUnits -= units;
+  const pnl = isLong
+    ? (price - position.entryPrice) * units
+    : (position.entryPrice - price) * units;
+
+  state.trades.push({
+    action: isLong ? "SELL" : "COVER",
+    symbol: position.symbol,
+    price: round2(price),
+    units,
+    time,
+    reason,
+    pnl: round2(pnl),
+  });
+
+  if (position.remainingUnits <= 0) {
+    state.openPositions.delete(position.symbol);
+  }
+}
+
+function evaluateSell(position, currentPrice, time) {
+  const movePercent = percentChange(position.entryPrice, currentPrice);
+  const isLong = position.side === "LONG";
+  const favorablePercent = isLong ? movePercent : -movePercent;
+  position.maxFavorablePercent = Math.max(position.maxFavorablePercent || 0, favorablePercent);
+
+  const elapsedMinutes = minutesBetween(position.entryTime, time);
+  const partialBookedAtStart = Boolean(position.partialBooked);
+
+  if (!position.partialBooked && elapsedMinutes >= STRATEGY_CONFIG.timeExitMinutes && favorablePercent < STRATEGY_CONFIG.firstProfitTargetPercent) {
+    executeExit(position, currentPrice, time, `Time exit (${STRATEGY_CONFIG.timeExitMinutes} min) before target`);
+    return;
+  }
+
+  if (!position.partialBooked && favorablePercent <= -STRATEGY_CONFIG.perStockStopLossPercent) {
+    executeExit(position, currentPrice, time, `Per-stock stop loss hit (${STRATEGY_CONFIG.perStockStopLossPercent}%)`);
+    return;
+  }
+
+  if (!position.partialBooked && favorablePercent >= STRATEGY_CONFIG.firstProfitTargetPercent) {
+    const unitsToExit = Math.max(1, Math.floor((position.units * STRATEGY_CONFIG.firstProfitExitPercent) / 100));
+    executeExit(
+      position,
+      currentPrice,
+      time,
+      `First target hit (${STRATEGY_CONFIG.firstProfitTargetPercent}%), booked ${STRATEGY_CONFIG.firstProfitExitPercent}%`,
+      unitsToExit
+    );
+    if (state.openPositions.has(position.symbol)) {
+      position.partialBooked = true;
+    }
+    return;
+  }
+
+  if (!position.partialBooked) {
+    return;
+  }
+
+  if (STRATEGY_CONFIG.moveStopToEntryAfterFirstExit && favorablePercent <= 0) {
+    executeExit(position, currentPrice, time, "No-loss mode stop at entry after first booking");
+    return;
+  }
+
+  const trailingStopLevel = position.maxFavorablePercent - STRATEGY_CONFIG.trailingStopPercent;
+  if (position.maxFavorablePercent > 0 && favorablePercent <= trailingStopLevel) {
+    executeExit(position, currentPrice, time, `Trailing stop hit (${STRATEGY_CONFIG.trailingStopPercent}%)`);
+    return;
+  }
+
+  if (partialBookedAtStart && favorablePercent >= STRATEGY_CONFIG.remainderHardTargetPercent) {
+    executeExit(position, currentPrice, time, `Final target hit (${STRATEGY_CONFIG.remainderHardTargetPercent}%)`);
+    return;
+  }
+}
+
+async function runCycle() {
+  const now = new Date();
+  try {
+    resetDailyControlIfNeeded(now);
+    const today = toDateStringInIST(now);
+    const phase = getMarketPhase(now);
+
+    if (phase === "pre-open" || phase === "closed") {
+      state.lastRun = now;
+      state.cycleCount += 1;
+      state.lastError = null;
+      return true;
+    }
+
+    const marketSymbols = await getAutomaticMarketSymbols();
+    const selected = await selectTopIntraday(marketSymbols);
+    state.symbols = selected.map((item) => item.symbol);
+
+    const trackedSymbols = uniqueSymbols([
+      ...state.symbols,
+      ...Array.from(state.openPositions.keys()),
+    ]);
+    const quoteMap = await getQuotesBySymbols(trackedSymbols);
+
+    if (shouldTriggerDailyCutoff(today, quoteMap)) {
+      state.dailyControl.cutoffHit = true;
+    }
+
+    state.symbols.forEach((symbol) => {
+      const quote = quoteMap.get(symbol);
+      if (!quote) {
+        return;
+      }
+
+      appendPricePoint(symbol, quote.price, now);
+      if (!state.dailyControl.cutoffHit && !state.openPositions.has(symbol) && phase === "open") {
+        if (isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes)) {
+          executeEntry(symbol, quote.price, now, "LONG");
+        } else if (isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes)) {
+          executeEntry(symbol, quote.price, now, "SHORT");
+        }
+      }
+    });
+
+    for (const position of Array.from(state.openPositions.values())) {
+      const quote = quoteMap.get(position.symbol);
+      if (!quote) {
+        continue;
+      }
+
+      if (state.dailyControl.cutoffHit) {
+        executeExit(position, quote.price, now, `Max daily loss cutoff hit (${STRATEGY_CONFIG.maxDailyLossPercent}%), forced square-off`);
+      } else if (phase === "square-off") {
+        executeExit(position, quote.price, now, `Auto square-off before market close (${STRATEGY_CONFIG.squareOffTimeIST} IST)`);
+      } else {
+        evaluateSell(position, quote.price, now);
+      }
+    }
+
+    if (!state.dailyControl.cutoffHit && phase === "open" && STRATEGY_CONFIG.allowRepeatEntryOnContinuousTrend) {
+      state.symbols.forEach((symbol) => {
+        if (state.openPositions.has(symbol)) {
+          return;
+        }
+
+        const quote = quoteMap.get(symbol);
+        if (!quote) {
+          return;
+        }
+
+        if (isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes)) {
+          executeEntry(symbol, quote.price, now, "LONG");
+        } else if (isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes)) {
+          executeEntry(symbol, quote.price, now, "SHORT");
+        }
+      });
+    }
+
+    state.lastRun = now;
+    state.cycleCount += 1;
+    state.lastError = null;
+    return true;
+  } catch (error) {
+    state.lastRun = now;
+    state.lastError = error.message || String(error);
+    return false;
+  }
+}
+
+function getSnapshot() {
+  const selected = state.symbols.map((symbol) => {
+    const history = state.historyBySymbol.get(symbol) || [];
+    const latest = history[history.length - 1];
+    const prev = history[history.length - 2];
+    const minuteMove = latest && prev ? percentChange(prev.price, latest.price) : 0;
+    const position = state.openPositions.get(symbol);
+
+    return {
+      symbol,
+      currentPrice: latest ? round2(latest.price) : null,
+      minuteMovePercent: round2(minuteMove),
+      uptrend10m: isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes),
+      downtrend10m: isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes),
+      hasOpenPosition: Boolean(position),
+      positionSide: position ? position.side : null,
+      entryPrice: position ? round2(position.entryPrice) : null,
+      remainingUnits: position ? position.remainingUnits : 0,
+    };
+  });
+
+  const charts = {};
+  for (const symbol of state.symbols) {
+    const history = state.historyBySymbol.get(symbol) || [];
+    const symbolTrades = state.trades.filter((trade) => trade.symbol === symbol);
+
+    charts[symbol] = {
+      prices: history.map((point) => ({
+        time: point.time,
+        price: round2(point.price),
+      })),
+      buyMarkers: symbolTrades
+        .filter((trade) => trade.action === "BUY" || trade.action === "COVER")
+        .map((trade) => ({
+          time: trade.time,
+          price: trade.price,
+          units: trade.units,
+        })),
+      sellMarkers: symbolTrades
+        .filter((trade) => trade.action === "SELL" || trade.action === "SELL_SHORT")
+        .map((trade) => ({
+          time: trade.time,
+          price: trade.price,
+          units: trade.units,
+        })),
+    };
+  }
+
+  const openPositions = Array.from(state.openPositions.values()).map((position) => ({
+    symbol: position.symbol,
+    entryPrice: round2(position.entryPrice),
+    units: position.units,
+    remainingUnits: position.remainingUnits,
+    side: position.side,
+    partialBooked: position.partialBooked,
+    maxFavorablePercent: round2(position.maxFavorablePercent || 0),
+    entryTime: position.entryTime,
+  }));
+
+  const realizedPnl = state.trades
+    .filter((trade) => trade.action === "SELL" || trade.action === "COVER")
+    .reduce((sum, trade) => sum + (trade.pnl || 0), 0);
+  const currentDate = state.dailyControl.date || toDateStringInIST();
+  const dailyRealizedPnl = getDailyRealizedPnl(currentDate);
+  const dailyCutoffAmount = getMaxDailyLossAmount();
+
+  return {
+    config: STRATEGY_CONFIG,
+    status: {
+      lastRun: state.lastRun,
+      cycleCount: state.cycleCount,
+      lastError: state.lastError,
+      marketSource: state.marketSource,
+      marketUniverseSize: state.marketUniverse.length,
+      dailyDate: currentDate,
+      dailyLossCutoffHit: state.dailyControl.cutoffHit,
+    },
+    selected,
+    charts,
+    openPositions,
+    trades: state.trades.slice(-100).reverse(),
+    summary: {
+      totalTrades: state.trades.length,
+      openPositions: state.openPositions.size,
+      realizedPnl: round2(realizedPnl),
+      dailyRealizedPnl: round2(dailyRealizedPnl),
+      dailyLossCutoffAmount: round2(dailyCutoffAmount),
+    },
+  };
+}
+
+async function startEngine(intervalMs = 60000, onCycleComplete) {
+  const executeCycle = async (trigger) => {
+    const success = await runCycle();
+    if (typeof onCycleComplete === "function") {
+      await onCycleComplete({
+        trigger,
+        success,
+        snapshot: getSnapshot(),
+      });
+    }
+  };
+
+  await executeCycle("startup");
+  setInterval(() => {
+    executeCycle("interval").catch((error) => {
+      state.lastError = error.message || String(error);
+    });
+  }, intervalMs);
+}
+
+module.exports = {
+  STRATEGY_CONFIG,
+  startEngine,
+  runCycle,
+  getSnapshot,
+  runHistoryTrialForDate,
+  runTodayHistoryTrial,
+  runPremarketShortlist,
+};
