@@ -149,10 +149,39 @@
         margin: 0 0 4px 0;
         font-size: 11px;
       }
+      .chart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+      }
+      .chart-title {
+        margin: 0;
+      }
+      .chart-legend {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chart-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+      }
+      .chart-legend-color {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        display: inline-block;
+      }
       .chart-canvas {
         width: 100%;
-        height: 200px;
-        max-height: 200px;
+        height: 120px;
+        max-height: 120px;
       }
     </style>
   </head>
@@ -166,7 +195,12 @@
                 Rules: Capital ₹10,000/day. Strategy runs automatically only during NSE market hours. Scripts are auto-selected from market movers. First booking: exit 50% at +1.00%. After first booking, stop-loss moves to entry (no-loss mode). Remaining 50% uses 1% trailing stop and hard final target +1.00%. Per-stock stop loss: -0.5%. Time-exit: if target not hit in 10–12 minutes, exit at market. Repeat entry is allowed on the same stock if continuous trend still holds. Max daily loss cutoff: 1% (₹100), with forced square-off if hit. All open positions auto square-off before close (15:20 IST).
             </p>
             <button id="runNowBtn">Run Strategy Now</button>
+            <button id="refreshDataBtn">Refresh Data</button>
             <span id="lastUpdated" class="muted"></span>
+            <div class="row" style="margin-top:4px;">
+              <span id="currentTime" class="muted">Current time: -</span>
+              <span id="refreshTimer" class="muted">Next refresh in: -</span>
+            </div>
           </div>
 
           <div class="grid">
@@ -193,47 +227,14 @@
                     <th>Symbol</th>
                     <th>Current Price</th>
                     <th>1m Move %</th>
-                    <th>Uptrend 10m</th>
+                    <th>3m Move %</th>
+                    <th>6m Move %</th>
+                    <th>10m Move %</th>
                     <th>Position</th>
                   </tr>
                 </thead>
                 <tbody id="selectedTable"></tbody>
               </table>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2>Pre-Market Shortlist (Yesterday Based)</h2>
-            <div class="row">
-              <span id="premarketInfo" class="muted"></span>
-            </div>
-            <div class="row" style="align-items:flex-start;">
-              <div style="flex:1; min-width: 260px;">
-                <h2 style="margin-bottom:4px;">Long Candidates</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Change%</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>
-                  <tbody id="premarketLongTable"></tbody>
-                </table>
-              </div>
-              <div style="flex:1; min-width: 260px;">
-                <h2 style="margin-bottom:4px;">Short Candidates</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Change%</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>
-                  <tbody id="premarketShortTable"></tbody>
-                </table>
-              </div>
             </div>
           </div>
 
@@ -304,11 +305,49 @@
               </table>
             </div>
           </div>
+
+          <div class="card">
+            <h2>Pre-Market Shortlist (Yesterday Based)</h2>
+            <div class="row">
+              <span id="premarketInfo" class="muted"></span>
+            </div>
+            <div class="row" style="align-items:flex-start;">
+              <div style="flex:1; min-width: 260px;">
+                <h2 style="margin-bottom:4px;">Long Candidates</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Symbol</th>
+                      <th>Change%</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody id="premarketLongTable"></tbody>
+                </table>
+              </div>
+              <div style="flex:1; min-width: 260px;">
+                <h2 style="margin-bottom:4px;">Short Candidates</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Symbol</th>
+                      <th>Change%</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody id="premarketShortTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="right-panel">
           <div class="card">
             <h2>Stock Charts (Buy/Sell Markers)</h2>
+            <div class="row" style="margin-bottom:4px;">
+              <span id="chartActiveTime" class="muted">Chart active time: -</span>
+            </div>
             <div id="chartsContainer" class="charts-grid"></div>
           </div>
 
@@ -321,6 +360,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/app.js"></script>
+    <script src="/app.js?v=20260217"></script>
   </body>
 </html>

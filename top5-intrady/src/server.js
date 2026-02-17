@@ -46,6 +46,10 @@ app.get("/api/health", (req, res) => {
 });
 
 app.get("/api/state", (req, res) => {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  res.setHeader("Surrogate-Control", "no-store");
   res.json(getSnapshot());
 });
 
@@ -175,7 +179,7 @@ app.get(/.*/, (req, res) => {
 app.listen(PORT, async () => {
   console.log(`Groww paper-trading app running on http://localhost:${PORT}`);
   notifierState.lastNotifiedTradeCount = getSnapshot()?.summary?.totalTrades || 0;
-  await startEngine(60000, async ({ snapshot }) => {
+  await startEngine(10000, async ({ snapshot }) => {
     await sendNotificationsForLatestCycle(snapshot, "auto-cycle");
   });
 });

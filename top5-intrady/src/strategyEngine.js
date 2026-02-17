@@ -30,6 +30,7 @@ const STRATEGY_CONFIG = {
   selectionLimit: 0,
   buyContinuousRiseMinutes: 10,
   shortContinuousFallMinutes: 10,
+  trendStrengthThreshold: 0.7,
   allowRepeatEntryOnContinuousTrend: true,
   perStockStopLossPercent: 0.5,
   firstProfitTargetPercent: 1,
@@ -39,14 +40,18 @@ const STRATEGY_CONFIG = {
   timeExitMinutes: 12,
   moveStopToEntryAfterFirstExit: true,
   marketScreenerCount: 250,
-  marketOpenTimeIST: "09:15",
-  marketCloseTimeIST: "15:30",
-  squareOffTimeIST: "15:20",
+  marketOpenTimeIST: "09:00",
+  marketCloseTimeIST: "15:00",
+  squareOffTimeIST: "14:50",
   weekdaysOnly: true,
 };
 
 const state = {
   symbols: [],
+  selectedSymbolsDate: null,
+  selectionOffset: 0,
+  selectionWindowStart: null,
+  selectionWindowTradeCount: 0,
   marketUniverse: [],
   marketSource: "fallback",
   dailyControl: {
@@ -63,6 +68,8 @@ const state = {
 
 const YAHOO_CHART_BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart";
 const YAHOO_SCREENER_BASE_URL = "https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved";
+const SIGNAL_CANDLE_MINUTES = 3;
+const ENTRY_UP_CANDLE_COUNT = 4;
 
 function percentChange(base, current) {
   if (!base || !current) {
@@ -179,6 +186,11 @@ function resetDailyControlIfNeeded(now = new Date()) {
   if (state.dailyControl.date !== today) {
     state.dailyControl.date = today;
     state.dailyControl.cutoffHit = false;
+    state.selectionOffset = 0;
+    state.selectionWindowStart = null;
+    state.selectionWindowTradeCount = state.trades.length;
+    state.selectedSymbolsDate = null;
+    state.symbols = [];
   }
 }
 
@@ -795,17 +807,34 @@ async function runTodayHistoryTrial() {
 }
 
 async function getLatestAndPrevClose(symbol) {
-  const quote = await yahooFinance.quote(symbol);
+  const url = `${YAHOO_CHART_BASE_URL}/${encodeURIComponent(symbol)}?interval=1d&range=5d&includePrePost=false&events=history`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Quote fetch failed for ${symbol}: HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const result = payload?.chart?.result?.[0];
+  const meta = result?.meta || {};
+  const closesRaw = result?.indicators?.quote?.[0]?.close || [];
+  const closes = closesRaw.filter((value) => typeof value === "number");
+
+  const lastClose = closes.length > 0 ? closes[closes.length - 1] : null;
+  const previousCloseFromSeries = closes.length > 1 ? closes[closes.length - 2] : null;
+
   const marketPrice =
-    typeof quote.regularMarketPrice === "number"
-      ? quote.regularMarketPrice
-      : typeof quote.postMarketPrice === "number"
-        ? quote.postMarketPrice
-        : quote.preMarketPrice;
+    typeof meta.regularMarketPrice === "number"
+      ? meta.regularMarketPrice
+      : lastClose;
+
   const previousClose =
-    typeof quote.regularMarketPreviousClose === "number"
-      ? quote.regularMarketPreviousClose
-      : quote.previousClose;
+    typeof meta.regularMarketPreviousClose === "number"
+      ? meta.regularMarketPreviousClose
+      : typeof meta.previousClose === "number"
+        ? meta.previousClose
+        : typeof meta.chartPreviousClose === "number"
+          ? meta.chartPreviousClose
+          : previousCloseFromSeries;
 
   if (typeof marketPrice !== "number" || typeof previousClose !== "number") {
     return null;
@@ -816,11 +845,11 @@ async function getLatestAndPrevClose(symbol) {
     price: marketPrice,
     prevClose: previousClose,
     changePercent: percentChange(previousClose, marketPrice),
-    quoteTime: quote.regularMarketTime ? new Date(quote.regularMarketTime * 1000) : new Date(),
+    quoteTime: typeof meta.regularMarketTime === "number" ? new Date(meta.regularMarketTime * 1000) : new Date(),
   };
 }
 
-async function selectTopIntraday(symbols = CANDIDATE_SYMBOLS, topN = STRATEGY_CONFIG.topN) {
+async function selectTopIntraday(symbols = CANDIDATE_SYMBOLS, topN = STRATEGY_CONFIG.topN, offset = 0) {
   const sourceSymbols = Array.isArray(symbols) && symbols.length > 0
     ? symbols
     : await getAutomaticMarketSymbols();
@@ -829,13 +858,26 @@ async function selectTopIntraday(symbols = CANDIDATE_SYMBOLS, topN = STRATEGY_CO
   const valid = settled
     .filter((item) => item.status === "fulfilled" && item.value)
     .map((item) => item.value)
+    .filter((item) => calculateUnits(item.price) > 0)
     .sort((a, b) => b.changePercent - a.changePercent);
 
   if (STRATEGY_CONFIG.selectionLimit > 0) {
     return valid.slice(0, STRATEGY_CONFIG.selectionLimit);
   }
 
-  return valid;
+  if (valid.length === 0) {
+    return [];
+  }
+
+  const maxSymbols = Math.min(topN, valid.length);
+  const normalizedOffset = ((offset % valid.length) + valid.length) % valid.length;
+  const selected = [];
+
+  for (let index = 0; index < maxSymbols; index += 1) {
+    selected.push(valid[(normalizedOffset + index) % valid.length]);
+  }
+
+  return selected;
 }
 
 async function getQuotesBySymbols(symbols) {
@@ -872,13 +914,15 @@ function isContinuousUptrend(symbol, lookbackMinutes) {
   }
 
   const points = history.slice(-1 * (lookbackMinutes + 1));
+  let riseCount = 0;
   for (let i = 1; i < points.length; i += 1) {
-    if (points[i].price <= points[i - 1].price) {
-      return false;
+    if (points[i].price > points[i - 1].price) {
+      riseCount += 1;
     }
   }
 
-  return true;
+  const requiredRises = Math.ceil(lookbackMinutes * STRATEGY_CONFIG.trendStrengthThreshold);
+  return riseCount >= requiredRises;
 }
 
 function isContinuousDowntrend(symbol, lookbackMinutes) {
@@ -888,8 +932,55 @@ function isContinuousDowntrend(symbol, lookbackMinutes) {
   }
 
   const points = history.slice(-1 * (lookbackMinutes + 1));
+  let fallCount = 0;
   for (let i = 1; i < points.length; i += 1) {
-    if (points[i].price >= points[i - 1].price) {
+    if (points[i].price < points[i - 1].price) {
+      fallCount += 1;
+    }
+  }
+
+  const requiredFalls = Math.ceil(lookbackMinutes * STRATEGY_CONFIG.trendStrengthThreshold);
+  return fallCount >= requiredFalls;
+}
+
+function getIntervalCandles(symbol, intervalMinutes, now = new Date()) {
+  const history = state.historyBySymbol.get(symbol) || [];
+  const intervalMs = intervalMinutes * 60 * 1000;
+  const nowMs = new Date(now).getTime();
+  const currentBucketStart = Math.floor(nowMs / intervalMs) * intervalMs;
+
+  const candles = [];
+  for (const point of history) {
+    const pointMs = new Date(point.time).getTime();
+    const bucketStart = Math.floor(pointMs / intervalMs) * intervalMs;
+    const last = candles[candles.length - 1];
+
+    if (!last || last.startTime !== bucketStart) {
+      candles.push({
+        startTime: bucketStart,
+        close: point.price,
+      });
+    } else {
+      last.close = point.price;
+    }
+  }
+
+  if (candles.length > 0 && candles[candles.length - 1].startTime === currentBucketStart) {
+    candles.pop();
+  }
+
+  return candles;
+}
+
+function hasConsecutiveUpCandles(symbol, candleCount, intervalMinutes, now = new Date()) {
+  const candles = getIntervalCandles(symbol, intervalMinutes, now);
+  if (candles.length < candleCount) {
+    return false;
+  }
+
+  const recent = candles.slice(-1 * candleCount);
+  for (let index = 1; index < recent.length; index += 1) {
+    if (recent[index].close <= recent[index - 1].close) {
       return false;
     }
   }
@@ -897,7 +988,18 @@ function isContinuousDowntrend(symbol, lookbackMinutes) {
   return true;
 }
 
-function executeEntry(symbol, price, time, side) {
+function isLatestCandleDown(symbol, intervalMinutes, now = new Date()) {
+  const candles = getIntervalCandles(symbol, intervalMinutes, now);
+  if (candles.length < 2) {
+    return false;
+  }
+
+  const latest = candles[candles.length - 1];
+  const previous = candles[candles.length - 2];
+  return latest.close < previous.close;
+}
+
+function executeEntry(symbol, price, time, side, reasonOverride) {
   if (state.openPositions.has(symbol)) {
     return;
   }
@@ -919,9 +1021,9 @@ function executeEntry(symbol, price, time, side) {
   });
 
   const action = side === "LONG" ? "BUY" : "SELL_SHORT";
-  const reason = side === "LONG"
+  const reason = reasonOverride || (side === "LONG"
     ? "Continuous uptrend for 10+ minutes"
-    : "Continuous downtrend for 10+ minutes";
+    : "Continuous downtrend for 10+ minutes");
 
   state.trades.push({
     action,
@@ -965,6 +1067,11 @@ function executeExit(position, price, time, reason, unitsOverride) {
 }
 
 function evaluateSell(position, currentPrice, time) {
+  if (position.side === "LONG" && isLatestCandleDown(position.symbol, SIGNAL_CANDLE_MINUTES, time)) {
+    executeExit(position, currentPrice, time, "First down 3-minute candle after entry");
+    return;
+  }
+
   const movePercent = percentChange(position.entryPrice, currentPrice);
   const isLong = position.side === "LONG";
   const favorablePercent = isLong ? movePercent : -movePercent;
@@ -1033,9 +1140,30 @@ async function runCycle() {
       return true;
     }
 
-    const marketSymbols = await getAutomaticMarketSymbols();
-    const selected = await selectTopIntraday(marketSymbols);
-    state.symbols = selected.map((item) => item.symbol);
+    let shouldReselectSymbols = state.selectedSymbolsDate !== today || state.symbols.length === 0;
+
+    if (!shouldReselectSymbols && phase === "open" && state.selectionWindowStart) {
+      const windowElapsedMinutes = minutesBetween(state.selectionWindowStart, now);
+      if (windowElapsedMinutes >= 60) {
+        const tradesInWindow = state.trades.length - state.selectionWindowTradeCount;
+        if (tradesInWindow <= 0) {
+          state.selectionOffset += STRATEGY_CONFIG.topN;
+          shouldReselectSymbols = true;
+        }
+
+        state.selectionWindowStart = now;
+        state.selectionWindowTradeCount = state.trades.length;
+      }
+    }
+
+    if (shouldReselectSymbols) {
+      const marketSymbols = await getAutomaticMarketSymbols();
+      const selected = await selectTopIntraday(marketSymbols, STRATEGY_CONFIG.topN, state.selectionOffset);
+      state.symbols = selected.map((item) => item.symbol);
+      state.selectedSymbolsDate = today;
+      state.selectionWindowStart = now;
+      state.selectionWindowTradeCount = state.trades.length;
+    }
 
     const trackedSymbols = uniqueSymbols([
       ...state.symbols,
@@ -1055,10 +1183,8 @@ async function runCycle() {
 
       appendPricePoint(symbol, quote.price, now);
       if (!state.dailyControl.cutoffHit && !state.openPositions.has(symbol) && phase === "open") {
-        if (isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes)) {
-          executeEntry(symbol, quote.price, now, "LONG");
-        } else if (isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes)) {
-          executeEntry(symbol, quote.price, now, "SHORT");
+        if (hasConsecutiveUpCandles(symbol, ENTRY_UP_CANDLE_COUNT, SIGNAL_CANDLE_MINUTES, now)) {
+          executeEntry(symbol, quote.price, now, "LONG", "3-minute candles moved up more than 2 times");
         }
       }
     });
@@ -1089,10 +1215,8 @@ async function runCycle() {
           return;
         }
 
-        if (isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes)) {
-          executeEntry(symbol, quote.price, now, "LONG");
-        } else if (isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes)) {
-          executeEntry(symbol, quote.price, now, "SHORT");
+        if (hasConsecutiveUpCandles(symbol, ENTRY_UP_CANDLE_COUNT, SIGNAL_CANDLE_MINUTES, now)) {
+          executeEntry(symbol, quote.price, now, "LONG", "3-minute candles moved up more than 2 times");
         }
       });
     }
@@ -1109,17 +1233,52 @@ async function runCycle() {
 }
 
 function getSnapshot() {
+  function getChangePercentByMinutes(history, minutes) {
+    if (!history || history.length < 2) {
+      return 0;
+    }
+
+    const latest = history[history.length - 1];
+    if (!latest || typeof latest.price !== "number") {
+      return 0;
+    }
+
+    const latestTimeMs = new Date(latest.time).getTime();
+    const targetTimeMs = latestTimeMs - (minutes * 60 * 1000);
+
+    let basePoint = null;
+    for (let index = history.length - 1; index >= 0; index -= 1) {
+      const point = history[index];
+      if (!point || typeof point.price !== "number") {
+        continue;
+      }
+
+      const pointTimeMs = new Date(point.time).getTime();
+      if (pointTimeMs <= targetTimeMs) {
+        basePoint = point;
+        break;
+      }
+    }
+
+    if (!basePoint) {
+      return 0;
+    }
+
+    return percentChange(basePoint.price, latest.price);
+  }
+
   const selected = state.symbols.map((symbol) => {
     const history = state.historyBySymbol.get(symbol) || [];
     const latest = history[history.length - 1];
-    const prev = history[history.length - 2];
-    const minuteMove = latest && prev ? percentChange(prev.price, latest.price) : 0;
     const position = state.openPositions.get(symbol);
 
     return {
       symbol,
       currentPrice: latest ? round2(latest.price) : null,
-      minuteMovePercent: round2(minuteMove),
+      move1mPercent: round2(getChangePercentByMinutes(history, 1)),
+      move6mPercent: round2(getChangePercentByMinutes(history, 6)),
+      move3mPercent: round2(getChangePercentByMinutes(history, 3)),
+      move10mPercent: round2(getChangePercentByMinutes(history, 10)),
       uptrend10m: isContinuousUptrend(symbol, STRATEGY_CONFIG.buyContinuousRiseMinutes),
       downtrend10m: isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes),
       hasOpenPosition: Boolean(position),
