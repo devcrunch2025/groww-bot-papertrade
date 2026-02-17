@@ -1,3 +1,5 @@
+const fs = require("fs/promises");
+const path = require("path");
 const yahooFinance = require("yahoo-finance2").default;
 
 const CANDIDATE_SYMBOLS = [
@@ -52,6 +54,8 @@ const state = {
   selectionOffset: 0,
   selectionWindowStart: null,
   selectionWindowTradeCount: 0,
+  historyLoadedDate: null,
+  lastHistoryPersistAt: 0,
   marketUniverse: [],
   marketSource: "fallback",
   dailyControl: {
@@ -70,6 +74,93 @@ const YAHOO_CHART_BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart"
 const YAHOO_SCREENER_BASE_URL = "https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved";
 const SIGNAL_CANDLE_MINUTES = 3;
 const ENTRY_UP_CANDLE_COUNT = 4;
+const HISTORY_DIRECTORY = path.join(__dirname, "..", "data", "price-history");
+const HISTORY_SAVE_INTERVAL_MS = 15000;
+
+function getHistoryFilePath(dateString) {
+  return path.join(HISTORY_DIRECTORY, `${dateString}.json`);
+}
+
+function serializeHistoryBySymbol() {
+  const payload = {};
+  for (const [symbol, points] of state.historyBySymbol.entries()) {
+    payload[symbol] = points.map((point) => ({
+      time: point.time instanceof Date ? point.time.toISOString() : point.time,
+      price: point.price,
+    }));
+  }
+  return payload;
+}
+
+function applySerializedHistory(historyPayload) {
+  const nextMap = new Map();
+
+  if (!historyPayload || typeof historyPayload !== "object") {
+    state.historyBySymbol = nextMap;
+    return;
+  }
+
+  Object.entries(historyPayload).forEach(([symbol, points]) => {
+    if (!Array.isArray(points)) {
+      return;
+    }
+
+    const cleaned = points
+      .map((point) => {
+        const time = new Date(point?.time);
+        const price = Number(point?.price);
+        if (!Number.isFinite(time.getTime()) || !Number.isFinite(price) || price <= 0) {
+          return null;
+        }
+        return { time, price };
+      })
+      .filter(Boolean)
+      .slice(-120);
+
+    if (cleaned.length > 0) {
+      nextMap.set(symbol, cleaned);
+    }
+  });
+
+  state.historyBySymbol = nextMap;
+}
+
+async function loadTodayPriceHistory(dateString) {
+  if (state.historyLoadedDate === dateString) {
+    return;
+  }
+
+  state.historyBySymbol = new Map();
+
+  try {
+    const filePath = getHistoryFilePath(dateString);
+    const raw = await fs.readFile(filePath, "utf8");
+    const parsed = JSON.parse(raw);
+    applySerializedHistory(parsed?.historyBySymbol);
+  } catch (error) {
+    if (error?.code !== "ENOENT") {
+      state.lastError = error.message || String(error);
+    }
+  } finally {
+    state.historyLoadedDate = dateString;
+  }
+}
+
+async function saveTodayPriceHistory(dateString, force = false) {
+  const nowMs = Date.now();
+  if (!force && nowMs - state.lastHistoryPersistAt < HISTORY_SAVE_INTERVAL_MS) {
+    return;
+  }
+
+  await fs.mkdir(HISTORY_DIRECTORY, { recursive: true });
+  const payload = {
+    date: dateString,
+    savedAt: new Date().toISOString(),
+    historyBySymbol: serializeHistoryBySymbol(),
+  };
+  await fs.writeFile(getHistoryFilePath(dateString), JSON.stringify(payload, null, 2), "utf8");
+  state.lastHistoryPersistAt = nowMs;
+}
 
 function percentChange(base, current) {
   if (!base || !current) {
@@ -191,6 +282,9 @@ function resetDailyControlIfNeeded(now = new Date()) {
     state.selectionWindowTradeCount = state.trades.length;
     state.selectedSymbolsDate = null;
     state.symbols = [];
+    state.historyBySymbol = new Map();
+    state.historyLoadedDate = null;
+    state.lastHistoryPersistAt = 0;
   }
 }
 
@@ -1131,12 +1225,14 @@ async function runCycle() {
   try {
     resetDailyControlIfNeeded(now);
     const today = toDateStringInIST(now);
+    await loadTodayPriceHistory(today);
     const phase = getMarketPhase(now);
 
     if (phase === "pre-open" || phase === "closed") {
       state.lastRun = now;
       state.cycleCount += 1;
       state.lastError = null;
+      await saveTodayPriceHistory(today);
       return true;
     }
 
@@ -1224,6 +1320,7 @@ async function runCycle() {
     state.lastRun = now;
     state.cycleCount += 1;
     state.lastError = null;
+    await saveTodayPriceHistory(today);
     return true;
   } catch (error) {
     state.lastRun = now;

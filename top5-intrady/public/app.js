@@ -47,7 +47,6 @@ async function fetchPremarketShortlist(date) {
 }
 
 const liveChartInstances = new Map();
-const trialChartInstances = new Map();
 let latestLiveRealizedPnl = 0;
 let latestTrialTotalPnl = 0;
 let lastPremarketFetchAt = 0;
@@ -181,31 +180,167 @@ function renderSummary(summary) {
 }
 
 function destroyCharts(chartMap) {
-  for (const chart of chartMap.values()) {
-    chart.destroy();
+  for (const entry of chartMap.values()) {
+    if (entry?.chart && typeof entry.chart.remove === 'function') {
+      entry.chart.remove();
+    }
   }
   chartMap.clear();
 }
 
-function renderSymbolCharts(containerId, chartMap, rows, chartResolver) {
+function buildOneMinuteCandles(pricePoints, livePrice, snapshotTime) {
+  const bucketMap = new Map();
+
+  pricePoints.forEach((point) => {
+    const timestampMs = new Date(point.time).getTime();
+    const price = toNumber(point.price);
+    if (!Number.isFinite(timestampMs) || price <= 0) {
+      return;
+    }
+
+    const bucketSec = Math.floor(timestampMs / 60000) * 60;
+    const existing = bucketMap.get(bucketSec);
+    if (!existing) {
+      bucketMap.set(bucketSec, {
+        time: bucketSec,
+        open: price,
+        high: price,
+        low: price,
+        close: price,
+      });
+      return;
+    }
+
+    existing.high = Math.max(existing.high, price);
+    existing.low = Math.min(existing.low, price);
+    existing.close = price;
+  });
+
+  const candles = Array.from(bucketMap.values()).sort((a, b) => a.time - b.time);
+
+  if (candles.length === 0 && livePrice > 0) {
+    const nowMs = snapshotTime ? new Date(snapshotTime).getTime() : Date.now();
+    const latestBucket = Math.floor(nowMs / 60000) * 60;
+    return [
+      { time: latestBucket - 60, open: livePrice, high: livePrice, low: livePrice, close: livePrice },
+      { time: latestBucket, open: livePrice, high: livePrice, low: livePrice, close: livePrice },
+    ];
+  }
+
+  if (candles.length === 1) {
+    const only = candles[0];
+    candles.unshift({
+      time: only.time - 60,
+      open: only.open,
+      high: only.high,
+      low: only.low,
+      close: only.close,
+    });
+  }
+
+  return candles;
+}
+
+function addCandlestickSeriesCompat(chart) {
+  const options = {
+    upColor: '#16a34a',
+    downColor: '#dc2626',
+    borderVisible: false,
+    wickUpColor: '#16a34a',
+    wickDownColor: '#dc2626',
+  };
+
+  if (typeof chart.addCandlestickSeries === 'function') {
+    return chart.addCandlestickSeries(options);
+  }
+
+  if (
+    typeof chart.addSeries === 'function'
+    && window.LightweightCharts
+    && window.LightweightCharts.CandlestickSeries
+  ) {
+    return chart.addSeries(window.LightweightCharts.CandlestickSeries, options);
+  }
+
+  throw new Error('Candlestick series API not available');
+}
+
+function addLineSeriesCompat(chart) {
+  const options = {
+    color: '#2563eb',
+    lineWidth: 2,
+    crosshairMarkerVisible: false,
+    lastValueVisible: true,
+    priceLineVisible: true,
+  };
+
+  if (typeof chart.addLineSeries === 'function') {
+    return chart.addLineSeries(options);
+  }
+
+  if (
+    typeof chart.addSeries === 'function'
+    && window.LightweightCharts
+    && window.LightweightCharts.LineSeries
+  ) {
+    return chart.addSeries(window.LightweightCharts.LineSeries, options);
+  }
+
+  throw new Error('Line series API not available');
+}
+
+function renderSymbolCharts(containerId, chartMap, rows, chartResolver, snapshotTime) {
   const container = document.getElementById(containerId);
+  if (!container) {
+    return;
+  }
+
+  if (!window.LightweightCharts || !window.LightweightCharts.createChart) {
+    container.innerHTML = '<div class="muted">Chart library not loaded.</div>';
+    return;
+  }
+
   container.innerHTML = '';
   destroyCharts(chartMap);
 
+  if (!rows || rows.length === 0) {
+    container.innerHTML = '<div class="muted">No selected symbols for chart.</div>';
+    return;
+  }
+
   rows.forEach((row) => {
+    try {
     const chartData = chartResolver(row) || { prices: [], buyMarkers: [], sellMarkers: [] };
     const symbol = row.symbol;
+    const pricePoints = [...(chartData.prices || [])];
+    const livePrice = toNumber(row.currentPrice);
 
-    const chartBox = document.createElement('div');
-    chartBox.className = 'chart-box';
+    if (livePrice > 0) {
+      const lastPoint = pricePoints.length > 0 ? pricePoints[pricePoints.length - 1] : null;
+      const lastPrice = lastPoint ? toNumber(lastPoint.price) : 0;
+      const pointTime = snapshotTime || new Date().toISOString();
 
-    const pricePoints = chartData.prices || [];
+      if (!lastPoint) {
+        pricePoints.push({ time: pointTime, price: livePrice });
+      } else if (Math.abs(lastPrice - livePrice) > 0.000001) {
+        pricePoints.push({ time: pointTime, price: livePrice });
+      }
+    }
+
+    if (pricePoints.length === 1) {
+      const firstPoint = pricePoints[0];
+      const fallbackTime = new Date(new Date(firstPoint.time).getTime() - 60 * 1000).toISOString();
+      pricePoints.unshift({ time: fallbackTime, price: toNumber(firstPoint.price) });
+    }
+
     const firstPrice = pricePoints.length > 0 ? toNumber(pricePoints[0].price) : 0;
     const latestChartPrice = pricePoints.length > 0 ? toNumber(pricePoints[pricePoints.length - 1].price) : 0;
-    const livePrice = toNumber(row.currentPrice);
     const displayPrice = livePrice > 0 ? livePrice : latestChartPrice;
     const changePercent = firstPrice > 0 ? ((displayPrice - firstPrice) / firstPrice) * 100 : 0;
     const changePrefix = changePercent > 0 ? '+' : '';
+
+    const chartBox = document.createElement('div');
+    chartBox.className = 'chart-box';
 
     const header = document.createElement('div');
     header.className = 'chart-header';
@@ -227,98 +362,74 @@ function renderSymbolCharts(containerId, chartMap, rows, chartResolver) {
     header.appendChild(legend);
     chartBox.appendChild(header);
 
-    const canvas = document.createElement('canvas');
-    canvas.className = 'chart-canvas';
-    canvas.height = 120;
-    chartBox.appendChild(canvas);
+    const widget = document.createElement('div');
+    widget.className = 'candle-widget';
+    chartBox.appendChild(widget);
     container.appendChild(chartBox);
 
-    const priceSeries = chartData.prices.map((point) => ({ x: new Date(point.time).getTime(), y: point.price }));
-    const buySeries = chartData.buyMarkers.map((point) => ({ x: new Date(point.time).getTime(), y: point.price }));
-    const sellSeries = chartData.sellMarkers.map((point) => ({ x: new Date(point.time).getTime(), y: point.price }));
-
-    const chart = new Chart(canvas.getContext('2d'), {
-      type: 'line',
-      data: {
-        datasets: [
-          {
-            label: 'Price',
-            data: priceSeries,
-            borderColor: '#2563eb',
-            borderWidth: 2,
-            pointRadius: 0,
-            tension: 0.2,
-          },
-          {
-            label: 'BUY',
-            type: 'scatter',
-            data: buySeries,
-            pointRadius: 5,
-            pointBackgroundColor: '#16a34a',
-          },
-          {
-            label: 'SELL',
-            type: 'scatter',
-            data: sellSeries,
-            pointRadius: 5,
-            pointBackgroundColor: '#dc2626',
-          },
-        ],
+    const chart = window.LightweightCharts.createChart(widget, {
+      layout: {
+        background: { color: '#ffffff' },
+        textColor: '#334155',
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            type: 'linear',
-            ticks: {
-              font: {
-                size: 9,
-              },
-              callback(value) {
-                return formatChartTime(value);
-              },
-              maxRotation: 0,
-              autoSkip: true,
-              maxTicksLimit: 8,
-            },
-          },
-          y: {
-            ticks: {
-              font: {
-                size: 9,
-              },
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            callbacks: {
-              title(items) {
-                const xValue = items?.[0]?.parsed?.x;
-                return formatChartTime(xValue);
-              },
-              label(context) {
-                const value = toNumber(context.parsed.y);
-                const pct = firstPrice > 0 ? ((value - firstPrice) / firstPrice) * 100 : 0;
-                const pctPrefix = pct > 0 ? '+' : '';
-                return `${context.dataset.label}: ${value.toFixed(2)} (${pctPrefix}${pct.toFixed(2)}%)`;
-              },
-            },
-          },
-        },
+      rightPriceScale: {
+        borderColor: '#e5e7eb',
       },
+      timeScale: {
+        borderColor: '#e5e7eb',
+        timeVisible: true,
+        secondsVisible: false,
+      },
+      grid: {
+        vertLines: { color: '#f1f5f9' },
+        horzLines: { color: '#f1f5f9' },
+      },
+      width: widget.clientWidth || 500,
+      height: 250,
     });
 
-    chartMap.set(symbol, chart);
+    const candleSeries = addCandlestickSeriesCompat(chart);
+    const lineSeries = addLineSeriesCompat(chart);
+
+    const candleData = buildOneMinuteCandles(pricePoints, livePrice, snapshotTime);
+    candleSeries.setData(candleData);
+    lineSeries.setData(candleData.map((item) => ({ time: item.time, value: item.close })));
+
+    const markers = [
+      ...(chartData.buyMarkers || []).map((point) => ({
+        time: Math.floor(new Date(point.time).getTime() / 1000),
+        position: 'belowBar',
+        color: '#16a34a',
+        shape: 'arrowUp',
+        text: 'BUY',
+      })),
+      ...(chartData.sellMarkers || []).map((point) => ({
+        time: Math.floor(new Date(point.time).getTime() / 1000),
+        position: 'aboveBar',
+        color: '#dc2626',
+        shape: 'arrowDown',
+        text: 'SELL',
+      })),
+    ].sort((a, b) => a.time - b.time);
+    if (typeof candleSeries.setMarkers === 'function') {
+      candleSeries.setMarkers(markers);
+    } else if (window.LightweightCharts.createSeriesMarkers) {
+      window.LightweightCharts.createSeriesMarkers(candleSeries, markers);
+    }
+
+    chart.timeScale().fitContent();
+    chartMap.set(symbol, { chart, series: candleSeries });
+    } catch (error) {
+      const errorRow = document.createElement('div');
+      errorRow.className = 'muted';
+      errorRow.textContent = `${row.symbol}: chart render failed (${error.message})`;
+      container.appendChild(errorRow);
+    }
   });
 }
 
-function renderLiveCharts(selected, chartsBySymbol) {
-  renderSymbolCharts('chartsContainer', liveChartInstances, selected, (row) => chartsBySymbol[row.symbol]);
+function renderLiveCharts(selected, chartsBySymbol, snapshotTime) {
+  renderSymbolCharts('chartsContainer', liveChartInstances, selected || [], (row) => chartsBySymbol[row.symbol], snapshotTime);
 }
 
 function renderChartActiveTime(state) {
@@ -374,10 +485,6 @@ function renderTrialSymbols(perSymbol) {
     `,
     )
     .join('');
-}
-
-function renderTrialCharts(perSymbol) {
-  renderSymbolCharts('trialChartsContainer', trialChartInstances, perSymbol, (row) => row.chart);
 }
 
 function renderPremarketShortlist(data) {
@@ -444,7 +551,6 @@ async function runTrialFromDateInput() {
 
     renderTrialSummary(trial.summary);
     renderTrialSymbols(trial.perSymbol);
-    renderTrialCharts(trial.perSymbol);
 
     trialStatus.textContent = `Trial date: ${trial.date} | Symbols: ${trial.summary.symbolsTested} | Trades: ${trial.summary.totalTrades}`;
     document.getElementById('trialDate').value = trial.date;
@@ -466,7 +572,7 @@ async function refresh() {
     renderSummary(state.summary);
     renderSelected(state.selected);
     renderTrades(state.trades);
-    renderLiveCharts(state.selected, state.charts || {});
+    renderLiveCharts(state.selected, state.charts || {}, state.status?.lastRun);
     renderChartActiveTime(state);
     refreshPremarketIfDue();
 
