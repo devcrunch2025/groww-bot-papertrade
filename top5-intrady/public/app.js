@@ -241,6 +241,22 @@ function buildOneMinuteCandles(pricePoints, livePrice, snapshotTime) {
   return candles;
 }
 
+function formatLocalChartTime(timeValue) {
+  if (typeof timeValue === 'number') {
+    return new Date(timeValue * 1000).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  if (timeValue && typeof timeValue === 'object' && 'year' in timeValue) {
+    const date = new Date(timeValue.year, timeValue.month - 1, timeValue.day);
+    return date.toLocaleDateString();
+  }
+
+  return '';
+}
+
 function addCandlestickSeriesCompat(chart) {
   const options = {
     upColor: '#16a34a',
@@ -372,6 +388,10 @@ function renderSymbolCharts(containerId, chartMap, rows, chartResolver, snapshot
         background: { color: '#ffffff' },
         textColor: '#334155',
       },
+      localization: {
+        locale: (typeof navigator !== 'undefined' && navigator.language) ? navigator.language : 'en-IN',
+        timeFormatter: (time) => formatLocalChartTime(time),
+      },
       rightPriceScale: {
         borderColor: '#e5e7eb',
       },
@@ -379,21 +399,20 @@ function renderSymbolCharts(containerId, chartMap, rows, chartResolver, snapshot
         borderColor: '#e5e7eb',
         timeVisible: true,
         secondsVisible: false,
+        tickMarkFormatter: (time) => formatLocalChartTime(time),
       },
       grid: {
         vertLines: { color: '#f1f5f9' },
         horzLines: { color: '#f1f5f9' },
       },
       width: widget.clientWidth || 500,
-      height: 250,
+      height: 150,
     });
 
     const candleSeries = addCandlestickSeriesCompat(chart);
-    const lineSeries = addLineSeriesCompat(chart);
 
     const candleData = buildOneMinuteCandles(pricePoints, livePrice, snapshotTime);
     candleSeries.setData(candleData);
-    lineSeries.setData(candleData.map((item) => ({ time: item.time, value: item.close })));
 
     const markers = [
       ...(chartData.buyMarkers || []).map((point) => ({
