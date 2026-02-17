@@ -29,7 +29,7 @@
       }
       .dashboard-split {
         display: grid;
-        grid-template-columns: 60% 40%;
+        grid-template-columns: 50% 50%;
         grid-template-areas: "left right";
         gap: 8px;
         height: 100%;
@@ -61,6 +61,17 @@
         font-size: 16px;
         margin-bottom: 4px;
       }
+      .headline-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        margin-bottom: 6px;
+      }
+      .headline-row h1 {
+        margin: 0;
+      }
       h2 {
         font-size: 13px;
         margin-bottom: 4px;
@@ -69,6 +80,20 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 8px;
+      }
+      .summary-grid {
+        grid-template-columns: repeat(6, minmax(110px, 1fr));
+        gap: 6px;
+      }
+      .summary-card {
+        padding: 6px;
+      }
+      .summary-card h2 {
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+      .summary-card .stat {
+        font-size: 13px;
       }
       .stat {
         font-size: 14px;
@@ -83,6 +108,10 @@
         border-bottom: 1px solid #e5e7eb;
         padding: 4px;
         font-size: 11px;
+      }
+      .summary-row td {
+        font-weight: bold;
+        background: #f8fafc;
       }
       .tag {
         display: inline-block;
@@ -115,7 +144,8 @@
         cursor: pointer;
         font-size: 11px;
       }
-      input[type="date"] {
+      input[type="date"],
+      select {
         border: 1px solid #d1d5db;
         border-radius: 6px;
         padding: 4px 6px;
@@ -124,6 +154,16 @@
       .muted {
         color: #6b7280;
         font-size: 11px;
+      }
+      .content-note {
+        color: #4b5563;
+        font-size: 11px;
+        line-height: 1.45;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 6px 8px;
+        margin-bottom: 6px;
       }
       .row {
         display: flex;
@@ -187,36 +227,94 @@
         width: 100%;
         height: 150px;
       }
+      .bot-ticker {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #ffffff;
+        padding: 4px 0;
+        margin: 0 0 6px 0;
+        overflow: hidden;
+      }
+      .bot-ticker-track {
+        white-space: nowrap;
+        display: inline-block;
+        padding-left: 100%;
+        animation: botTickerScroll 24s linear infinite;
+        color: #334155;
+        font-size: 11px;
+      }
+      @keyframes botTickerScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <div class="bot-ticker">
+        <div id="botThinkingText" class="bot-ticker-track">Bot thinking: Initializing strategy engine and market context...</div>
+      </div>
       <div class="dashboard-split">
         <div class="left-panel">
-          <h1>Groww Paper Trading (Top 5 Intraday)</h1>
+          <div class="headline-row">
+            <span id="currentTime" class="muted">Current time: -</span>
+            <h1>Groww Paper Trading (Top 5 Intraday)</h1>
+            <span id="refreshTimer" class="muted">Next refresh in: -</span>
+            <span id="chartActiveTime" class="muted">Chart active time: -</span>
+          </div>
           <div class="card">
-            <p class="muted">
-                Rules: Capital ₹10,000/day. Strategy runs automatically only during NSE market hours. Scripts are auto-selected from market movers. First booking: exit 50% at +1.00%. After first booking, stop-loss moves to entry (no-loss mode). Remaining 50% uses 1% trailing stop and hard final target +1.00%. Per-stock stop loss: -0.5%. Time-exit: if target not hit in 10–12 minutes, exit at market. Repeat entry is allowed on the same stock if continuous trend still holds. Max daily loss cutoff: 1% (₹100), with forced square-off if hit. All open positions auto square-off before close (15:20 IST).
-            </p>
-            <button id="runNowBtn">Run Strategy Now</button>
-            <button id="refreshDataBtn">Refresh Data</button>
-            <span id="lastUpdated" class="muted"></span>
-            <div class="row" style="margin-top:4px;">
-              <span id="currentTime" class="muted">Current time: -</span>
-              <span id="refreshTimer" class="muted">Next refresh in: -</span>
+            <div class="content-note">
+              <strong>Strategy Summary</strong><br />
+              Capital: ₹10,000/day • Market hours only • Auto symbol selection from market movers<br />
+              Entry: 8-min trend, 75% strength • Repeat entry: Allowed • Time-exit: Off<br />
+              Booking: 60% at +0.60% • Remaining: 0.5% trailing stop, final target +1.20%<br />
+              Risk: Per-stock stop loss -0.8% • Daily max loss 1% (₹100) • Auto square-off at 15:20 IST
             </div>
+            <div class="row" style="margin-bottom:4px;">
+              <label for="trialDate" class="muted">Date</label>
+              <input type="date" id="trialDate" />
+              <button id="refreshDataBtn">Refresh Data</button>
+              <button id="runTrialBtn">Apply Date Filter</button>
+              <label for="strategySelect" class="muted">Strategy</label>
+              <select id="strategySelect"></select>
+              <button id="applyStrategyBtn">Apply Strategy</button>
+              <button id="downloadTrialCsvBtn">Download CSV</button>
+              <span id="trialStatus" class="muted"></span>
+              <span id="strategyStatus" class="muted"></span>
+            </div>
+            <div class="row" style="margin-bottom:4px;">
+              <span id="strategyInfoLine" class="muted" style="display:none;">Strategy: -</span>
+            </div>
+            <button id="runNowBtn" style="display:none;">Run Strategy Now</button>
+            <span id="lastUpdated" class="muted"></span>
           </div>
 
-          <div class="grid">
-            <div class="card">
+          <div class="grid summary-grid">
+            <div class="card summary-card">
+              <h2>Today Invested Amount</h2>
+              <div id="todayInvestedAmount" class="stat">0</div>
+            </div>
+            <div class="card summary-card">
+              <h2>Traded Amount</h2>
+              <div id="tradedAmount" class="stat">0</div>
+            </div>
+            <div class="card summary-card">
+              <h2>Profit/Loss (Live)</h2>
+              <div id="totalPnl" class="stat">0</div>
+            </div>
+            <div class="card summary-card">
               <h2>Total Trades</h2>
               <div id="totalTrades" class="stat">0</div>
             </div>
-            <div class="card">
+            <div class="card summary-card">
               <h2>Open Positions</h2>
               <div id="openPositions" class="stat">0</div>
             </div>
-            <div class="card">
+            <div class="card summary-card">
               <h2>Realized P&L</h2>
               <div id="realizedPnl" class="stat">0</div>
             </div>
@@ -253,42 +351,13 @@
                     <th>Symbol</th>
                     <th>Price</th>
                     <th>Units</th>
+                    <th>Invested Amount</th>
                     <th>Reason</th>
                     <th>P&L</th>
                   </tr>
                 </thead>
                 <tbody id="tradesTable"></tbody>
               </table>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2>Date-wise Backtest Trial</h2>
-            <div class="row">
-              <label for="trialDate" class="muted">Date</label>
-              <input type="date" id="trialDate" />
-              <button id="runTrialBtn">Run Backtest</button>
-              <button id="downloadTrialCsvBtn">Download CSV</button>
-              <span id="trialStatus" class="muted"></span>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <h2>Trial Trades</h2>
-              <div id="trialTotalTrades" class="stat">0</div>
-            </div>
-            <div class="card">
-              <h2>Trial Realized P&L</h2>
-              <div id="trialRealizedPnl" class="stat">0</div>
-            </div>
-            <div class="card">
-              <h2>Trial Unrealized P&L</h2>
-              <div id="trialUnrealizedPnl" class="stat">0</div>
-            </div>
-            <div class="card">
-              <h2>Trial Total P&L</h2>
-              <div id="trialTotalPnl" class="stat">0</div>
             </div>
           </div>
 
@@ -306,6 +375,27 @@
                   </tr>
                 </thead>
                 <tbody id="trialSymbolsTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Trade History (Date Filter)</h2>
+            <p class="muted" id="trialTradesInfo">Showing today history</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Action</th>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>Units</th>
+                    <th>Reason</th>
+                    <th>P&L</th>
+                  </tr>
+                </thead>
+                <tbody id="trialTradesTable"></tbody>
               </table>
             </div>
           </div>
@@ -348,17 +438,17 @@
 
         <div class="right-panel">
           <div class="card">
-            <h2>Stock Charts (Candles)</h2>
-            <div class="row" style="margin-bottom:4px;">
-              <span id="chartActiveTime" class="muted">Chart active time: -</span>
-            </div>
             <div id="chartsContainer" class="charts-grid"></div>
+          </div>
+          <div class="card">
+            <h2>Today Traded Charts</h2>
+            <div id="todayTradedChartsContainer" class="charts-grid"></div>
           </div>
         </div>
       </div>
     </div>
 
     <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="/app.js?v=20260217-7"></script>
+    <script src="/app.js?v=20260217-16"></script>
   </body>
 </html>

@@ -9,6 +9,9 @@ const {
   runTodayHistoryTrial,
   runHistoryTrialForDate,
   runPremarketShortlist,
+  getStrategyPresets,
+  getActiveStrategy,
+  applyStrategyPreset,
 } = require("./strategyEngine");
 const {
   getNotificationConfig,
@@ -42,7 +45,33 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, time: new Date().toISOString(), notifications: getNotificationConfig() });
+  res.json({
+    ok: true,
+    time: new Date().toISOString(),
+    notifications: getNotificationConfig(),
+    strategy: getActiveStrategy(),
+  });
+});
+
+app.get("/api/strategies", (req, res) => {
+  res.json({
+    active: getActiveStrategy(),
+    presets: getStrategyPresets(),
+  });
+});
+
+app.post("/api/strategies/select", async (req, res) => {
+  try {
+    const strategyId = req.body?.id ? String(req.body.id) : "";
+    const active = applyStrategyPreset(strategyId);
+    const snapshot = getSnapshot();
+    res.json({ ok: true, active, snapshot });
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      message: error.message || String(error),
+    });
+  }
 });
 
 app.get("/api/state", (req, res) => {

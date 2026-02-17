@@ -30,23 +30,112 @@ const STRATEGY_CONFIG = {
   maxDailyLossPercent: 1,
   topN: 5,
   selectionLimit: 0,
-  buyContinuousRiseMinutes: 10,
-  shortContinuousFallMinutes: 10,
-  trendStrengthThreshold: 0.7,
+  buyContinuousRiseMinutes: 8,
+  shortContinuousFallMinutes: 8,
+  trendStrengthThreshold: 0.75,
   allowRepeatEntryOnContinuousTrend: true,
-  perStockStopLossPercent: 0.5,
-  firstProfitTargetPercent: 1,
-  firstProfitExitPercent: 50,
-  remainderHardTargetPercent: 1,
-  trailingStopPercent: 1,
-  timeExitMinutes: 12,
+  perStockStopLossPercent: 0.8,
+  firstProfitTargetPercent: 0.6,
+  firstProfitExitPercent: 60,
+  remainderHardTargetPercent: 1.2,
+  trailingStopPercent: 0.5,
+  timeExitMinutes: 0,
   moveStopToEntryAfterFirstExit: true,
   marketScreenerCount: 250,
+  autoStartBeforeMarketMinutes: 30,
   marketOpenTimeIST: "09:00",
   marketCloseTimeIST: "15:00",
   squareOffTimeIST: "14:50",
   weekdaysOnly: true,
 };
+
+const STRATEGY_PRESETS = {
+  S1: {
+    name: "Balanced Momentum",
+    config: {
+      buyContinuousRiseMinutes: 8,
+      shortContinuousFallMinutes: 8,
+      trendStrengthThreshold: 0.75,
+      allowRepeatEntryOnContinuousTrend: true,
+      perStockStopLossPercent: 0.8,
+      firstProfitTargetPercent: 0.6,
+      firstProfitExitPercent: 60,
+      remainderHardTargetPercent: 1.2,
+      trailingStopPercent: 0.5,
+      timeExitMinutes: 0,
+      moveStopToEntryAfterFirstExit: true,
+    },
+  },
+  S2: {
+    name: "Conservative Filter",
+    config: {
+      buyContinuousRiseMinutes: 10,
+      shortContinuousFallMinutes: 10,
+      trendStrengthThreshold: 0.82,
+      allowRepeatEntryOnContinuousTrend: false,
+      perStockStopLossPercent: 0.8,
+      firstProfitTargetPercent: 0.7,
+      firstProfitExitPercent: 65,
+      remainderHardTargetPercent: 1.4,
+      trailingStopPercent: 0.45,
+      timeExitMinutes: 0,
+      moveStopToEntryAfterFirstExit: true,
+    },
+  },
+  S3: {
+    name: "Aggressive Intraday",
+    config: {
+      buyContinuousRiseMinutes: 6,
+      shortContinuousFallMinutes: 6,
+      trendStrengthThreshold: 0.65,
+      allowRepeatEntryOnContinuousTrend: true,
+      perStockStopLossPercent: 0.8,
+      firstProfitTargetPercent: 0.5,
+      firstProfitExitPercent: 50,
+      remainderHardTargetPercent: 1.0,
+      trailingStopPercent: 0.6,
+      timeExitMinutes: 0,
+      moveStopToEntryAfterFirstExit: true,
+    },
+  },
+};
+
+let activeStrategyId = "S3";
+
+function applyStrategyPreset(strategyId) {
+  const preset = STRATEGY_PRESETS[strategyId];
+  if (!preset) {
+    throw new Error(`Unknown strategy id: ${strategyId}`);
+  }
+
+  Object.assign(STRATEGY_CONFIG, preset.config);
+  activeStrategyId = strategyId;
+
+  return {
+    id: activeStrategyId,
+    name: preset.name,
+    config: { ...STRATEGY_CONFIG },
+  };
+}
+
+function getStrategyPresets() {
+  return Object.entries(STRATEGY_PRESETS).map(([id, preset]) => ({
+    id,
+    name: preset.name,
+    config: { ...preset.config },
+  }));
+}
+
+function getActiveStrategy() {
+  const preset = STRATEGY_PRESETS[activeStrategyId];
+  return {
+    id: activeStrategyId,
+    name: preset?.name || activeStrategyId,
+    config: { ...STRATEGY_CONFIG },
+  };
+}
+
+applyStrategyPreset(activeStrategyId);
 
 const state = {
   symbols: [],
@@ -68,6 +157,10 @@ const state = {
   lastRun: null,
   lastError: null,
   cycleCount: 0,
+  adaptiveStrategyGeneratedDate: null,
+  adaptiveStrategyInProgress: false,
+  lastAdaptiveStrategy: null,
+  lastAdaptiveStrategyError: null,
 };
 
 const YAHOO_CHART_BASE_URL = "https://query1.finance.yahoo.com/v8/finance/chart";
@@ -254,14 +347,18 @@ function getMarketPhase(now = new Date()) {
   const openMinutes = parseTimeToMinutes(STRATEGY_CONFIG.marketOpenTimeIST);
   const closeMinutes = parseTimeToMinutes(STRATEGY_CONFIG.marketCloseTimeIST);
   const squareOffMinutes = parseTimeToMinutes(STRATEGY_CONFIG.squareOffTimeIST);
+  const warmupStartMinutes = Math.max(0, openMinutes - Math.max(0, Number(STRATEGY_CONFIG.autoStartBeforeMarketMinutes) || 0));
 
   const isWeekend = parts.weekday === "Sat" || parts.weekday === "Sun";
   if (STRATEGY_CONFIG.weekdaysOnly && isWeekend) {
     return "closed";
   }
 
-  if (parts.minutesOfDay < openMinutes) {
+  if (parts.minutesOfDay < warmupStartMinutes) {
     return "pre-open";
+  }
+  if (parts.minutesOfDay < openMinutes) {
+    return "warmup";
   }
   if (parts.minutesOfDay >= closeMinutes) {
     return "closed";
@@ -285,6 +382,86 @@ function resetDailyControlIfNeeded(now = new Date()) {
     state.historyBySymbol = new Map();
     state.historyLoadedDate = null;
     state.lastHistoryPersistAt = 0;
+    state.adaptiveStrategyGeneratedDate = null;
+    state.adaptiveStrategyInProgress = false;
+    state.lastAdaptiveStrategyError = null;
+  }
+}
+
+function isPostMarketOptimizationWindow(now = new Date()) {
+  const parts = getIstDateParts(now);
+  const closeMinutes = parseTimeToMinutes(STRATEGY_CONFIG.marketCloseTimeIST);
+  return parts.minutesOfDay >= (closeMinutes + 60);
+}
+
+async function generateAdaptiveStrategyForDate(dateString) {
+  if (state.adaptiveStrategyInProgress) {
+    return;
+  }
+
+  if (state.adaptiveStrategyGeneratedDate === dateString) {
+    return;
+  }
+
+  state.adaptiveStrategyInProgress = true;
+  state.lastAdaptiveStrategyError = null;
+
+  const originalActiveStrategyId = activeStrategyId;
+  const originalConfig = { ...STRATEGY_CONFIG };
+
+  try {
+    const candidateStrategyIds = Array.from(new Set([
+      "S1",
+      "S2",
+      "S3",
+      originalActiveStrategyId,
+    ].filter((id) => Boolean(STRATEGY_PRESETS[id]))));
+
+    let best = null;
+
+    for (const strategyId of candidateStrategyIds) {
+      const preset = STRATEGY_PRESETS[strategyId];
+      Object.assign(STRATEGY_CONFIG, preset.config);
+
+      const result = await runHistoryTrialForDate(dateString);
+      const totalPnl = Number(result?.summary?.totalPnl) || 0;
+      const totalTrades = Number(result?.summary?.totalTrades) || 0;
+
+      if (!best || totalPnl > best.totalPnl) {
+        best = {
+          strategyId,
+          strategyName: preset.name,
+          config: { ...preset.config },
+          totalPnl,
+          totalTrades,
+        };
+      }
+    }
+
+    if (best) {
+      STRATEGY_PRESETS.S4 = {
+        name: `Auto Optimized (${dateString}) from ${best.strategyId}`,
+        config: { ...best.config },
+      };
+
+      applyStrategyPreset("S4");
+
+      state.lastAdaptiveStrategy = {
+        date: dateString,
+        sourceStrategyId: best.strategyId,
+        sourceStrategyName: best.strategyName,
+        totalPnl: round2(best.totalPnl),
+        totalTrades: best.totalTrades,
+      };
+    }
+
+    state.adaptiveStrategyGeneratedDate = dateString;
+  } catch (error) {
+    Object.assign(STRATEGY_CONFIG, originalConfig);
+    activeStrategyId = originalActiveStrategyId;
+    state.lastAdaptiveStrategyError = error.message || String(error);
+  } finally {
+    state.adaptiveStrategyInProgress = false;
   }
 }
 
@@ -739,7 +916,7 @@ function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
     const elapsedMinutes = minutesBetween(openPosition.entryTime, point.time);
     const partialBookedAtStart = openPosition.partialBooked;
 
-    if (!openPosition.partialBooked && elapsedMinutes >= config.timeExitMinutes && favorablePercent < config.firstProfitTargetPercent) {
+    if (!openPosition.partialBooked && config.timeExitMinutes > 0 && elapsedMinutes >= config.timeExitMinutes && favorablePercent < config.firstProfitTargetPercent) {
       logExit(point.price, point.time, `Time exit (${config.timeExitMinutes} min) before target`);
       continue;
     }
@@ -1174,7 +1351,7 @@ function evaluateSell(position, currentPrice, time) {
   const elapsedMinutes = minutesBetween(position.entryTime, time);
   const partialBookedAtStart = Boolean(position.partialBooked);
 
-  if (!position.partialBooked && elapsedMinutes >= STRATEGY_CONFIG.timeExitMinutes && favorablePercent < STRATEGY_CONFIG.firstProfitTargetPercent) {
+  if (!position.partialBooked && STRATEGY_CONFIG.timeExitMinutes > 0 && elapsedMinutes >= STRATEGY_CONFIG.timeExitMinutes && favorablePercent < STRATEGY_CONFIG.firstProfitTargetPercent) {
     executeExit(position, currentPrice, time, `Time exit (${STRATEGY_CONFIG.timeExitMinutes} min) before target`);
     return;
   }
@@ -1229,6 +1406,10 @@ async function runCycle() {
     const phase = getMarketPhase(now);
 
     if (phase === "pre-open" || phase === "closed") {
+      if (phase === "closed" && isPostMarketOptimizationWindow(now)) {
+        await generateAdaptiveStrategyForDate(today);
+      }
+
       state.lastRun = now;
       state.cycleCount += 1;
       state.lastError = null;
@@ -1238,7 +1419,7 @@ async function runCycle() {
 
     let shouldReselectSymbols = state.selectedSymbolsDate !== today || state.symbols.length === 0;
 
-    if (!shouldReselectSymbols && phase === "open" && state.selectionWindowStart) {
+    if (!shouldReselectSymbols && (phase === "open" || phase === "warmup") && state.selectionWindowStart) {
       const windowElapsedMinutes = minutesBetween(state.selectionWindowStart, now);
       if (windowElapsedMinutes >= 60) {
         const tradesInWindow = state.trades.length - state.selectionWindowTradeCount;
@@ -1426,6 +1607,44 @@ function getSnapshot() {
   const realizedPnl = state.trades
     .filter((trade) => trade.action === "SELL" || trade.action === "COVER")
     .reduce((sum, trade) => sum + (trade.pnl || 0), 0);
+  const tradedAmount = state.trades.reduce((sum, trade) => {
+    const price = Number(trade?.price);
+    const units = Number(trade?.units);
+    if (!Number.isFinite(price) || !Number.isFinite(units)) {
+      return sum;
+    }
+    return sum + Math.abs(price * units);
+  }, 0);
+
+  const unrealizedPnl = Array.from(state.openPositions.values()).reduce((sum, position) => {
+    const history = state.historyBySymbol.get(position.symbol) || [];
+    const latest = history[history.length - 1];
+    const currentPrice = Number(latest?.price);
+
+    if (!Number.isFinite(currentPrice)) {
+      return sum;
+    }
+
+    const sideMultiplier = position.side === "SHORT" ? -1 : 1;
+    return sum + ((currentPrice - position.entryPrice) * position.remainingUnits * sideMultiplier);
+  }, 0);
+
+  const todayInvestedAmount = state.trades
+    .filter((trade) => {
+      const isEntryTrade = trade.action === "BUY" || trade.action === "SELL_SHORT";
+      return isEntryTrade && normalizeDateToIST(trade.time) === currentDate;
+    })
+    .reduce((sum, trade) => {
+      const price = Number(trade?.price);
+      const units = Number(trade?.units);
+      if (!Number.isFinite(price) || !Number.isFinite(units)) {
+        return sum;
+      }
+      return sum + Math.abs(price * units);
+    }, 0);
+
+  const totalPnl = realizedPnl + unrealizedPnl;
+  const openAccountAmount = STRATEGY_CONFIG.totalCapital + totalPnl;
   const currentDate = state.dailyControl.date || toDateStringInIST();
   const dailyRealizedPnl = getDailyRealizedPnl(currentDate);
   const dailyCutoffAmount = getMaxDailyLossAmount();
@@ -1440,6 +1659,11 @@ function getSnapshot() {
       marketUniverseSize: state.marketUniverse.length,
       dailyDate: currentDate,
       dailyLossCutoffHit: state.dailyControl.cutoffHit,
+      activeStrategyId,
+      adaptiveStrategyGeneratedDate: state.adaptiveStrategyGeneratedDate,
+      adaptiveStrategyInProgress: state.adaptiveStrategyInProgress,
+      lastAdaptiveStrategy: state.lastAdaptiveStrategy,
+      lastAdaptiveStrategyError: state.lastAdaptiveStrategyError,
     },
     selected,
     charts,
@@ -1449,6 +1673,11 @@ function getSnapshot() {
       totalTrades: state.trades.length,
       openPositions: state.openPositions.size,
       realizedPnl: round2(realizedPnl),
+      unrealizedPnl: round2(unrealizedPnl),
+      totalPnl: round2(totalPnl),
+      tradedAmount: round2(tradedAmount),
+      todayInvestedAmount: round2(todayInvestedAmount),
+      openAccountAmount: round2(openAccountAmount),
       dailyRealizedPnl: round2(dailyRealizedPnl),
       dailyLossCutoffAmount: round2(dailyCutoffAmount),
     },
@@ -1477,6 +1706,9 @@ async function startEngine(intervalMs = 60000, onCycleComplete) {
 
 module.exports = {
   STRATEGY_CONFIG,
+  getStrategyPresets,
+  getActiveStrategy,
+  applyStrategyPreset,
   startEngine,
   runCycle,
   getSnapshot,
