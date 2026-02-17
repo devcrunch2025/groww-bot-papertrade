@@ -309,7 +309,7 @@ function renderSelected(rows) {
       return `
       <tr>
         <td>${row.symbol}</td>
-        <td>${row.currentPrice ?? '-'}</td>
+        <td class="money-col">${row.currentPrice ?? '-'}</td>
         <td class="${valueClass(move1m)}">${move1m}%</td>
         <td class="${valueClass(move3m)}">${move3m}%</td>
         <td class="${valueClass(move6m)}">${move6m}%</td>
@@ -324,19 +324,21 @@ function renderSelected(rows) {
 function renderTrades(trades) {
   const body = document.getElementById('tradesTable');
   body.innerHTML = trades
-    .map(
-      (trade) => `
+    .map((trade) => {
+      const investedAmount = Math.abs(toNumber(trade?.price) * toNumber(trade?.units));
+      return `
       <tr>
         <td>${formatTime(trade.time)}</td>
         <td class="${trade.action === 'BUY' || trade.action === 'COVER' ? 'buy' : 'sell'}">${trade.action}</td>
         <td>${trade.symbol}</td>
-        <td>${trade.price}</td>
-        <td>${trade.units}</td>
+        <td class="money-col">${trade.price}</td>
+        <td class="money-col">${trade.units}</td>
+        <td class="money-col">${formatAmount(investedAmount)}</td>
         <td>${trade.reason}</td>
-        <td class="${valueClass(toNumber(trade.pnl))}">${trade.pnl ?? '-'}</td>
+        <td class="money-col ${valueClass(toNumber(trade.pnl))}">${trade.pnl ?? '-'}</td>
       </tr>
-    `,
-    )
+    `;
+    })
     .join('');
 }
 
@@ -945,10 +947,10 @@ function renderTrialSymbols(perSymbol) {
       (item) => `
       <tr>
         <td>${item.symbol}</td>
-        <td class="${valueClass(toNumber(item.realizedPnl))}">${item.realizedPnl}</td>
-        <td class="${valueClass(toNumber(item.unrealizedPnl))}">${item.unrealizedPnl}</td>
-        <td class="${valueClass(toNumber(item.totalPnl))}">${item.totalPnl}</td>
-        <td>${item.trades.length}</td>
+        <td class="money-col ${valueClass(toNumber(item.realizedPnl))}">${item.realizedPnl}</td>
+        <td class="money-col ${valueClass(toNumber(item.unrealizedPnl))}">${item.unrealizedPnl}</td>
+        <td class="money-col ${valueClass(toNumber(item.totalPnl))}">${item.totalPnl}</td>
+        <td class="money-col">${item.trades.length}</td>
       </tr>
     `,
     )
@@ -994,11 +996,11 @@ function renderTrialTrades(trades) {
         <td>${formatTime(trade.time)}</td>
         <td class="${trade.action === 'BUY' || trade.action === 'COVER' ? 'buy' : 'sell'}">${trade.action}</td>
         <td>${trade.symbol}</td>
-        <td>${trade.price}</td>
-        <td>${trade.units}</td>
-        <td>${formatAmount(investedAmount)}</td>
+        <td class="money-col">${trade.price}</td>
+        <td class="money-col">${trade.units}</td>
+        <td class="money-col">${formatAmount(investedAmount)}</td>
         <td>${trade.reason}</td>
-        <td class="${valueClass(toNumber(trade.pnl))}">${trade.pnl ?? '-'}</td>
+        <td class="money-col ${valueClass(toNumber(trade.pnl))}">${trade.pnl ?? '-'}</td>
       </tr>
     `;
       },
@@ -1010,10 +1012,10 @@ function renderTrialTrades(trades) {
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>${formatAmount(totalUnits)}</td>
-        <td>${formatAmount(totalInvestedAmount)}</td>
+        <td class="money-col">${formatAmount(totalUnits)}</td>
+        <td class="money-col">${formatAmount(totalInvestedAmount)}</td>
         <td>Trades: ${rows.length}</td>
-        <td class="${valueClass(totalPnl)}">${formatAmount(totalPnl)}</td>
+        <td class="money-col ${valueClass(totalPnl)}">${formatAmount(totalPnl)}</td>
       </tr>
     `;
 }

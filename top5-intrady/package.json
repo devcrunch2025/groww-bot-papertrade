@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "dev": "node src/server.js",
     "trial:today": "node src/runTodayTrial.js",
-    "trial:date": "node src/runTodayTrial.js"
+    "trial:date": "node src/runTodayTrial.js",
+    "auto:start:register": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/register-auto-start.ps1",
+    "auto:start:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/unregister-auto-start.ps1"
   },
   "keywords": [],
   "author": "",

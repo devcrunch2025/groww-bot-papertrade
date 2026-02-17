@@ -87,6 +87,8 @@ function buildTableHtml(title, rows) {
 }
 
 function formatTrade(trade) {
+  const investedAmount = Number(trade?.price) * Number(trade?.units);
+  const investedText = Number.isFinite(investedAmount) ? ` | Invested: ₹${investedAmount.toFixed(2)}` : "";
   const pnlText = typeof trade.pnl === "number" ? ` | PnL: ₹${trade.pnl.toFixed(2)}` : "";
   return [
     `${trade.action} ${trade.symbol}`,
@@ -94,7 +96,11 @@ function formatTrade(trade) {
     `Units: ${trade.units}`,
     `Time: ${toLocalTimeString(trade.time)}`,
     `Reason: ${trade.reason}`,
-  ].join(" | ") + pnlText;
+  ].join(" | ") + investedText + pnlText;
+}
+
+function getStrategyLabel(snapshot) {
+  return snapshot?.status?.activeStrategyId || "-";
 }
 
 async function sendTradeNotifications(trades = [], snapshot) {
@@ -103,22 +109,28 @@ async function sendTradeNotifications(trades = [], snapshot) {
   }
 
   for (const trade of trades) {
+    const investedAmount = Number(trade?.price) * Number(trade?.units);
+    const investedAmountText = Number.isFinite(investedAmount) ? `₹${investedAmount.toFixed(2)}` : "-";
     const subject = `[PaperTrade] ${trade.action} ${trade.symbol} @ ₹${trade.price}`;
     const text = [
       "Trade alert",
       "",
       formatTrade(trade),
       "",
+      `Strategy: ${getStrategyLabel(snapshot)}`,
+      `Invested Amount: ${investedAmountText}`,
       `Total Trades: ${snapshot?.summary?.totalTrades ?? "-"}`,
       `Open Positions: ${snapshot?.summary?.openPositions ?? "-"}`,
       `Realized PnL: ₹${snapshot?.summary?.realizedPnl ?? "-"}`,
     ].join("\n");
 
     const html = buildTableHtml("Trade Alert", [
+      { label: "Strategy", value: getStrategyLabel(snapshot) },
       { label: "Action", value: trade.action || "-" },
       { label: "Symbol", value: trade.symbol || "-" },
       { label: "Price", value: `₹${trade.price ?? "-"}` },
       { label: "Units", value: trade.units ?? "-" },
+      { label: "Invested Amount", value: investedAmountText },
       { label: "Time (IST)", value: toLocalTimeString(trade.time) },
       { label: "Reason", value: trade.reason || "-" },
       { label: "Trade PnL", value: typeof trade.pnl === "number" ? `₹${trade.pnl.toFixed(2)}` : "-" },
@@ -144,21 +156,25 @@ async function sendCycleHeartbeat(snapshot, context = "auto") {
   const text = [
     "Cycle heartbeat",
     "",
+    `Strategy: ${getStrategyLabel(snapshot)}`,
     `Run Time (IST): ${toLocalTimeString(snapshot?.status?.lastRun)}`,
     `Cycle Count: ${snapshot?.status?.cycleCount ?? "-"}`,
     `Daily Loss Cutoff Hit: ${snapshot?.status?.dailyLossCutoffHit ? "Yes" : "No"}`,
     `Selected Symbols: ${(snapshot?.selected || []).map((item) => item.symbol).join(", ") || "-"}`,
     `Open Positions: ${snapshot?.summary?.openPositions ?? "-"}`,
+    `Invested Amount: ₹${snapshot?.summary?.todayInvestedAmount ?? "-"}`,
     `Realized PnL: ₹${snapshot?.summary?.realizedPnl ?? "-"}`,
     `Last Error: ${snapshot?.status?.lastError || "None"}`,
   ].join("\n");
 
   const html = buildTableHtml(`Cycle Heartbeat (${context})`, [
+    { label: "Strategy", value: getStrategyLabel(snapshot) },
     { label: "Run Time (IST)", value: toLocalTimeString(snapshot?.status?.lastRun) },
     { label: "Cycle Count", value: snapshot?.status?.cycleCount ?? "-" },
     { label: "Daily Loss Cutoff Hit", value: snapshot?.status?.dailyLossCutoffHit ? "Yes" : "No" },
     { label: "Selected Symbols", value: (snapshot?.selected || []).map((item) => item.symbol).join(", ") || "-" },
     { label: "Open Positions", value: snapshot?.summary?.openPositions ?? "-" },
+    { label: "Invested Amount", value: `₹${snapshot?.summary?.todayInvestedAmount ?? "-"}` },
     { label: "Realized PnL", value: `₹${snapshot?.summary?.realizedPnl ?? "-"}` },
     { label: "Last Error", value: snapshot?.status?.lastError || "None" },
   ]);

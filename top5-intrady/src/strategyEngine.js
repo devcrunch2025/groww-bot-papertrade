@@ -120,9 +120,34 @@ const STRATEGY_PRESETS = {
       moveStopToEntryAfterFirstExit: true,
     },
   },
+  S4: {
+    name: "Option-Style Bearish PUT",
+    config: {
+      buyContinuousRiseMinutes: 6,
+      shortContinuousFallMinutes: 6,
+      trendStrengthThreshold: 0.65,
+      allowRepeatEntryOnContinuousTrend: false,
+      perStockStopLossPercent: 0.8,
+      firstProfitTargetPercent: 0.5,
+      firstProfitExitPercent: 100,
+      remainderHardTargetPercent: 0,
+      trailingStopPercent: 0,
+      timeExitMinutes: 0,
+      moveStopToEntryAfterFirstExit: false,
+      supertrendFactor: 3.0,
+      supertrendPeriod: 10,
+      rsiPeriod: 14,
+      emaFastPeriod: 20,
+      emaSlowPeriod: 50,
+      optionPremium: 5.0,
+      targetPoints: 2.0,
+      stopLossPoints: 1.0,
+      premiumMovePerUnderlyingPercent: 1.0,
+    },
+  },
 };
 
-let activeStrategyId = "S3";
+let activeStrategyId = "S4";
 
 function applyStrategyPreset(strategyId) {
   const preset = STRATEGY_PRESETS[strategyId];
@@ -707,6 +732,142 @@ function average(values) {
     return 0;
   }
   return valid.reduce((sum, value) => sum + value, 0) / valid.length;
+}
+
+function calculateEma(closes, period) {
+  if (!Array.isArray(closes) || closes.length === 0 || period <= 1) {
+    return null;
+  }
+
+  const valid = closes.filter((value) => Number.isFinite(value));
+  if (valid.length === 0) {
+    return null;
+  }
+
+  const multiplier = 2 / (period + 1);
+  let ema = valid[0];
+  for (let index = 1; index < valid.length; index += 1) {
+    ema = (valid[index] - ema) * multiplier + ema;
+  }
+  return ema;
+}
+
+function calculateRsi(closes, period = 14) {
+  if (!Array.isArray(closes) || closes.length <= period) {
+    return null;
+  }
+
+  let gains = 0;
+  let losses = 0;
+
+  for (let index = 1; index <= period; index += 1) {
+    const change = closes[index] - closes[index - 1];
+    if (change >= 0) {
+      gains += change;
+    } else {
+      losses += Math.abs(change);
+    }
+  }
+
+  let avgGain = gains / period;
+  let avgLoss = losses / period;
+
+  for (let index = period + 1; index < closes.length; index += 1) {
+    const change = closes[index] - closes[index - 1];
+    const gain = change > 0 ? change : 0;
+    const loss = change < 0 ? Math.abs(change) : 0;
+
+    avgGain = ((avgGain * (period - 1)) + gain) / period;
+    avgLoss = ((avgLoss * (period - 1)) + loss) / period;
+  }
+
+  if (avgLoss === 0) {
+    return 100;
+  }
+
+  const rs = avgGain / avgLoss;
+  return 100 - (100 / (1 + rs));
+}
+
+function calculateSupertrendDirection(closes, factor = 3, period = 10) {
+  if (!Array.isArray(closes) || closes.length < period + 2) {
+    return null;
+  }
+
+  const trs = [0];
+  for (let index = 1; index < closes.length; index += 1) {
+    trs.push(Math.abs(closes[index] - closes[index - 1]));
+  }
+
+  let atr = average(trs.slice(1, Math.min(period + 1, trs.length)));
+  let finalUpper = closes[0] + (factor * atr);
+  let finalLower = closes[0] - (factor * atr);
+  let direction = 1;
+
+  for (let index = 1; index < closes.length; index += 1) {
+    const tr = trs[index];
+    atr = ((atr * (period - 1)) + tr) / period;
+
+    const middle = closes[index];
+    const basicUpper = middle + (factor * atr);
+    const basicLower = middle - (factor * atr);
+
+    finalUpper = (basicUpper < finalUpper || closes[index - 1] > finalUpper) ? basicUpper : finalUpper;
+    finalLower = (basicLower > finalLower || closes[index - 1] < finalLower) ? basicLower : finalLower;
+
+    if (closes[index] > finalUpper) {
+      direction = 1;
+    } else if (closes[index] < finalLower) {
+      direction = -1;
+    }
+  }
+
+  return direction;
+}
+
+function getPutSignal(symbol) {
+  const history = state.historyBySymbol.get(symbol) || [];
+  const closes = history.map((point) => Number(point?.price)).filter((value) => Number.isFinite(value));
+  if (closes.length < 60) {
+    return { isBearish: false, rsi: null, emaFast: null, emaSlow: null, direction: null };
+  }
+
+  const rsiPeriod = Math.max(2, Number(STRATEGY_CONFIG.rsiPeriod) || 14);
+  const emaFastPeriod = Math.max(2, Number(STRATEGY_CONFIG.emaFastPeriod) || 20);
+  const emaSlowPeriod = Math.max(3, Number(STRATEGY_CONFIG.emaSlowPeriod) || 50);
+  const supertrendFactor = Math.max(1, Number(STRATEGY_CONFIG.supertrendFactor) || 3);
+  const supertrendPeriod = Math.max(2, Number(STRATEGY_CONFIG.supertrendPeriod) || 10);
+
+  const rsi = calculateRsi(closes, rsiPeriod);
+  const emaFast = calculateEma(closes, emaFastPeriod);
+  const emaSlow = calculateEma(closes, emaSlowPeriod);
+  const direction = calculateSupertrendDirection(closes, supertrendFactor, supertrendPeriod);
+  const close = closes[closes.length - 1];
+
+  const isBearish =
+    direction === -1
+    && Number.isFinite(rsi)
+    && rsi < 50
+    && Number.isFinite(emaFast)
+    && Number.isFinite(emaSlow)
+    && close < emaFast
+    && emaFast < emaSlow;
+
+  return { isBearish, rsi, emaFast, emaSlow, direction };
+}
+
+function getPutPremiumFromPosition(position, currentUnderlyingPrice) {
+  const entryUnderlying = Number(position?.entryPrice);
+  const basePremium = Number(position?.optionEntryPremium);
+  const movePerPercent = Number(position?.premiumMovePerUnderlyingPercent) || 1;
+
+  if (!Number.isFinite(entryUnderlying) || entryUnderlying <= 0 || !Number.isFinite(basePremium) || basePremium <= 0) {
+    return null;
+  }
+
+  const underlyingMovePercent = ((entryUnderlying - Number(currentUnderlyingPrice)) / entryUnderlying) * 100;
+  const currentPremium = basePremium + (underlyingMovePercent * movePerPercent);
+  return Math.max(0.1, currentPremium);
 }
 
 function scorePremarketCandidate(symbol, candle, previousCandles) {
@@ -1345,12 +1506,14 @@ function isLatestCandleDown(symbol, intervalMinutes, now = new Date()) {
   return latest.close < previous.close;
 }
 
-function executeEntry(symbol, price, time, side, reasonOverride) {
+function executeEntry(symbol, price, time, side, reasonOverride, metadata = {}) {
   if (state.openPositions.has(symbol)) {
     return;
   }
 
-  const units = calculateUnits(price);
+  const units = Number.isFinite(Number(metadata.unitsOverride)) && Number(metadata.unitsOverride) > 0
+    ? Math.floor(Number(metadata.unitsOverride))
+    : calculateUnits(price);
   if (units <= 0) {
     return;
   }
@@ -1364,17 +1527,23 @@ function executeEntry(symbol, price, time, side, reasonOverride) {
     partialBooked: false,
     maxFavorablePercent: 0,
     entryTime: time,
+    instrumentType: metadata.instrumentType || "SPOT",
+    optionEntryPremium: Number.isFinite(Number(metadata.optionEntryPremium)) ? Number(metadata.optionEntryPremium) : null,
+    premiumMovePerUnderlyingPercent: Number.isFinite(Number(metadata.premiumMovePerUnderlyingPercent))
+      ? Number(metadata.premiumMovePerUnderlyingPercent)
+      : 1,
   });
 
   const action = side === "LONG" ? "BUY" : "SELL_SHORT";
   const reason = reasonOverride || (side === "LONG"
     ? "Continuous uptrend for 10+ minutes"
     : "Continuous downtrend for 10+ minutes");
+  const tradePrice = Number.isFinite(Number(metadata.tradePrice)) ? Number(metadata.tradePrice) : price;
 
   state.trades.push({
     action,
     symbol,
-    price: round2(price),
+    price: round2(tradePrice),
     units,
     time,
     reason,
@@ -1393,14 +1562,21 @@ function executeExit(position, price, time, reason, unitsOverride) {
 
   const isLong = position.side === "LONG";
   position.remainingUnits -= units;
+  const isPutInstrument = position.instrumentType === "PUT_OPTION";
+  const currentPutPremium = isPutInstrument ? getPutPremiumFromPosition(position, price) : null;
+  const exitPrice = isPutInstrument && Number.isFinite(currentPutPremium) ? currentPutPremium : price;
+  const entryReferencePrice = isPutInstrument && Number.isFinite(position.optionEntryPremium)
+    ? position.optionEntryPremium
+    : position.entryPrice;
+
   const pnl = isLong
-    ? (price - position.entryPrice) * units
-    : (position.entryPrice - price) * units;
+    ? (exitPrice - entryReferencePrice) * units
+    : (entryReferencePrice - exitPrice) * units;
 
   state.trades.push({
     action: isLong ? "SELL" : "COVER",
     symbol: position.symbol,
-    price: round2(price),
+    price: round2(exitPrice),
     units,
     time,
     reason,
@@ -1409,6 +1585,28 @@ function executeExit(position, price, time, reason, unitsOverride) {
 
   if (position.remainingUnits <= 0) {
     state.openPositions.delete(position.symbol);
+  }
+}
+
+function evaluatePutPosition(position, currentPrice, time) {
+  const targetPoints = Math.max(0.1, Number(STRATEGY_CONFIG.targetPoints) || 2);
+  const stopLossPoints = Math.max(0.1, Number(STRATEGY_CONFIG.stopLossPoints) || 1);
+  const entryPremium = Number(position.optionEntryPremium);
+  const currentPremium = getPutPremiumFromPosition(position, currentPrice);
+
+  if (!Number.isFinite(entryPremium) || !Number.isFinite(currentPremium)) {
+    return;
+  }
+
+  const premiumPnl = currentPremium - entryPremium;
+
+  if (premiumPnl >= targetPoints) {
+    executeExit(position, currentPrice, time, `S4 PUT target hit (+₹${targetPoints.toFixed(2)})`);
+    return;
+  }
+
+  if (premiumPnl <= (-1 * stopLossPoints)) {
+    executeExit(position, currentPrice, time, `S4 PUT stop loss hit (-₹${stopLossPoints.toFixed(2)})`);
   }
 }
 
@@ -1527,6 +1725,8 @@ async function runCycle() {
       state.dailyControl.cutoffHit = true;
     }
 
+    const isPutStrategy = activeStrategyId === "S4";
+
     state.symbols.forEach((symbol) => {
       const quote = quoteMap.get(symbol);
       if (!quote) {
@@ -1535,7 +1735,28 @@ async function runCycle() {
 
       appendPricePoint(symbol, quote.price, now);
       if (!state.dailyControl.cutoffHit && !state.openPositions.has(symbol) && phase === "open") {
-        if (hasConsecutiveUpCandles(symbol, ENTRY_UP_CANDLE_COUNT, SIGNAL_CANDLE_MINUTES, now)) {
+        if (isPutStrategy) {
+          const putSignal = getPutSignal(symbol);
+          if (putSignal.isBearish) {
+            const optionPremium = Math.max(0.1, Number(STRATEGY_CONFIG.optionPremium) || 5);
+            const units = Math.max(1, Math.floor(capitalPerPosition() / optionPremium));
+
+            executeEntry(
+              symbol,
+              quote.price,
+              now,
+              "LONG",
+              "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow",
+              {
+                instrumentType: "PUT_OPTION",
+                optionEntryPremium: optionPremium,
+                premiumMovePerUnderlyingPercent: Number(STRATEGY_CONFIG.premiumMovePerUnderlyingPercent) || 1,
+                unitsOverride: units,
+                tradePrice: optionPremium,
+              }
+            );
+          }
+        } else if (hasConsecutiveUpCandles(symbol, ENTRY_UP_CANDLE_COUNT, SIGNAL_CANDLE_MINUTES, now)) {
           executeEntry(symbol, quote.price, now, "LONG", "3-minute candles moved up more than 2 times");
         }
       }
@@ -1551,12 +1772,14 @@ async function runCycle() {
         executeExit(position, quote.price, now, `Max daily loss cutoff hit (${STRATEGY_CONFIG.maxDailyLossPercent}%), forced square-off`);
       } else if (phase === "square-off") {
         executeExit(position, quote.price, now, `Auto square-off before market close (${STRATEGY_CONFIG.squareOffTimeIST} IST)`);
+      } else if (position.instrumentType === "PUT_OPTION") {
+        evaluatePutPosition(position, quote.price, now);
       } else {
         evaluateSell(position, quote.price, now);
       }
     }
 
-    if (!state.dailyControl.cutoffHit && phase === "open" && STRATEGY_CONFIG.allowRepeatEntryOnContinuousTrend) {
+    if (!state.dailyControl.cutoffHit && phase === "open" && STRATEGY_CONFIG.allowRepeatEntryOnContinuousTrend && activeStrategyId !== "S4") {
       state.symbols.forEach((symbol) => {
         if (state.openPositions.has(symbol)) {
           return;

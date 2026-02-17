@@ -109,6 +109,10 @@
         padding: 4px;
         font-size: 11px;
       }
+      .money-col {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
       .summary-row td {
         font-weight: bold;
         background: #f8fafc;
@@ -330,7 +334,7 @@
                 <thead>
                   <tr>
                     <th>Symbol</th>
-                    <th>Current Price</th>
+                    <th class="money-col">Current Price</th>
                     <th>1m Move %</th>
                     <th>3m Move %</th>
                     <th>6m Move %</th>
@@ -352,11 +356,11 @@
                     <th>Time</th>
                     <th>Action</th>
                     <th>Symbol</th>
-                    <th>Price</th>
-                    <th>Units</th>
-                    <th>Invested Amount</th>
+                    <th class="money-col">Price</th>
+                    <th class="money-col">Units</th>
+                    <th class="money-col">Invested Amount</th>
                     <th>Reason</th>
-                    <th>P&L</th>
+                    <th class="money-col">P&L</th>
                   </tr>
                 </thead>
                 <tbody id="tradesTable"></tbody>
@@ -371,10 +375,10 @@
                 <thead>
                   <tr>
                     <th>Symbol</th>
-                    <th>Realized P&L</th>
-                    <th>Unrealized P&L</th>
-                    <th>Total P&L</th>
-                    <th>Trades</th>
+                    <th class="money-col">Realized P&L</th>
+                    <th class="money-col">Unrealized P&L</th>
+                    <th class="money-col">Total P&L</th>
+                    <th class="money-col">Trades</th>
                   </tr>
                 </thead>
                 <tbody id="trialSymbolsTable"></tbody>
@@ -392,10 +396,10 @@
                     <th>Time</th>
                     <th>Action</th>
                     <th>Symbol</th>
-                    <th>Price</th>
-                    <th>Units</th>
+                    <th class="money-col">Price</th>
+                    <th class="money-col">Units</th>
                     <th>Reason</th>
-                    <th>P&L</th>
+                    <th class="money-col">P&L</th>
                   </tr>
                 </thead>
                 <tbody id="trialTradesTable"></tbody>
