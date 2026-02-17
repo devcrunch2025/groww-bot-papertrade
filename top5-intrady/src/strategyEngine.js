@@ -1,3 +1,4 @@
+require("dotenv").config();
 const fs = require("fs/promises");
 const path = require("path");
 const yahooFinance = require("yahoo-finance2").default;
@@ -25,8 +26,29 @@ const CANDIDATE_SYMBOLS = [
   "NTPC.NS",
 ];
 
+const DEFAULT_TOTAL_CAPITAL = 10000;
+
+function resolveTotalCapitalFromEnv() {
+  const candidates = [
+    process.env.TOTAL_CAPITAL,
+    process.env.TRADING_CAPITAL,
+    process.env.CAPITAL,
+  ];
+
+  for (const candidate of candidates) {
+    const parsed = Number(candidate);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+
+  return DEFAULT_TOTAL_CAPITAL;
+}
+
+const TOTAL_CAPITAL = resolveTotalCapitalFromEnv();
+
 const STRATEGY_CONFIG = {
-  totalCapital: 10000,
+  totalCapital: TOTAL_CAPITAL,
   maxDailyLossPercent: 1,
   topN: 5,
   selectionLimit: 0,
@@ -109,6 +131,7 @@ function applyStrategyPreset(strategyId) {
   }
 
   Object.assign(STRATEGY_CONFIG, preset.config);
+  STRATEGY_CONFIG.totalCapital = TOTAL_CAPITAL;
   activeStrategyId = strategyId;
 
   return {
@@ -1077,6 +1100,58 @@ async function runTodayHistoryTrial() {
   return runHistoryTrialForDate(toDateStringInIST());
 }
 
+async function runHistoryTrialForStrategy(strategyId, dateString) {
+  const preset = STRATEGY_PRESETS[strategyId];
+  if (!preset) {
+    throw new Error(`Unknown strategy id: ${strategyId}`);
+  }
+
+  const originalActiveStrategyId = activeStrategyId;
+  const originalConfig = { ...STRATEGY_CONFIG };
+
+  try {
+    Object.assign(STRATEGY_CONFIG, preset.config);
+    activeStrategyId = strategyId;
+    return await runHistoryTrialForDate(dateString);
+  } finally {
+    Object.assign(STRATEGY_CONFIG, originalConfig);
+    activeStrategyId = originalActiveStrategyId;
+  }
+}
+
+async function getStrategyComparisonForDate(dateString) {
+  const targetDate = dateString || toDateStringInIST();
+  const capital = Number(STRATEGY_CONFIG.totalCapital) || 10000;
+  const strategyIds = Object.keys(STRATEGY_PRESETS);
+
+  const rows = [];
+  for (const strategyId of strategyIds) {
+    const trial = await runHistoryTrialForStrategy(strategyId, targetDate);
+    const totalPnl = Number(trial?.summary?.totalPnl) || 0;
+    const pnlPercent = capital > 0 ? (totalPnl / capital) * 100 : 0;
+
+    rows.push({
+      strategyId,
+      strategyName: STRATEGY_PRESETS[strategyId]?.name || strategyId,
+      totalTrades: Number(trial?.summary?.totalTrades) || 0,
+      realizedPnl: Number(trial?.summary?.totalRealizedPnl) || 0,
+      unrealizedPnl: Number(trial?.summary?.totalUnrealizedPnl) || 0,
+      totalPnl,
+      pnlPercent: round2(pnlPercent),
+    });
+  }
+
+  rows.sort((left, right) => right.totalPnl - left.totalPnl);
+
+  return {
+    date: targetDate,
+    capital,
+    activeStrategyId,
+    bestStrategyId: rows[0]?.strategyId || null,
+    results: rows,
+  };
+}
+
 async function getLatestAndPrevClose(symbol) {
   const url = `${YAHOO_CHART_BASE_URL}/${encodeURIComponent(symbol)}?interval=1d&range=5d&includePrePost=false&events=history`;
   const response = await fetch(url);
@@ -1709,6 +1784,7 @@ module.exports = {
   getStrategyPresets,
   getActiveStrategy,
   applyStrategyPreset,
+  getStrategyComparisonForDate,
   startEngine,
   runCycle,
   getSnapshot,

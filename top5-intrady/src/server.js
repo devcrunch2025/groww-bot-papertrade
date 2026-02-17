@@ -12,6 +12,7 @@ const {
   getStrategyPresets,
   getActiveStrategy,
   applyStrategyPreset,
+  getStrategyComparisonForDate,
 } = require("./strategyEngine");
 const {
   getNotificationConfig,
@@ -58,6 +59,20 @@ app.get("/api/strategies", (req, res) => {
     active: getActiveStrategy(),
     presets: getStrategyPresets(),
   });
+});
+
+app.get("/api/strategy-comparison", async (req, res) => {
+  try {
+    const date = req.query.date ? String(req.query.date) : undefined;
+    const result = await getStrategyComparisonForDate(date);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: "Failed to generate strategy comparison",
+      error: error.message || String(error),
+    });
+  }
 });
 
 app.post("/api/strategies/select", async (req, res) => {

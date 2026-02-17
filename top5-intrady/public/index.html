@@ -139,10 +139,11 @@
         border: none;
         background: var(--accent-color);
         color: white;
-        padding: 5px 8px;
+        padding: 4px 6px;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 11px;
+        font-size: 10px;
+        line-height: 1.2;
       }
       input[type="date"],
       select {
@@ -240,7 +241,7 @@
         display: inline-block;
         padding-left: 100%;
         animation: botTickerScroll 24s linear infinite;
-        color: #334155;
+        color: #991b1b;
         font-size: 11px;
       }
       @keyframes botTickerScroll {
@@ -277,12 +278,14 @@
             <div class="row" style="margin-bottom:4px;">
               <label for="trialDate" class="muted">Date</label>
               <input type="date" id="trialDate" />
-              <button id="refreshDataBtn">Refresh Data</button>
-              <button id="runTrialBtn">Apply Date Filter</button>
+              <button id="refreshDataBtn">Refresh</button>
+              <button id="runTrialBtn">Apply</button>
               <label for="strategySelect" class="muted">Strategy</label>
               <select id="strategySelect"></select>
-              <button id="applyStrategyBtn">Apply Strategy</button>
-              <button id="downloadTrialCsvBtn">Download CSV</button>
+              <button id="applyStrategyBtn">Apply</button>
+              <button id="openComparisonBtn">Compare</button>
+              <button id="analyzeTomorrowBtn">Analyze Tomorrow Stocks</button>
+              <button id="downloadTrialCsvBtn">CSV</button>
               <span id="trialStatus" class="muted"></span>
               <span id="strategyStatus" class="muted"></span>
             </div>
@@ -295,11 +298,11 @@
 
           <div class="grid summary-grid">
             <div class="card summary-card">
-              <h2>Today Invested Amount</h2>
+              <h2>Invested</h2>
               <div id="todayInvestedAmount" class="stat">0</div>
             </div>
             <div class="card summary-card">
-              <h2>Traded Amount</h2>
+              <h2>Traded</h2>
               <div id="tradedAmount" class="stat">0</div>
             </div>
             <div class="card summary-card">
@@ -449,6 +452,6 @@
     </div>
 
     <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="/app.js?v=20260217-16"></script>
+    <script src="/app.js?v=20260217-17"></script>
   </body>
 </html>

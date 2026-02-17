@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strategy Comparison</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 8px;
+      }
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 18px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      input[type="date"] {
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 4px 6px;
+        font-size: 12px;
+      }
+      button {
+        border: none;
+        background: #2563eb;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 6px;
+        font-size: 12px;
+      }
+      .pos {
+        color: #166534;
+      }
+      .neg {
+        color: #991b1b;
+      }
+      .neu {
+        color: #1f2937;
+      }
+      .best-row td {
+        background: #eff6ff;
+        font-weight: bold;
+      }
+      .muted {
+        color: #6b7280;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>Strategy Comparison</h1>
+        <div class="row">
+          <label for="compareDate">Date</label>
+          <input type="date" id="compareDate" />
+          <button id="loadComparisonBtn">Load Comparison</button>
+          <span id="summaryInfo" class="muted">Loading...</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Strategy</th>
+              <th>Total Trades</th>
+              <th>Realized P&L</th>
+              <th>Unrealized P&L</th>
+              <th>Total P&L</th>
+              <th>P&L %</th>
+            </tr>
+          </thead>
+          <tbody id="comparisonTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      function todayDateValue() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function toNumber(value) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function valueClass(value) {
+        if (value > 0) return 'pos';
+        if (value < 0) return 'neg';
+        return 'neu';
+      }
+
+      function formatAmount(value) {
+        return toNumber(value).toFixed(2);
+      }
+
+      function formatPercent(value) {
+        const numericValue = toNumber(value);
+        const prefix = numericValue > 0 ? '+' : '';
+        return `${prefix}${numericValue.toFixed(2)}%`;
+      }
+
+      async function fetchComparison(date) {
+        const query = date ? `?date=${encodeURIComponent(date)}` : '';
+        const response = await fetch(`/api/strategy-comparison${query}`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Comparison request failed: ${response.status}`);
+        }
+
+        return response.json();
+      }
+
+      function renderComparison(data) {
+        const body = document.getElementById('comparisonTable');
+        const summaryInfo = document.getElementById('summaryInfo');
+        const rows = data?.results || [];
+
+        body.innerHTML = rows
+          .map((row, index) => {
+            const rowClass = row.strategyId === data.bestStrategyId ? 'best-row' : '';
+
+            return `
+              <tr class="${rowClass}">
+                <td>${index + 1}</td>
+                <td>${row.strategyId} - ${row.strategyName}</td>
+                <td>${row.totalTrades}</td>
+                <td class="${valueClass(row.realizedPnl)}">${formatAmount(row.realizedPnl)}</td>
+                <td class="${valueClass(row.unrealizedPnl)}">${formatAmount(row.unrealizedPnl)}</td>
+                <td class="${valueClass(row.totalPnl)}">${formatAmount(row.totalPnl)}</td>
+                <td class="${valueClass(row.pnlPercent)}">${formatPercent(row.pnlPercent)}</td>
+              </tr>
+            `;
+          })
+          .join('');
+
+        summaryInfo.textContent = `Date: ${data.date} | Capital: ${formatAmount(data.capital)} | Active: ${data.activeStrategyId || '-'} | Best: ${data.bestStrategyId || '-'}`;
+      }
+
+      async function loadComparison() {
+        const date = document.getElementById('compareDate').value;
+        const summaryInfo = document.getElementById('summaryInfo');
+
+        try {
+          summaryInfo.textContent = 'Loading comparison...';
+          const data = await fetchComparison(date);
+          renderComparison(data);
+        } catch (error) {
+          summaryInfo.textContent = `Comparison error: ${error.message}`;
+          document.getElementById('comparisonTable').innerHTML = '';
+        }
+      }
+
+      const urlDate = new URLSearchParams(window.location.search).get('date');
+      document.getElementById('compareDate').value = urlDate || todayDateValue();
+      document.getElementById('loadComparisonBtn').addEventListener('click', loadComparison);
+      loadComparison();
+    </script>
+  </body>
+</html>

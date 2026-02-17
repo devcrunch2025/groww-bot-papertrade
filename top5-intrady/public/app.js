@@ -141,6 +141,12 @@ function todayDateValue() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function addDays(dateValue, days) {
+  const date = new Date(`${dateValue}T00:00:00`);
+  date.setDate(date.getDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
 function toPercentText(value) {
   const numericValue = toNumber(value);
   const prefix = numericValue > 0 ? '+' : '';
@@ -898,8 +904,9 @@ function renderChartActiveTime(state) {
   element.textContent = 'Chart active time: -';
 }
 
-function renderTrialSummary(summary) {
-  const trialCapital = 10000;
+function renderTrialSummary(trial) {
+  const summary = trial?.summary || {};
+  const trialCapital = toNumber(trial?.config?.totalCapital) || 10000;
   const trialRealizedPnl = toNumber(summary.totalRealizedPnl);
   const trialUnrealizedPnl = toNumber(summary.totalUnrealizedPnl);
   const trialTotalPnl = toNumber(summary.totalPnl);
@@ -1065,6 +1072,40 @@ async function refreshPremarketIfDue() {
   }
 }
 
+async function analyzeTomorrowShortlist() {
+  const analyzeButton = document.getElementById('analyzeTomorrowBtn');
+  const premarketInfo = document.getElementById('premarketInfo');
+  const baseDate = getSelectedDashboardDate();
+  const targetDate = addDays(baseDate, 1);
+
+  if (analyzeButton) {
+    analyzeButton.disabled = true;
+    analyzeButton.textContent = 'Analyzing...';
+  }
+
+  if (premarketInfo) {
+    premarketInfo.textContent = `Analyzing tomorrow (${targetDate}) candidates using ${baseDate} market data...`;
+  }
+
+  try {
+    const premarket = await fetchPremarketShortlist(baseDate);
+    renderPremarketShortlist(premarket);
+
+    if (premarketInfo) {
+      premarketInfo.textContent = `Tomorrow (${targetDate}) analysis | Based on: ${premarket.date} | Source: ${premarket.source} | Universe: ${premarket.universeSize} | Evaluated: ${premarket.evaluated}`;
+    }
+  } catch (error) {
+    if (premarketInfo) {
+      premarketInfo.textContent = `Tomorrow analysis failed: ${error.message}`;
+    }
+  } finally {
+    if (analyzeButton) {
+      analyzeButton.disabled = false;
+      analyzeButton.textContent = 'Analyze Tomorrow Stocks';
+    }
+  }
+}
+
 async function runTrialFromDateInput(silent = false) {
   const trialDate = document.getElementById('trialDate').value;
   const trialStatus = document.getElementById('trialStatus');
@@ -1076,7 +1117,7 @@ async function runTrialFromDateInput(silent = false) {
     const trial = await fetchTrial(trialDate);
 
     renderDashboardFromTrial(trial);
-    renderTrialSummary(trial.summary);
+    renderTrialSummary(trial);
     renderTrialSymbols(trial.perSymbol);
     renderTrialTrades(trial.trades);
     renderTodayTradedCharts(trial);
@@ -1109,7 +1150,7 @@ async function refresh() {
     if ((state?.selected || []).length === 0 && (state?.trades || []).length === 0 && isTodaySelectedDate()) {
       const trial = await fetchTrial(todayDateValue());
       renderDashboardFromTrial(trial);
-      renderTrialSummary(trial.summary);
+      renderTrialSummary(trial);
       renderTrialSymbols(trial.perSymbol);
       renderTrialTrades(trial.trades);
       renderTodayTradedCharts(trial);
@@ -1177,6 +1218,12 @@ document.getElementById('downloadTrialCsvBtn').addEventListener('click', () => {
   window.open(`/api/trial-csv${query}`, '_blank');
 });
 
+document.getElementById('openComparisonBtn').addEventListener('click', () => {
+  const trialDate = document.getElementById('trialDate').value;
+  const query = trialDate ? `?date=${encodeURIComponent(trialDate)}` : '';
+  window.open(`/comparison.html${query}`, '_blank');
+});
+
 document.getElementById('applyStrategyBtn').addEventListener('click', async () => {
   const strategySelect = document.getElementById('strategySelect');
   const strategyStatus = document.getElementById('strategyStatus');
@@ -1205,6 +1252,10 @@ document.getElementById('applyStrategyBtn').addEventListener('click', async () =
       strategyStatus.textContent = `Strategy apply failed: ${error.message}`;
     }
   }
+});
+
+document.getElementById('analyzeTomorrowBtn').addEventListener('click', async () => {
+  await analyzeTomorrowShortlist();
 });
 
 document.getElementById('strategySelect').addEventListener('change', (event) => {
