@@ -766,16 +766,25 @@ async function fetchMinuteHistoryForDate(symbol, dateString) {
   const closes = result?.indicators?.quote?.[0]?.close || [];
 
   const points = [];
+  let lastTimestampMs = null;
   for (let index = 0; index < timestamps.length; index += 1) {
     const close = closes[index];
-    if (typeof close !== "number") {
+    const timestamp = Number(timestamps[index]);
+    if (typeof close !== "number" || !Number.isFinite(close) || close <= 0 || !Number.isFinite(timestamp)) {
+      continue;
+    }
+
+    const timestampMs = timestamp * 1000;
+    if (lastTimestampMs === timestampMs) {
       continue;
     }
 
     points.push({
-      time: new Date(timestamps[index] * 1000),
+      time: new Date(timestampMs),
       price: close,
     });
+
+    lastTimestampMs = timestampMs;
   }
 
   return points;
@@ -1106,6 +1115,29 @@ function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
   const trades = [];
   const history = [];
   let openPosition = null;
+  const emittedTradeKeys = new Set();
+
+  function pushUniqueTrade(trade) {
+    if (!trade) {
+      return;
+    }
+
+    const timeKey = trade.time ? new Date(trade.time).toISOString() : "";
+    const key = [
+      trade.action,
+      trade.symbol,
+      timeKey,
+      Number(trade.price).toFixed(4),
+      Number(trade.units) || 0,
+    ].join("|");
+
+    if (emittedTradeKeys.has(key)) {
+      return;
+    }
+
+    emittedTradeKeys.add(key);
+    trades.push(trade);
+  }
 
   function logEntry(side, price, time) {
     const units = calculateUnits(price);
@@ -1129,7 +1161,7 @@ function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
       ? "Continuous uptrend for 10+ minutes"
       : "Continuous downtrend for 10+ minutes";
 
-    trades.push({
+    pushUniqueTrade({
       action,
       symbol,
       price: round2(price),
@@ -1156,7 +1188,7 @@ function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
       : (openPosition.entryPrice - price) * units;
 
     openPosition.remainingUnits -= units;
-    trades.push({
+    pushUniqueTrade({
       action,
       symbol,
       price: round2(price),
