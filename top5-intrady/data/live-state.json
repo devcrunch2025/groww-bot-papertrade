@@ -1,0 +1,183 @@
+{
+  "savedAt": "2026-02-18T05:30:23.000Z",
+  "activeStrategyId": "S4",
+  "trades": [
+    {
+      "action": "BUY",
+      "symbol": "AXISBANK.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:00:41.509Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "BAJFINANCE.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:01:14.145Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "ITC.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:02:04.183Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:04:54.295Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "SELL",
+      "symbol": "AXISBANK.NS",
+      "strategyId": "S4",
+      "price": 4.81,
+      "units": 400,
+      "time": "2026-02-18T05:07:43.729Z",
+      "reason": "Manual sell: user booked profit",
+      "pnl": -76.72
+    },
+    {
+      "action": "SELL",
+      "symbol": "BAJFINANCE.NS",
+      "strategyId": "S4",
+      "price": 4.99,
+      "units": 400,
+      "time": "2026-02-18T05:07:54.382Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": -5.89
+    },
+    {
+      "action": "SELL",
+      "symbol": "ITC.NS",
+      "strategyId": "S4",
+      "price": 5.02,
+      "units": 400,
+      "time": "2026-02-18T05:07:54.382Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 6.09
+    },
+    {
+      "action": "SELL",
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "price": 5.03,
+      "units": 400,
+      "time": "2026-02-18T05:07:54.382Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 13.12
+    },
+    {
+      "action": "BUY",
+      "symbol": "ITC.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:11:52.841Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:11:52.841Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "BAJFINANCE.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:11:52.841Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "BUY",
+      "symbol": "NTPC.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:11:52.841Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    },
+    {
+      "action": "SELL",
+      "symbol": "ITC.NS",
+      "strategyId": "S4",
+      "price": 5.09,
+      "units": 400,
+      "time": "2026-02-18T05:15:12.685Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 36.61
+    },
+    {
+      "action": "SELL",
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "price": 5.07,
+      "units": 400,
+      "time": "2026-02-18T05:15:12.685Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 29.59
+    },
+    {
+      "action": "SELL",
+      "symbol": "BAJFINANCE.NS",
+      "strategyId": "S4",
+      "price": 4.95,
+      "units": 400,
+      "time": "2026-02-18T05:15:12.685Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": -21.64
+    },
+    {
+      "action": "SELL",
+      "symbol": "NTPC.NS",
+      "strategyId": "S4",
+      "price": 5.05,
+      "units": 400,
+      "time": "2026-02-18T05:15:12.685Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 21.63
+    },
+    {
+      "action": "BUY",
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "price": 5,
+      "units": 400,
+      "time": "2026-02-18T05:30:22.752Z",
+      "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
+    }
+  ],
+  "openPositions": [
+    {
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "side": "LONG",
+      "entryPrice": 1217.5,
+      "units": 400,
+      "remainingUnits": 400,
+      "partialBooked": false,
+      "maxFavorablePercent": 0,
+      "entryTime": "2026-02-18T05:30:22.752Z",
+      "instrumentType": "PUT_OPTION",
+      "optionEntryPremium": 5,
+      "premiumMovePerUnderlyingPercent": 1
+    }
+  ]
+}

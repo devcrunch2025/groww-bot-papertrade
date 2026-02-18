@@ -13,6 +13,9 @@ const {
   getActiveStrategy,
   applyStrategyPreset,
   getStrategyComparisonForDate,
+  getStrategyMonitorForDate,
+  forceSellAllActiveTrades,
+  forceSellActiveTradeBySymbol,
 } = require("./strategyEngine");
 const {
   getNotificationConfig,
@@ -26,6 +29,33 @@ const PORT = process.env.PORT || 3000;
 const notifierState = {
   lastNotifiedTradeCount: 0,
 };
+
+const strategyMonitorState = {
+  data: null,
+  lastUpdated: null,
+  lastError: null,
+  inProgress: false,
+};
+
+async function refreshStrategyMonitor(dateString) {
+  if (strategyMonitorState.inProgress) {
+    return strategyMonitorState.data;
+  }
+
+  strategyMonitorState.inProgress = true;
+  try {
+    const data = await getStrategyMonitorForDate(dateString);
+    strategyMonitorState.data = data;
+    strategyMonitorState.lastUpdated = new Date().toISOString();
+    strategyMonitorState.lastError = null;
+    return data;
+  } catch (error) {
+    strategyMonitorState.lastError = error.message || String(error);
+    return strategyMonitorState.data;
+  } finally {
+    strategyMonitorState.inProgress = false;
+  }
+}
 
 async function sendNotificationsForLatestCycle(snapshot, context) {
   const totalTrades = snapshot?.summary?.totalTrades || 0;
@@ -75,6 +105,36 @@ app.get("/api/strategy-comparison", async (req, res) => {
   }
 });
 
+app.get("/api/strategy-monitor", async (req, res) => {
+  try {
+    const date = req.query.date ? String(req.query.date) : undefined;
+    let data = null;
+
+    if (date) {
+      data = await getStrategyMonitorForDate(date);
+    } else {
+      data = await refreshStrategyMonitor();
+      if (!data) {
+        data = await getStrategyMonitorForDate();
+      }
+    }
+
+    res.json({
+      ok: true,
+      background: !date,
+      lastUpdated: strategyMonitorState.lastUpdated,
+      lastError: strategyMonitorState.lastError,
+      ...data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: "Failed to load strategy monitor",
+      error: error.message || String(error),
+    });
+  }
+});
+
 app.post("/api/strategies/select", async (req, res) => {
   try {
     const strategyId = req.body?.id ? String(req.body.id) : "";
@@ -102,6 +162,48 @@ app.post("/api/run-now", async (req, res) => {
   const snapshot = getSnapshot();
   await sendNotificationsForLatestCycle(snapshot, "manual-run");
   res.status(success ? 200 : 500).json(snapshot);
+});
+
+app.post("/api/sell-active-trades", async (req, res) => {
+  try {
+    const reason = req.body?.reason ? String(req.body.reason) : "Manual sell: user booked profit";
+    const action = await forceSellAllActiveTrades(reason);
+    const snapshot = getSnapshot();
+    await sendNotificationsForLatestCycle(snapshot, "manual-sell-all");
+    res.json({ ok: true, action, snapshot });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: "Failed to sell active trades",
+      error: error.message || String(error),
+    });
+  }
+});
+
+app.post("/api/sell-trade", async (req, res) => {
+  try {
+    const symbol = req.body?.symbol ? String(req.body.symbol) : "";
+    const reason = req.body?.reason ? String(req.body.reason) : "Manual sell: user booked profit";
+
+    if (!symbol) {
+      res.status(400).json({
+        ok: false,
+        message: "Symbol is required",
+      });
+      return;
+    }
+
+    const action = await forceSellActiveTradeBySymbol(symbol, reason);
+    const snapshot = getSnapshot();
+    await sendNotificationsForLatestCycle(snapshot, "manual-sell-one");
+    res.json({ ok: true, action, snapshot });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: "Failed to sell active trade",
+      error: error.message || String(error),
+    });
+  }
 });
 
 app.post("/api/test-email", async (req, res) => {
@@ -223,7 +325,13 @@ app.get(/.*/, (req, res) => {
 app.listen(PORT, async () => {
   console.log(`Groww paper-trading app running on http://localhost:${PORT}`);
   notifierState.lastNotifiedTradeCount = getSnapshot()?.summary?.totalTrades || 0;
+  await refreshStrategyMonitor();
   await startEngine(10000, async ({ snapshot }) => {
     await sendNotificationsForLatestCycle(snapshot, "auto-cycle");
   });
+  setInterval(() => {
+    refreshStrategyMonitor().catch(() => {
+      // handled in state
+    });
+  }, 30000);
 });

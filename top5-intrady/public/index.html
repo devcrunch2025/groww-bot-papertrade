@@ -287,9 +287,8 @@
               <button id="runTrialBtn">Apply</button>
               <label for="strategySelect" class="muted">Strategy</label>
               <select id="strategySelect"></select>
-              <button id="applyStrategyBtn">Apply</button>
+              <button id="applyStrategyBtn">View</button>
               <button id="openComparisonBtn">Compare</button>
-              <button id="analyzeTomorrowBtn">Analyze Tomorrow Stocks</button>
               <button id="downloadTrialCsvBtn">CSV</button>
               <span id="trialStatus" class="muted"></span>
               <span id="strategyStatus" class="muted"></span>
@@ -329,6 +328,29 @@
           </div>
 
           <div class="card">
+            <h2>Active Trades (Live P/L)</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Strategy</th>
+                    <th>Side</th>
+                    <th class="money-col">Entry</th>
+                    <th class="money-col">Live</th>
+                    <th class="money-col">Units</th>
+                    <th class="money-col">P/L / Unit</th>
+                    <th class="money-col">P/L Total</th>
+                    <th>Entry Time</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="activeTradesTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
             <h2>Selected Top 5 Intraday</h2>
             <div class="table-wrap">
               <table>
@@ -349,19 +371,20 @@
           </div>
 
           <div class="card">
-            <h2>Trades</h2>
+            <h2>Order History</h2>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>Time</th>
                     <th>Action</th>
+                    <th>Strategy</th>
                     <th>Symbol</th>
                     <th class="money-col">Price</th>
                     <th class="money-col">Units</th>
                     <th class="money-col">Invested Amount</th>
                     <th>Reason</th>
-                    <th class="money-col">P&L</th>
+                    <th class="money-col">P/L</th>
                   </tr>
                 </thead>
                 <tbody id="tradesTable"></tbody>
@@ -383,27 +406,6 @@
                   </tr>
                 </thead>
                 <tbody id="trialSymbolsTable"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="card">
-            <h2>Trade History (Date Filter)</h2>
-            <p class="muted" id="trialTradesInfo">Showing today history</p>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Action</th>
-                    <th>Symbol</th>
-                    <th class="money-col">Price</th>
-                    <th class="money-col">Units</th>
-                    <th>Reason</th>
-                    <th class="money-col">P&L</th>
-                  </tr>
-                </thead>
-                <tbody id="trialTradesTable"></tbody>
               </table>
             </div>
           </div>
@@ -457,6 +459,6 @@
     </div>
 
     <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="/app.js?v=20260217-17"></script>
+    <script src="/app.js?v=20260218-20"></script>
   </body>
 </html>

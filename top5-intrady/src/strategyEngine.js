@@ -202,6 +202,8 @@ const state = {
   historyBySymbol: new Map(),
   openPositions: new Map(),
   trades: [],
+  liveStateLoaded: false,
+  lastLiveStatePersistAt: 0,
   lastRun: null,
   lastError: null,
   cycleCount: 0,
@@ -217,6 +219,8 @@ const SIGNAL_CANDLE_MINUTES = 3;
 const ENTRY_UP_CANDLE_COUNT = 4;
 const HISTORY_DIRECTORY = path.join(__dirname, "..", "data", "price-history");
 const HISTORY_SAVE_INTERVAL_MS = 15000;
+const LIVE_STATE_FILE_PATH = path.join(__dirname, "..", "data", "live-state.json");
+const LIVE_STATE_SAVE_INTERVAL_MS = 5000;
 
 function getHistoryFilePath(dateString) {
   return path.join(HISTORY_DIRECTORY, `${dateString}.json`);
@@ -264,6 +268,95 @@ function applySerializedHistory(historyPayload) {
   });
 
   state.historyBySymbol = nextMap;
+}
+
+function serializeLiveState() {
+  return {
+    savedAt: new Date().toISOString(),
+    activeStrategyId,
+    trades: state.trades.map((trade) => ({
+      ...trade,
+      strategyId: trade?.strategyId || activeStrategyId,
+      time: trade?.time instanceof Date ? trade.time.toISOString() : trade?.time,
+    })),
+    openPositions: Array.from(state.openPositions.values()).map((position) => ({
+      ...position,
+      strategyId: position?.strategyId || activeStrategyId,
+      entryTime: position?.entryTime instanceof Date ? position.entryTime.toISOString() : position?.entryTime,
+    })),
+  };
+}
+
+function applySerializedLiveState(payload) {
+  const trades = Array.isArray(payload?.trades) ? payload.trades : [];
+  const openPositions = Array.isArray(payload?.openPositions) ? payload.openPositions : [];
+
+  state.trades = trades
+    .map((trade) => {
+      if (!trade || !trade.symbol || !trade.action) {
+        return null;
+      }
+
+      const parsedTime = trade.time ? new Date(trade.time) : null;
+      const time = parsedTime && Number.isFinite(parsedTime.getTime()) ? parsedTime : new Date();
+
+      return {
+        ...trade,
+        strategyId: trade.strategyId || activeStrategyId,
+        time,
+      };
+    })
+    .filter(Boolean);
+
+  const nextOpenPositions = new Map();
+  openPositions.forEach((position) => {
+    if (!position || !position.symbol) {
+      return;
+    }
+
+    const parsedEntryTime = position.entryTime ? new Date(position.entryTime) : null;
+    const entryTime = parsedEntryTime && Number.isFinite(parsedEntryTime.getTime())
+      ? parsedEntryTime
+      : new Date();
+
+    nextOpenPositions.set(position.symbol, {
+      ...position,
+      strategyId: position.strategyId || activeStrategyId,
+      entryTime,
+    });
+  });
+
+  state.openPositions = nextOpenPositions;
+}
+
+async function loadLiveStateFromDisk() {
+  if (state.liveStateLoaded) {
+    return;
+  }
+
+  try {
+    const raw = await fs.readFile(LIVE_STATE_FILE_PATH, "utf8");
+    const parsed = JSON.parse(raw);
+    applySerializedLiveState(parsed);
+  } catch (error) {
+    if (error?.code !== "ENOENT") {
+      state.lastError = error.message || String(error);
+    }
+  } finally {
+    state.liveStateLoaded = true;
+  }
+}
+
+async function saveLiveStateToDisk(force = false) {
+  const nowMs = Date.now();
+  if (!force && nowMs - state.lastLiveStatePersistAt < LIVE_STATE_SAVE_INTERVAL_MS) {
+    return;
+  }
+
+  await fs.mkdir(path.dirname(LIVE_STATE_FILE_PATH), { recursive: true });
+  const payload = serializeLiveState();
+  await fs.writeFile(LIVE_STATE_FILE_PATH, JSON.stringify(payload, null, 2), "utf8");
+  state.lastLiveStatePersistAt = nowMs;
 }
 
 async function loadTodayPriceHistory(dateString) {
@@ -430,6 +523,7 @@ function resetDailyControlIfNeeded(now = new Date()) {
     state.historyBySymbol = new Map();
     state.historyLoadedDate = null;
     state.lastHistoryPersistAt = 0;
+    state.lastLiveStatePersistAt = 0;
     state.adaptiveStrategyGeneratedDate = null;
     state.adaptiveStrategyInProgress = false;
     state.lastAdaptiveStrategyError = null;
@@ -1160,9 +1254,9 @@ function simulateHistoryForSymbol(symbol, points, config = STRATEGY_CONFIG) {
   };
 }
 
-function buildTrialResult(date, candidates) {
+function buildTrialResult(date, candidates, strategyConfig = STRATEGY_CONFIG) {
   const simulations = candidates.map((candidate) =>
-    simulateHistoryForSymbol(candidate.symbol, candidate.points, STRATEGY_CONFIG)
+    simulateHistoryForSymbol(candidate.symbol, candidate.points, strategyConfig)
   );
 
   const allTrades = simulations
@@ -1209,7 +1303,7 @@ function buildTrialResult(date, candidates) {
 
   return {
     date,
-    config: STRATEGY_CONFIG,
+    config: strategyConfig,
     selectedSymbols,
     summary: {
       symbolsTested: selectedSymbols.length,
@@ -1223,9 +1317,15 @@ function buildTrialResult(date, candidates) {
   };
 }
 
-async function runHistoryTrialForDate(dateString) {
+async function runHistoryTrialForDate(dateString, marketSymbolsOverride) {
+  return runHistoryTrialForDateWithConfig(dateString, marketSymbolsOverride, STRATEGY_CONFIG);
+}
+
+async function runHistoryTrialForDateWithConfig(dateString, marketSymbolsOverride, strategyConfig) {
   const targetDate = dateString || toDateStringInIST();
-  const marketSymbols = await getAutomaticMarketSymbols();
+  const marketSymbols = Array.isArray(marketSymbolsOverride) && marketSymbolsOverride.length > 0
+    ? uniqueSymbols(marketSymbolsOverride)
+    : await getAutomaticMarketSymbols();
 
   const settled = await Promise.allSettled(
     marketSymbols.map(async (symbol) => {
@@ -1250,44 +1350,211 @@ async function runHistoryTrialForDate(dateString) {
     .map((item) => item.value)
     .sort((a, b) => b.intradayChangePercent - a.intradayChangePercent);
 
-  const limitedCandidates = STRATEGY_CONFIG.selectionLimit > 0
-    ? candidates.slice(0, STRATEGY_CONFIG.selectionLimit)
+  const selectionLimit = Number(strategyConfig?.selectionLimit) || 0;
+
+  const limitedCandidates = selectionLimit > 0
+    ? candidates.slice(0, selectionLimit)
     : candidates;
 
-  return buildTrialResult(targetDate, limitedCandidates);
+  return buildTrialResult(targetDate, limitedCandidates, strategyConfig);
 }
 
 async function runTodayHistoryTrial() {
   return runHistoryTrialForDate(toDateStringInIST());
 }
 
-async function runHistoryTrialForStrategy(strategyId, dateString) {
+async function runHistoryTrialForStrategy(strategyId, dateString, marketSymbolsOverride) {
   const preset = STRATEGY_PRESETS[strategyId];
   if (!preset) {
     throw new Error(`Unknown strategy id: ${strategyId}`);
   }
 
-  const originalActiveStrategyId = activeStrategyId;
-  const originalConfig = { ...STRATEGY_CONFIG };
+  const strategyConfig = {
+    ...STRATEGY_CONFIG,
+    ...preset.config,
+    totalCapital: STRATEGY_CONFIG.totalCapital,
+  };
 
-  try {
-    Object.assign(STRATEGY_CONFIG, preset.config);
-    activeStrategyId = strategyId;
-    return await runHistoryTrialForDate(dateString);
-  } finally {
-    Object.assign(STRATEGY_CONFIG, originalConfig);
-    activeStrategyId = originalActiveStrategyId;
+  return runHistoryTrialForDateWithConfig(dateString, marketSymbolsOverride, strategyConfig);
+}
+
+async function getStrategyMonitorForDate(dateString) {
+  const targetDate = dateString || toDateStringInIST();
+  const isToday = targetDate === toDateStringInIST();
+  const capital = Number(STRATEGY_CONFIG.totalCapital) || 10000;
+  const strategyIds = Object.keys(STRATEGY_PRESETS);
+  const sharedSymbols = await getAutomaticMarketSymbols();
+
+  const rows = [];
+  for (const strategyId of strategyIds) {
+    if (isToday && strategyId === activeStrategyId) {
+      const strategyTrades = state.trades.filter((trade) => {
+        const tradeStrategyId = trade?.strategyId || activeStrategyId;
+        return tradeStrategyId === strategyId && normalizeDateToIST(trade.time) === targetDate;
+      });
+
+      const strategyOpenPositions = Array.from(state.openPositions.values())
+        .filter((position) => (position?.strategyId || activeStrategyId) === strategyId)
+        .map((position) => ({
+          symbol: position.symbol,
+          side: position.side,
+          entryPrice: round2(Number(position.entryPrice) || 0),
+          remainingUnits: Number(position.remainingUnits) || 0,
+          entryTime: position.entryTime,
+          strategyId: position.strategyId || strategyId,
+        }));
+
+      const strategySymbols = Array.from(new Set([
+        ...strategyTrades.map((trade) => trade?.symbol).filter(Boolean),
+        ...strategyOpenPositions.map((position) => position?.symbol).filter(Boolean),
+      ]));
+
+      const quoteMap = await getQuotesBySymbols(strategySymbols);
+      const livePriceBySymbol = Object.fromEntries(
+        strategySymbols.map((symbol) => {
+          const quotePrice = Number(quoteMap.get(symbol)?.price);
+          if (Number.isFinite(quotePrice) && quotePrice > 0) {
+            return [symbol, round2(quotePrice)];
+          }
+
+          const history = state.historyBySymbol.get(symbol) || [];
+          const latest = history[history.length - 1];
+          const historyPrice = Number(latest?.price);
+          return [symbol, Number.isFinite(historyPrice) && historyPrice > 0 ? round2(historyPrice) : null];
+        })
+      );
+
+      const chartBySymbol = Object.fromEntries(
+        strategySymbols.map((symbol) => {
+          const history = state.historyBySymbol.get(symbol) || [];
+          const symbolTrades = strategyTrades.filter((trade) => trade?.symbol === symbol);
+
+          return [symbol, {
+            prices: history.map((point) => ({
+              time: point?.time,
+              price: round2(Number(point?.price) || 0),
+            })).filter((point) => Number.isFinite(point.price) && point.price > 0),
+            buyMarkers: symbolTrades
+              .filter((trade) => trade.action === "BUY" || trade.action === "COVER")
+              .map((trade) => ({
+                time: trade.time,
+                price: round2(Number(trade.price) || 0),
+                units: Number(trade.units) || 0,
+                strategyId: trade.strategyId || strategyId,
+              })),
+            sellMarkers: symbolTrades
+              .filter((trade) => trade.action === "SELL" || trade.action === "SELL_SHORT")
+              .map((trade) => ({
+                time: trade.time,
+                price: round2(Number(trade.price) || 0),
+                units: Number(trade.units) || 0,
+                strategyId: trade.strategyId || strategyId,
+              })),
+          }];
+        })
+      );
+
+      const realizedPnl = strategyTrades
+        .filter((trade) => trade.action === "SELL" || trade.action === "COVER")
+        .reduce((sum, trade) => sum + (Number(trade?.pnl) || 0), 0);
+
+      const unrealizedPnl = strategyOpenPositions.reduce((sum, position) => {
+        const history = state.historyBySymbol.get(position.symbol) || [];
+        const latest = history[history.length - 1];
+        const currentPrice = Number(latest?.price);
+        if (!Number.isFinite(currentPrice)) {
+          return sum;
+        }
+
+        const sideMultiplier = position.side === "SHORT" ? -1 : 1;
+        return sum + ((currentPrice - position.entryPrice) * position.remainingUnits * sideMultiplier);
+      }, 0);
+
+      const totalPnl = realizedPnl + unrealizedPnl;
+      const pnlPercent = capital > 0 ? (totalPnl / capital) * 100 : 0;
+
+      rows.push({
+        strategyId,
+        strategyName: STRATEGY_PRESETS[strategyId]?.name || strategyId,
+        totalTrades: strategyTrades.length,
+        realizedPnl: round2(realizedPnl),
+        unrealizedPnl: round2(unrealizedPnl),
+        totalPnl: round2(totalPnl),
+        pnlPercent: round2(pnlPercent),
+        openPositions: strategyOpenPositions,
+        recentTrades: strategyTrades.slice(-60),
+        livePriceBySymbol,
+        chartBySymbol,
+        dataSource: "live-engine",
+      });
+
+      continue;
+    }
+
+    const trial = await runHistoryTrialForStrategy(strategyId, targetDate, sharedSymbols);
+    const totalPnl = Number(trial?.summary?.totalPnl) || 0;
+    const pnlPercent = capital > 0 ? (totalPnl / capital) * 100 : 0;
+    const openPositions = (trial?.perSymbol || [])
+      .map((item) => item?.openPosition)
+      .filter(Boolean);
+    const strategySymbols = Array.from(new Set([
+      ...(trial?.trades || []).map((trade) => trade?.symbol).filter(Boolean),
+      ...openPositions.map((position) => position?.symbol).filter(Boolean),
+    ]));
+
+    const perSymbolMap = new Map((trial?.perSymbol || []).map((item) => [item?.symbol, item]));
+    const livePriceBySymbol = Object.fromEntries(
+      strategySymbols.map((symbol) => {
+        const chartPrices = perSymbolMap.get(symbol)?.chart?.prices || [];
+        const latest = chartPrices.length > 0 ? chartPrices[chartPrices.length - 1] : null;
+        const price = Number(latest?.price);
+        return [symbol, Number.isFinite(price) && price > 0 ? round2(price) : null];
+      })
+    );
+    const chartBySymbol = Object.fromEntries(
+      strategySymbols.map((symbol) => {
+        const item = perSymbolMap.get(symbol);
+        const chart = item?.chart || { prices: [], buyMarkers: [], sellMarkers: [] };
+        return [symbol, chart];
+      })
+    );
+
+    rows.push({
+      strategyId,
+      strategyName: STRATEGY_PRESETS[strategyId]?.name || strategyId,
+      totalTrades: Number(trial?.summary?.totalTrades) || 0,
+      realizedPnl: Number(trial?.summary?.totalRealizedPnl) || 0,
+      unrealizedPnl: Number(trial?.summary?.totalUnrealizedPnl) || 0,
+      totalPnl,
+      pnlPercent: round2(pnlPercent),
+      openPositions,
+      recentTrades: (trial?.trades || []).slice(-60),
+      livePriceBySymbol,
+      chartBySymbol,
+      dataSource: "simulation",
+    });
   }
+
+  rows.sort((left, right) => right.totalPnl - left.totalPnl);
+
+  return {
+    date: targetDate,
+    capital,
+    activeStrategyId,
+    bestStrategyId: rows[0]?.strategyId || null,
+    results: rows,
+  };
 }
 
 async function getStrategyComparisonForDate(dateString) {
   const targetDate = dateString || toDateStringInIST();
   const capital = Number(STRATEGY_CONFIG.totalCapital) || 10000;
   const strategyIds = Object.keys(STRATEGY_PRESETS);
+  const sharedSymbols = await getAutomaticMarketSymbols();
 
   const rows = [];
   for (const strategyId of strategyIds) {
-    const trial = await runHistoryTrialForStrategy(strategyId, targetDate);
+    const trial = await runHistoryTrialForStrategy(strategyId, targetDate, sharedSymbols);
     const totalPnl = Number(trial?.summary?.totalPnl) || 0;
     const pnlPercent = capital > 0 ? (totalPnl / capital) * 100 : 0;
 
@@ -1520,6 +1787,7 @@ function executeEntry(symbol, price, time, side, reasonOverride, metadata = {}) 
 
   state.openPositions.set(symbol, {
     symbol,
+    strategyId: activeStrategyId,
     side,
     entryPrice: price,
     units,
@@ -1543,10 +1811,15 @@ function executeEntry(symbol, price, time, side, reasonOverride, metadata = {}) 
   state.trades.push({
     action,
     symbol,
+    strategyId: activeStrategyId,
     price: round2(tradePrice),
     units,
     time,
     reason,
+  });
+
+  saveLiveStateToDisk().catch((error) => {
+    state.lastError = error.message || String(error);
   });
 }
 
@@ -1576,6 +1849,7 @@ function executeExit(position, price, time, reason, unitsOverride) {
   state.trades.push({
     action: isLong ? "SELL" : "COVER",
     symbol: position.symbol,
+    strategyId: position.strategyId || activeStrategyId,
     price: round2(exitPrice),
     units,
     time,
@@ -1586,6 +1860,109 @@ function executeExit(position, price, time, reason, unitsOverride) {
   if (position.remainingUnits <= 0) {
     state.openPositions.delete(position.symbol);
   }
+
+  saveLiveStateToDisk().catch((error) => {
+    state.lastError = error.message || String(error);
+  });
+}
+
+async function forceSellAllActiveTrades(reason = "Manual sell: user booked profit") {
+  const now = new Date();
+  const positions = Array.from(state.openPositions.values());
+
+  if (positions.length === 0) {
+    return {
+      requestedCount: 0,
+      soldCount: 0,
+      skippedSymbols: [],
+      time: now.toISOString(),
+    };
+  }
+
+  const symbols = uniqueSymbols(positions.map((position) => position.symbol));
+  const quoteMap = await getQuotesBySymbols(symbols);
+  const skippedSymbols = [];
+
+  for (const position of positions) {
+    const quote = quoteMap.get(position.symbol);
+    let exitPrice = Number(quote?.price);
+
+    if (!Number.isFinite(exitPrice)) {
+      const history = state.historyBySymbol.get(position.symbol) || [];
+      const latest = history[history.length - 1];
+      exitPrice = Number(latest?.price);
+    }
+
+    if (!Number.isFinite(exitPrice) || exitPrice <= 0) {
+      skippedSymbols.push(position.symbol);
+      continue;
+    }
+
+    executeExit(position, exitPrice, now, reason);
+  }
+
+  return {
+    requestedCount: positions.length,
+    soldCount: positions.length - skippedSymbols.length,
+    skippedSymbols,
+    time: now.toISOString(),
+  };
+}
+
+async function forceSellActiveTradeBySymbol(symbol, reason = "Manual sell: user booked profit") {
+  const now = new Date();
+  const targetSymbol = String(symbol || "").trim();
+
+  if (!targetSymbol) {
+    return {
+      requestedSymbol: targetSymbol,
+      sold: false,
+      skipped: true,
+      reason: "Symbol is required",
+      time: now.toISOString(),
+    };
+  }
+
+  const position = state.openPositions.get(targetSymbol);
+  if (!position) {
+    return {
+      requestedSymbol: targetSymbol,
+      sold: false,
+      skipped: true,
+      reason: "No active position",
+      time: now.toISOString(),
+    };
+  }
+
+  const quoteMap = await getQuotesBySymbols([targetSymbol]);
+  const quote = quoteMap.get(targetSymbol);
+  let exitPrice = Number(quote?.price);
+
+  if (!Number.isFinite(exitPrice)) {
+    const history = state.historyBySymbol.get(targetSymbol) || [];
+    const latest = history[history.length - 1];
+    exitPrice = Number(latest?.price);
+  }
+
+  if (!Number.isFinite(exitPrice) || exitPrice <= 0) {
+    return {
+      requestedSymbol: targetSymbol,
+      sold: false,
+      skipped: true,
+      reason: "No valid exit price",
+      time: now.toISOString(),
+    };
+  }
+
+  executeExit(position, exitPrice, now, reason);
+
+  return {
+    requestedSymbol: targetSymbol,
+    sold: true,
+    skipped: false,
+    reason,
+    time: now.toISOString(),
+  };
 }
 
 function evaluatePutPosition(position, currentPrice, time) {
@@ -1859,6 +2236,7 @@ function getSnapshot() {
       downtrend10m: isContinuousDowntrend(symbol, STRATEGY_CONFIG.shortContinuousFallMinutes),
       hasOpenPosition: Boolean(position),
       positionSide: position ? position.side : null,
+      positionStrategyId: position ? position.strategyId || null : null,
       entryPrice: position ? round2(position.entryPrice) : null,
       remainingUnits: position ? position.remainingUnits : 0,
     };
@@ -1880,6 +2258,7 @@ function getSnapshot() {
           time: trade.time,
           price: trade.price,
           units: trade.units,
+          strategyId: trade.strategyId || null,
         })),
       sellMarkers: symbolTrades
         .filter((trade) => trade.action === "SELL" || trade.action === "SELL_SHORT")
@@ -1887,12 +2266,14 @@ function getSnapshot() {
           time: trade.time,
           price: trade.price,
           units: trade.units,
+          strategyId: trade.strategyId || null,
         })),
     };
   }
 
   const openPositions = Array.from(state.openPositions.values()).map((position) => ({
     symbol: position.symbol,
+    strategyId: position.strategyId || null,
     entryPrice: round2(position.entryPrice),
     units: position.units,
     remainingUnits: position.remainingUnits,
@@ -1927,6 +2308,8 @@ function getSnapshot() {
     return sum + ((currentPrice - position.entryPrice) * position.remainingUnits * sideMultiplier);
   }, 0);
 
+  const currentDate = state.dailyControl.date || toDateStringInIST();
+
   const todayInvestedAmount = state.trades
     .filter((trade) => {
       const isEntryTrade = trade.action === "BUY" || trade.action === "SELL_SHORT";
@@ -1943,7 +2326,6 @@ function getSnapshot() {
 
   const totalPnl = realizedPnl + unrealizedPnl;
   const openAccountAmount = STRATEGY_CONFIG.totalCapital + totalPnl;
-  const currentDate = state.dailyControl.date || toDateStringInIST();
   const dailyRealizedPnl = getDailyRealizedPnl(currentDate);
   const dailyCutoffAmount = getMaxDailyLossAmount();
 
@@ -1983,6 +2365,8 @@ function getSnapshot() {
 }
 
 async function startEngine(intervalMs = 60000, onCycleComplete) {
+  await loadLiveStateFromDisk();
+
   const executeCycle = async (trigger) => {
     const success = await runCycle();
     if (typeof onCycleComplete === "function") {
@@ -2008,8 +2392,11 @@ module.exports = {
   getActiveStrategy,
   applyStrategyPreset,
   getStrategyComparisonForDate,
+  getStrategyMonitorForDate,
   startEngine,
   runCycle,
+  forceSellAllActiveTrades,
+  forceSellActiveTradeBySymbol,
   getSnapshot,
   runHistoryTrialForDate,
   runTodayHistoryTrial,

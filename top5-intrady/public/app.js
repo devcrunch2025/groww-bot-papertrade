@@ -51,20 +51,28 @@ async function fetchStrategies() {
   return response;
 }
 
-async function selectStrategy(strategyId) {
-  const response = await fetch('/api/strategies/select', {
+async function fetchStrategyMonitor(date) {
+  const query = date
+    ? `?date=${encodeURIComponent(date)}&_ts=${Date.now()}`
+    : `?_ts=${Date.now()}`;
+  const response = await fetchJson(`/api/strategy-monitor${query}`, 30000);
+  return response;
+}
+
+async function sellTradeBySymbol(symbol, reason = 'Manual sell: user booked profit') {
+  const response = await fetch('/api/sell-trade', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
     },
-    body: JSON.stringify({ id: strategyId }),
+    body: JSON.stringify({ symbol, reason }),
   });
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(text || `Strategy apply failed: ${response.status}`);
+    throw new Error(text || `Sell trade failed: ${response.status}`);
   }
 
   return response.json();
@@ -73,6 +81,7 @@ async function selectStrategy(strategyId) {
 const liveChartInstances = new Map();
 const todayTradedChartInstances = new Map();
 const strategyPresetById = new Map();
+let dashboardViewStrategyId = '';
 let latestLiveRealizedPnl = 0;
 let latestTrialTotalPnl = 0;
 let lastPremarketFetchAt = 0;
@@ -83,6 +92,35 @@ let nextAutoRefreshAt = Date.now() + 10000;
 
 const PREMARKET_REFRESH_MS = 5 * 60 * 1000;
 const REFRESH_INTERVAL_MS = 10000;
+const CHART_LIBRARY_CDN_URLS = [
+  'https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js',
+  'https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js',
+];
+
+let chartLibraryLoadPromise = null;
+const DASHBOARD_VIEW_STRATEGY_STORAGE_KEY = 'groww.dashboard.viewStrategyId';
+
+function loadPersistedViewStrategyId() {
+  try {
+    const value = window.localStorage.getItem(DASHBOARD_VIEW_STRATEGY_STORAGE_KEY);
+    return value ? String(value).trim() : '';
+  } catch (error) {
+    return '';
+  }
+}
+
+function persistViewStrategyId(strategyId) {
+  try {
+    const value = String(strategyId || '').trim();
+    if (!value) {
+      window.localStorage.removeItem(DASHBOARD_VIEW_STRATEGY_STORAGE_KEY);
+      return;
+    }
+    window.localStorage.setItem(DASHBOARD_VIEW_STRATEGY_STORAGE_KEY, value);
+  } catch (error) {
+    // ignore storage failures
+  }
+}
 
 function formatTime(value) {
   if (!value) return '-';
@@ -128,13 +166,62 @@ function updateClockAndRefreshTimer() {
     return;
   }
 
-  if (!isTodaySelectedDate()) {
-    refreshTimer.textContent = 'Next refresh in: Historical mode';
-    return;
-  }
-
   const remainingMs = nextAutoRefreshAt - Date.now();
   refreshTimer.textContent = `Next refresh in: ${formatCountdown(remainingMs)}`;
+}
+
+function loadExternalScript(src) {
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector(`script[src="${src}"]`);
+    if (existing) {
+      if (window.LightweightCharts && typeof window.LightweightCharts.createChart === 'function') {
+        resolve(true);
+        return;
+      }
+
+      existing.addEventListener('load', () => resolve(true), { once: true });
+      existing.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)), { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+async function ensureChartLibraryLoaded() {
+  if (window.LightweightCharts && typeof window.LightweightCharts.createChart === 'function') {
+    return true;
+  }
+
+  if (chartLibraryLoadPromise) {
+    return chartLibraryLoadPromise;
+  }
+
+  chartLibraryLoadPromise = (async () => {
+    for (const src of CHART_LIBRARY_CDN_URLS) {
+      try {
+        await loadExternalScript(src);
+        if (window.LightweightCharts && typeof window.LightweightCharts.createChart === 'function') {
+          return true;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+    throw new Error('Chart library not loaded from available CDNs');
+  })();
+
+  try {
+    await chartLibraryLoadPromise;
+    return true;
+  } finally {
+    chartLibraryLoadPromise = null;
+  }
 }
 
 function todayDateValue() {
@@ -214,22 +301,313 @@ async function initStrategySelector() {
       })
       .join('');
 
-    if (activeId) {
-      strategySelect.value = activeId;
+    const persistedViewStrategyId = loadPersistedViewStrategyId();
+    const isPersistedAvailable = persistedViewStrategyId && strategyPresetById.has(persistedViewStrategyId);
+    dashboardViewStrategyId = isPersistedAvailable
+      ? persistedViewStrategyId
+      : (activeId || presets?.[0]?.id || '');
+
+    persistViewStrategyId(dashboardViewStrategyId);
+    if (dashboardViewStrategyId) {
+      strategySelect.value = dashboardViewStrategyId;
     }
 
     if (strategyStatus) {
-      strategyStatus.textContent = activeId ? `Active strategy: ${activeId}` : '';
+      strategyStatus.textContent = activeId
+        ? `Engine active: ${activeId} | Viewing: ${dashboardViewStrategyId || '-'}`
+        : '';
     }
 
-    if (activeId) {
-      updateStrategyInfoLine(activeId, strategyData?.active?.config);
+    if (dashboardViewStrategyId) {
+      updateStrategyInfoLine(dashboardViewStrategyId, strategyPresetById.get(dashboardViewStrategyId)?.config);
     }
   } catch (error) {
     if (strategyStatus) {
       strategyStatus.textContent = `Strategy load failed: ${error.message}`;
     }
   }
+}
+
+function buildViewStateByStrategy(state, strategyId) {
+  const selectedStrategyId = String(strategyId || '').trim();
+  if (!selectedStrategyId) {
+    return state;
+  }
+
+  const rawTrades = state?.trades || [];
+  const rawOpenPositions = state?.openPositions || [];
+  const selected = state?.selected || [];
+  const charts = state?.charts || {};
+
+  const trades = rawTrades.filter((trade) => {
+    const tradeStrategyId = trade?.strategyId || state?.status?.activeStrategyId || '';
+    return tradeStrategyId === selectedStrategyId;
+  });
+
+  const openPositions = rawOpenPositions.filter((position) => {
+    const positionStrategyId = position?.strategyId || state?.status?.activeStrategyId || '';
+    return positionStrategyId === selectedStrategyId;
+  });
+
+  const openPositionBySymbol = new Map(
+    openPositions
+      .filter((position) => position?.symbol)
+      .map((position) => [position.symbol, position]),
+  );
+
+  const selectedRows = selected.map((row) => {
+    const position = openPositionBySymbol.get(row.symbol);
+    return {
+      ...row,
+      hasOpenPosition: Boolean(position),
+      positionSide: position ? position.side : null,
+      entryPrice: position ? position.entryPrice : null,
+      remainingUnits: position ? position.remainingUnits : 0,
+      positionStrategyId: position ? (position.strategyId || selectedStrategyId) : null,
+    };
+  });
+
+  const filteredCharts = Object.fromEntries(
+    Object.entries(charts).map(([symbol, chart]) => {
+      const buyMarkers = (chart?.buyMarkers || []).filter((marker) => {
+        const markerStrategyId = marker?.strategyId || state?.status?.activeStrategyId || '';
+        return markerStrategyId === selectedStrategyId;
+      });
+      const sellMarkers = (chart?.sellMarkers || []).filter((marker) => {
+        const markerStrategyId = marker?.strategyId || state?.status?.activeStrategyId || '';
+        return markerStrategyId === selectedStrategyId;
+      });
+
+      return [symbol, {
+        ...(chart || {}),
+        buyMarkers,
+        sellMarkers,
+      }];
+    }),
+  );
+
+  const realizedPnl = trades
+    .filter((trade) => trade?.action === 'SELL' || trade?.action === 'COVER')
+    .reduce((sum, trade) => sum + toNumber(trade?.pnl), 0);
+
+  const tradedAmount = trades.reduce((sum, trade) => {
+    const price = toNumber(trade?.price);
+    const units = toNumber(trade?.units);
+    return sum + Math.abs(price * units);
+  }, 0);
+
+  const todayInvestedAmount = trades.reduce((sum, trade) => {
+    const isEntryTrade = trade?.action === 'BUY' || trade?.action === 'SELL_SHORT';
+    if (!isEntryTrade) {
+      return sum;
+    }
+    const price = toNumber(trade?.price);
+    const units = toNumber(trade?.units);
+    return sum + Math.abs(price * units);
+  }, 0);
+
+  const livePriceBySymbol = new Map(
+    selectedRows
+      .filter((row) => row && row.symbol)
+      .map((row) => ({ symbol: row.symbol, currentPrice: Number(row.currentPrice) }))
+      .filter((row) => Number.isFinite(row.currentPrice) && row.currentPrice > 0)
+      .map((row) => [row.symbol, row.currentPrice]),
+  );
+
+  const unrealizedPnl = openPositions.reduce((sum, position) => {
+    const currentPrice = livePriceBySymbol.get(position.symbol);
+    if (!Number.isFinite(currentPrice)) {
+      return sum;
+    }
+
+    const entryPrice = toNumber(position.entryPrice);
+    const remainingUnits = toNumber(position.remainingUnits);
+    const sideMultiplier = position.side === 'SHORT' ? -1 : 1;
+    return sum + ((currentPrice - entryPrice) * remainingUnits * sideMultiplier);
+  }, 0);
+
+  const totalPnl = realizedPnl + unrealizedPnl;
+  const totalCapital = toNumber(state?.config?.totalCapital);
+  const openAccountAmount = totalCapital + totalPnl;
+
+  return {
+    ...state,
+    selected: selectedRows,
+    charts: filteredCharts,
+    trades,
+    openPositions,
+    summary: {
+      ...(state?.summary || {}),
+      totalTrades: trades.length,
+      openPositions: openPositions.length,
+      realizedPnl,
+      unrealizedPnl,
+      totalPnl,
+      tradedAmount,
+      todayInvestedAmount,
+      openAccountAmount,
+    },
+  };
+}
+
+function buildViewStateFromMonitorStrategy(baseState, monitorRow, strategyId) {
+  const fallbackState = buildViewStateByStrategy(baseState, strategyId);
+  if (!monitorRow) {
+    return fallbackState;
+  }
+
+  const trades = Array.isArray(monitorRow?.recentTrades) ? monitorRow.recentTrades : [];
+  const openPositions = Array.isArray(monitorRow?.openPositions) ? monitorRow.openPositions : [];
+  const monitorCharts = monitorRow?.chartBySymbol || {};
+  const monitorLivePriceBySymbol = monitorRow?.livePriceBySymbol || {};
+  const fallbackSelectedRows = Array.isArray(fallbackState?.selected) ? fallbackState.selected : [];
+  const fallbackCharts = fallbackState?.charts || {};
+  const openPositionBySymbol = new Map(
+    openPositions
+      .filter((position) => position?.symbol)
+      .map((position) => [position.symbol, position]),
+  );
+
+  const symbolsFromTrades = trades
+    .map((trade) => trade?.symbol)
+    .filter(Boolean);
+  const symbolsFromOpen = openPositions
+    .map((position) => position?.symbol)
+    .filter(Boolean);
+  const symbolsFromFallback = fallbackSelectedRows
+    .map((row) => row?.symbol)
+    .filter(Boolean);
+
+  const strategySymbols = Array.from(new Set([
+    ...symbolsFromFallback,
+    ...symbolsFromTrades,
+    ...symbolsFromOpen,
+  ]));
+
+  const fallbackSelectedBySymbol = new Map(
+    fallbackSelectedRows
+      .filter((row) => row?.symbol)
+      .map((row) => [row.symbol, row]),
+  );
+
+  const selectedRows = strategySymbols.map((symbol) => {
+    const baseRow = fallbackSelectedBySymbol.get(symbol) || {
+      symbol,
+      currentPrice: null,
+      move1mPercent: 0,
+      move3mPercent: 0,
+      move6mPercent: 0,
+      move10mPercent: 0,
+      hasOpenPosition: false,
+      positionSide: null,
+      entryPrice: null,
+      remainingUnits: 0,
+      positionStrategyId: null,
+    };
+
+    const chartPrices = monitorCharts?.[symbol]?.prices || fallbackCharts?.[symbol]?.prices || [];
+    const latestChartPoint = chartPrices.length > 0 ? chartPrices[chartPrices.length - 1] : null;
+    const monitorLivePrice = Number(monitorLivePriceBySymbol?.[symbol]);
+    const chartPrice = Number(latestChartPoint?.price);
+    const baseCurrentPrice = Number(baseRow?.currentPrice);
+    const currentPrice = Number.isFinite(monitorLivePrice) && monitorLivePrice > 0
+      ? monitorLivePrice
+      : Number.isFinite(baseCurrentPrice) && baseCurrentPrice > 0
+        ? baseCurrentPrice
+      : (Number.isFinite(chartPrice) && chartPrice > 0 ? chartPrice : null);
+
+    const position = openPositionBySymbol.get(symbol);
+    return {
+      ...baseRow,
+      currentPrice,
+      hasOpenPosition: Boolean(position),
+      positionSide: position ? position.side : null,
+      entryPrice: position ? toNumber(position.entryPrice) : null,
+      remainingUnits: position ? toNumber(position.remainingUnits) : 0,
+      positionStrategyId: position ? (position.strategyId || strategyId) : null,
+    };
+  });
+
+  const tradesBySymbol = trades.reduce((map, trade) => {
+    if (!trade?.symbol) {
+      return map;
+    }
+    if (!map.has(trade.symbol)) {
+      map.set(trade.symbol, []);
+    }
+    map.get(trade.symbol).push(trade);
+    return map;
+  }, new Map());
+
+  const charts = Object.fromEntries(
+    strategySymbols.map((symbol) => {
+      const baseChart = monitorCharts[symbol] || fallbackCharts[symbol] || { prices: [], buyMarkers: [], sellMarkers: [] };
+      const symbolTrades = tradesBySymbol.get(symbol) || [];
+
+      const buyMarkers = symbolTrades
+        .filter((trade) => trade?.action === 'BUY' || trade?.action === 'COVER')
+        .map((trade) => ({
+          time: trade.time,
+          price: toNumber(trade.price),
+          units: toNumber(trade.units),
+          strategyId: trade.strategyId || strategyId,
+        }));
+
+      const sellMarkers = symbolTrades
+        .filter((trade) => trade?.action === 'SELL' || trade?.action === 'SELL_SHORT')
+        .map((trade) => ({
+          time: trade.time,
+          price: toNumber(trade.price),
+          units: toNumber(trade.units),
+          strategyId: trade.strategyId || strategyId,
+        }));
+
+      return [symbol, {
+        ...baseChart,
+        buyMarkers,
+        sellMarkers,
+      }];
+    }),
+  );
+
+  const tradedAmount = trades.reduce((sum, trade) => {
+    const price = toNumber(trade?.price);
+    const units = toNumber(trade?.units);
+    return sum + Math.abs(price * units);
+  }, 0);
+
+  const todayInvestedAmount = trades.reduce((sum, trade) => {
+    const isEntryTrade = trade?.action === 'BUY' || trade?.action === 'SELL_SHORT';
+    if (!isEntryTrade) {
+      return sum;
+    }
+
+    const price = toNumber(trade?.price);
+    const units = toNumber(trade?.units);
+    return sum + Math.abs(price * units);
+  }, 0);
+
+  return {
+    ...fallbackState,
+    selected: selectedRows,
+    charts,
+    trades,
+    openPositions,
+    status: {
+      ...(fallbackState?.status || {}),
+      monitorSource: monitorRow?.dataSource || 'simulation',
+    },
+    summary: {
+      ...(fallbackState?.summary || {}),
+      totalTrades: toNumber(monitorRow?.totalTrades ?? trades.length),
+      openPositions: openPositions.length,
+      realizedPnl: toNumber(monitorRow?.realizedPnl),
+      unrealizedPnl: toNumber(monitorRow?.unrealizedPnl),
+      totalPnl: toNumber(monitorRow?.totalPnl),
+      tradedAmount,
+      todayInvestedAmount,
+    },
+  };
 }
 
 function toNumber(value) {
@@ -239,6 +617,12 @@ function toNumber(value) {
 
 function formatAmount(value) {
   return toNumber(value).toFixed(2);
+}
+
+function formatSignedAmount(value) {
+  const numericValue = toNumber(value);
+  const prefix = numericValue > 0 ? '+' : '';
+  return `${prefix}${numericValue.toFixed(2)}`;
 }
 
 function updateBotThinkingTicker(state, mode = 'live') {
@@ -321,21 +705,79 @@ function renderSelected(rows) {
     .join('');
 }
 
-function renderTrades(trades) {
+function renderTrades(trades, selectedRows = []) {
   const body = document.getElementById('tradesTable');
   body.innerHTML = trades
     .map((trade) => {
       const investedAmount = Math.abs(toNumber(trade?.price) * toNumber(trade?.units));
+
       return `
       <tr>
         <td>${formatTime(trade.time)}</td>
         <td class="${trade.action === 'BUY' || trade.action === 'COVER' ? 'buy' : 'sell'}">${trade.action}</td>
+        <td>${trade.strategyId || '-'}</td>
         <td>${trade.symbol}</td>
         <td class="money-col">${trade.price}</td>
         <td class="money-col">${trade.units}</td>
         <td class="money-col">${formatAmount(investedAmount)}</td>
         <td>${trade.reason}</td>
-        <td class="money-col ${valueClass(toNumber(trade.pnl))}">${trade.pnl ?? '-'}</td>
+        <td class="money-col ${valueClass(toNumber(trade?.pnl))}">${trade?.pnl !== null && trade?.pnl !== undefined ? formatSignedAmount(trade.pnl) : '-'}</td>
+      </tr>
+    `;
+    })
+    .join('');
+}
+
+function renderActiveTrades(openPositions = [], selectedRows = []) {
+  const livePriceBySymbol = new Map(
+    (selectedRows || [])
+      .filter((item) => item && item.symbol)
+      .map((item) => ({ symbol: item.symbol, currentPrice: Number(item.currentPrice) }))
+      .filter((item) => Number.isFinite(item.currentPrice) && item.currentPrice > 0)
+      .map((item) => [item.symbol, item.currentPrice]),
+  );
+
+  const body = document.getElementById('activeTradesTable');
+  if (!body) {
+    return;
+  }
+
+  if (!openPositions || openPositions.length === 0) {
+    body.innerHTML = `
+      <tr>
+        <td colspan="10" class="muted">No active trades.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  body.innerHTML = openPositions
+    .map((position) => {
+      const symbol = position?.symbol;
+      const side = String(position?.side || 'LONG');
+      const entryPrice = toNumber(position?.entryPrice);
+      const livePrice = livePriceBySymbol.get(symbol);
+      const units = toNumber(position?.remainingUnits ?? position?.units);
+      const isShort = side === 'SHORT';
+      const hasValidLivePrice = Number.isFinite(livePrice) && livePrice > 0;
+
+      const pnlPerUnit = hasValidLivePrice
+        ? (isShort ? entryPrice - livePrice : livePrice - entryPrice)
+        : 0;
+      const totalPnl = pnlPerUnit * units;
+
+      return `
+      <tr>
+        <td>${symbol || '-'}</td>
+        <td>${position?.strategyId || '-'}</td>
+        <td>${side}</td>
+        <td class="money-col">${formatAmount(entryPrice)}</td>
+        <td class="money-col ${hasValidLivePrice ? valueClass(pnlPerUnit) : 'neu'}">${hasValidLivePrice ? formatAmount(livePrice) : '-'}</td>
+        <td class="money-col">${formatAmount(units)}</td>
+        <td class="money-col ${valueClass(pnlPerUnit)}">${hasValidLivePrice ? formatSignedAmount(pnlPerUnit) : '-'}</td>
+        <td class="money-col ${valueClass(totalPnl)}">${hasValidLivePrice ? formatSignedAmount(totalPnl) : '-'}</td>
+        <td>${formatTime(position?.entryTime)}</td>
+        <td><button class="sell-trade-btn" data-symbol="${symbol || ''}">Sell</button></td>
       </tr>
     `;
     })
@@ -552,12 +994,21 @@ function renderSymbolCharts(containerId, chartMap, rows, chartResolver, snapshot
   container.innerHTML = '';
   destroyCharts(chartMap);
 
-  if (!rows || rows.length === 0) {
+  const orderedRows = [...(rows || [])].sort((left, right) => {
+    const leftCount = toNumber(left?.tradeCount);
+    const rightCount = toNumber(right?.tradeCount);
+    if (rightCount !== leftCount) {
+      return rightCount - leftCount;
+    }
+    return String(left?.symbol || '').localeCompare(String(right?.symbol || ''));
+  });
+
+  if (orderedRows.length === 0) {
     container.innerHTML = '<div class="muted">No selected symbols for chart.</div>';
     return;
   }
 
-  rows.forEach((row) => {
+  orderedRows.forEach((row) => {
     try {
     const chartData = chartResolver(row) || { prices: [], buyMarkers: [], sellMarkers: [] };
     const symbol = row.symbol;
@@ -697,7 +1148,10 @@ function renderLiveCharts(selected, chartsBySymbol, snapshotTime, trades = []) {
       return rightCount - leftCount;
     }
     return String(left.symbol).localeCompare(String(right.symbol));
-  });
+  }).map((row) => ({
+    ...row,
+    tradeCount: tradeCountBySymbol.get(row.symbol) || 0,
+  }));
 
   renderSymbolCharts('chartsContainer', liveChartInstances, sortedRows, (row) => chartsBySymbol[row.symbol], snapshotTime);
 }
@@ -722,6 +1176,7 @@ function renderTodayTradedCharts(trial) {
     return {
       symbol: item.symbol,
       currentPrice: latestPoint ? toNumber(latestPoint.price) : 0,
+      tradeCount: (item?.trades || []).length,
     };
   });
 
@@ -816,6 +1271,7 @@ function buildDashboardStateFromTrial(trial) {
       entryPrice: toNumber(item.openPosition.entryPrice),
       remainingUnits: toNumber(item.openPosition.remainingUnits),
       side: item.openPosition.side,
+      entryTime: item.openPosition.entryTime,
     }));
 
   const tradedAmount = trades.reduce((sum, trade) => {
@@ -872,7 +1328,8 @@ function renderDashboardFromTrial(trial) {
   const state = buildDashboardStateFromTrial(trial);
   renderSummary(state);
   renderSelected(state.selected);
-  renderTrades(state.trades);
+  renderActiveTrades(state.openPositions, state.selected);
+  renderTrades(state.trades, state.selected);
   renderLiveCharts(state.selected, state.charts || {}, state.status?.lastRun, state.trades || []);
   renderChartActiveTime(state);
   updateBotThinkingTicker(state, 'history');
@@ -959,6 +1416,9 @@ function renderTrialSymbols(perSymbol) {
 
 function renderTrialTrades(trades) {
   const body = document.getElementById('trialTradesTable');
+  if (!body) {
+    return;
+  }
   const rows = trades || [];
 
   if (rows.length === 0) {
@@ -1111,12 +1571,14 @@ async function analyzeTomorrowShortlist() {
 async function runTrialFromDateInput(silent = false) {
   const trialDate = document.getElementById('trialDate').value;
   const trialStatus = document.getElementById('trialStatus');
+  const trialTradesInfo = document.getElementById('trialTradesInfo');
 
   try {
     if (!silent) {
       trialStatus.textContent = 'Running trial...';
     }
     const trial = await fetchTrial(trialDate);
+    await ensureChartLibraryLoaded().catch(() => false);
 
     renderDashboardFromTrial(trial);
     renderTrialSummary(trial);
@@ -1126,10 +1588,14 @@ async function runTrialFromDateInput(silent = false) {
 
     trialStatus.textContent = `Trial date: ${trial.date} | Symbols: ${trial.summary.symbolsTested} | Trades: ${trial.summary.totalTrades}`;
     document.getElementById('trialDate').value = trial.date;
-    document.getElementById('trialTradesInfo').textContent = `Showing trade history for ${trial.date}`;
+    if (trialTradesInfo) {
+      trialTradesInfo.textContent = `Showing trade history for ${trial.date}`;
+    }
   } catch (error) {
     trialStatus.textContent = `Trial error: ${error.message}`;
-    document.getElementById('trialTradesInfo').textContent = `Trade history error: ${error.message}`;
+    if (trialTradesInfo) {
+      trialTradesInfo.textContent = `Trade history error: ${error.message}`;
+    }
   }
 }
 
@@ -1148,6 +1614,20 @@ async function refresh() {
     }
 
     const state = await fetchState();
+    await ensureChartLibraryLoaded().catch(() => false);
+
+    const viewStrategyId = dashboardViewStrategyId || state?.status?.activeStrategyId || '';
+    let viewState = buildViewStateByStrategy(state, viewStrategyId);
+
+    if (viewStrategyId && viewStrategyId !== state?.status?.activeStrategyId) {
+      try {
+        const monitor = await fetchStrategyMonitor();
+        const monitorRow = (monitor?.results || []).find((row) => row?.strategyId === viewStrategyId);
+        viewState = buildViewStateFromMonitorStrategy(state, monitorRow, viewStrategyId);
+      } catch (monitorError) {
+        // keep fallback live-state-based view
+      }
+    }
 
     if ((state?.selected || []).length === 0 && (state?.trades || []).length === 0 && isTodaySelectedDate()) {
       const trial = await fetchTrial(todayDateValue());
@@ -1157,16 +1637,20 @@ async function refresh() {
       renderTrialTrades(trial.trades);
       renderTodayTradedCharts(trial);
       document.getElementById('trialStatus').textContent = `Trial date: ${trial.date} | Symbols: ${trial.summary.symbolsTested} | Trades: ${trial.summary.totalTrades}`;
-      document.getElementById('trialTradesInfo').textContent = `Showing trade history for ${trial.date}`;
+      const trialTradesInfo = document.getElementById('trialTradesInfo');
+      if (trialTradesInfo) {
+        trialTradesInfo.textContent = `Showing trade history for ${trial.date}`;
+      }
       return;
     }
 
-    renderSummary(state);
-    renderSelected(state.selected);
-    renderTrades(state.trades);
-    renderLiveCharts(state.selected, state.charts || {}, state.status?.lastRun, state.trades || []);
-    renderChartActiveTime(state);
-    updateBotThinkingTicker(state, 'live');
+    renderSummary(viewState);
+    renderSelected(viewState.selected);
+    renderActiveTrades(viewState.openPositions, viewState.selected);
+    renderTrades(viewState.trades, viewState.selected);
+    renderLiveCharts(viewState.selected, viewState.charts || {}, viewState.status?.lastRun, viewState.trades || []);
+    renderChartActiveTime(viewState);
+    updateBotThinkingTicker(viewState, 'live');
     refreshPremarketIfDue();
 
     const info = state.status.lastError
@@ -1176,12 +1660,17 @@ async function refresh() {
 
     const strategySelect = document.getElementById('strategySelect');
     const strategyStatus = document.getElementById('strategyStatus');
-    if (strategySelect && state?.status?.activeStrategyId) {
-      strategySelect.value = state.status.activeStrategyId;
-      if (strategyStatus) {
-        strategyStatus.textContent = `Active strategy: ${state.status.activeStrategyId}`;
+    if (strategySelect) {
+      if (!dashboardViewStrategyId) {
+        dashboardViewStrategyId = state?.status?.activeStrategyId || strategySelect.value || '';
+        persistViewStrategyId(dashboardViewStrategyId);
       }
-      updateStrategyInfoLine(state.status.activeStrategyId, state?.config);
+      strategySelect.value = dashboardViewStrategyId;
+      updateStrategyInfoLine(dashboardViewStrategyId, strategyPresetById.get(dashboardViewStrategyId)?.config);
+      if (strategyStatus) {
+        const sourceText = viewState?.status?.monitorSource ? ` | Source: ${viewState.status.monitorSource}` : '';
+        strategyStatus.textContent = `Engine active: ${state?.status?.activeStrategyId || '-'} | Viewing: ${dashboardViewStrategyId || '-'}${sourceText}`;
+      }
     }
   } catch (error) {
     document.getElementById('lastUpdated').textContent = `Error: ${error.message}`;
@@ -1197,6 +1686,54 @@ async function refresh() {
 document.getElementById('runNowBtn').addEventListener('click', async () => {
   await fetch('/api/run-now', { method: 'POST' });
   await refresh();
+});
+
+document.getElementById('activeTradesTable').addEventListener('click', async (event) => {
+  const button = event.target?.closest?.('.sell-trade-btn');
+  if (!button) {
+    return;
+  }
+
+  const symbol = String(button.getAttribute('data-symbol') || '').trim();
+  const strategyStatus = document.getElementById('strategyStatus');
+
+  if (!symbol) {
+    return;
+  }
+
+  if (!window.confirm(`Sell active trade for ${symbol}?`)) {
+    return;
+  }
+
+  try {
+    button.disabled = true;
+    button.textContent = 'Selling...';
+    if (strategyStatus) {
+      strategyStatus.textContent = `Selling ${symbol}...`;
+    }
+
+    const result = await sellTradeBySymbol(symbol);
+    const sold = Boolean(result?.action?.sold);
+    const actionReason = result?.action?.reason ? String(result.action.reason) : '';
+
+    if (strategyStatus) {
+      strategyStatus.textContent = sold
+        ? `${symbol} sold successfully`
+        : `${symbol} not sold${actionReason ? `: ${actionReason}` : ''}`;
+    }
+
+    nextAutoRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
+    await refresh();
+  } catch (error) {
+    if (strategyStatus) {
+      strategyStatus.textContent = `Sell failed for ${symbol}: ${error.message}`;
+    }
+  } finally {
+    if (button && button.isConnected) {
+      button.disabled = false;
+      button.textContent = 'Sell';
+    }
+  }
 });
 
 document.getElementById('refreshDataBtn').addEventListener('click', async () => {
@@ -1230,39 +1767,27 @@ document.getElementById('applyStrategyBtn').addEventListener('click', async () =
   const strategySelect = document.getElementById('strategySelect');
   const strategyStatus = document.getElementById('strategyStatus');
   const selectedStrategyId = strategySelect?.value;
-
   if (!selectedStrategyId) {
     return;
   }
 
-  try {
-    if (strategyStatus) {
-      strategyStatus.textContent = 'Applying strategy...';
-    }
-
-    const response = await selectStrategy(selectedStrategyId);
-    if (strategyStatus) {
-      strategyStatus.textContent = `Active strategy: ${response?.active?.id || selectedStrategyId}`;
-    }
-    updateStrategyInfoLine(response?.active?.id || selectedStrategyId, response?.active?.config);
-
-    nextAutoRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
-    await refresh();
-    await runTrialFromDateInput(true);
-  } catch (error) {
-    if (strategyStatus) {
-      strategyStatus.textContent = `Strategy apply failed: ${error.message}`;
-    }
+  dashboardViewStrategyId = selectedStrategyId;
+  persistViewStrategyId(dashboardViewStrategyId);
+  if (strategyStatus) {
+    strategyStatus.textContent = `Viewing strategy: ${dashboardViewStrategyId}`;
   }
-});
 
-document.getElementById('analyzeTomorrowBtn').addEventListener('click', async () => {
-  await analyzeTomorrowShortlist();
+  nextAutoRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
+  await refresh();
 });
 
 document.getElementById('strategySelect').addEventListener('change', (event) => {
   const selectedStrategyId = event?.target?.value;
+  dashboardViewStrategyId = selectedStrategyId || dashboardViewStrategyId;
+  persistViewStrategyId(dashboardViewStrategyId);
   updateStrategyInfoLine(selectedStrategyId);
+  nextAutoRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
+  refresh();
 });
 
 document.getElementById('strategySelect').addEventListener('mouseenter', (event) => {
@@ -1286,16 +1811,15 @@ document.getElementById('strategySelect').addEventListener('blur', () => {
 });
 
 document.getElementById('trialDate').value = todayDateValue();
-document.getElementById('trialTradesInfo').textContent = `Showing trade history for ${todayDateValue()}`;
+const trialTradesInfo = document.getElementById('trialTradesInfo');
+if (trialTradesInfo) {
+  trialTradesInfo.textContent = `Showing trade history for ${todayDateValue()}`;
+}
 
 initStrategySelector();
 refresh();
 runTrialFromDateInput(true);
 setInterval(() => {
-  if (!isTodaySelectedDate()) {
-    return;
-  }
-
   nextAutoRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
   refresh();
 }, REFRESH_INTERVAL_MS);
