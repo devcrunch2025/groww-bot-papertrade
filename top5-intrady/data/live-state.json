@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-02-18T05:30:23.000Z",
+  "savedAt": "2026-02-18T05:35:33.184Z",
   "activeStrategyId": "S4",
   "trades": [
     {
@@ -162,22 +162,17 @@
       "units": 400,
       "time": "2026-02-18T05:30:22.752Z",
       "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
-    }
-  ],
-  "openPositions": [
+    },
     {
+      "action": "SELL",
       "symbol": "SBIN.NS",
       "strategyId": "S4",
-      "side": "LONG",
-      "entryPrice": 1217.5,
+      "price": 5.02,
       "units": 400,
-      "remainingUnits": 400,
-      "partialBooked": false,
-      "maxFavorablePercent": 0,
-      "entryTime": "2026-02-18T05:30:22.752Z",
-      "instrumentType": "PUT_OPTION",
-      "optionEntryPremium": 5,
-      "premiumMovePerUnderlyingPercent": 1
+      "time": "2026-02-18T05:35:32.926Z",
+      "reason": "Max daily loss cutoff hit (1%), forced square-off",
+      "pnl": 9.86
     }
-  ]
+  ],
+  "openPositions": []
 }
