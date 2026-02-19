@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Node.js app",
+			"type": "shell",
+			"command": "node src/server.js",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run Node.js app",
+			"type": "shell",
+			"command": "node src/server.js",
+			"group": "build"
+		},
+		{
+			"label": "Run Node.js app",
+			"type": "shell",
+			"command": "node src/server.js",
+			"group": "build"
+		},
+		{
+			"label": "Run Node.js app",
+			"type": "shell",
+			"command": "node src/server.js",
+			"group": "build"
+		}
+	]
+}

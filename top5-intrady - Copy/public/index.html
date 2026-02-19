@@ -273,13 +273,6 @@
             <span id="chartActiveTime" class="muted">Chart active time: -</span>
           </div>
           <div class="card">
-            <div class="content-note">
-              <strong>Strategy Summary</strong><br />
-              Capital: ₹10,000/day • Market hours only • Auto symbol selection from market movers<br />
-              Entry: 8-min trend, 75% strength • Repeat entry: Allowed • Time-exit: Off<br />
-              Booking: 60% at +0.60% • Remaining: 0.5% trailing stop, final target +1.20%<br />
-              Risk: Per-stock stop loss -0.8% • Daily max loss 1% (₹100) • Auto square-off at 15:20 IST
-            </div>
             <div class="row" style="margin-bottom:4px;">
               <label for="trialDate" class="muted">Date</label>
               <input type="date" id="trialDate" />
@@ -328,7 +321,7 @@
           </div>
 
           <div class="card">
-            <h2>Active Trades (Live P/L)</h2>
+            <h2 id="activeTradesHeading">Active Trades (Live P/L) - Strategy: -</h2>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -459,6 +452,6 @@
     </div>
 
     <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="/app.js?v=20260218-20"></script>
+    <script src="/app.js?v=20260218-22"></script>
   </body>
 </html>

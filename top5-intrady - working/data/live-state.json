@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-02-19T03:49:33.841Z",
+  "savedAt": "2026-02-19T03:47:51.572Z",
   "activeStrategyId": "S4",
   "trades": [
     {
@@ -180,37 +180,50 @@
       "units": 400,
       "time": "2026-02-19T03:47:50.858Z",
       "reason": "S4 PUT entry: Supertrend bearish + RSI<50 + EMA fast below slow"
-    },
-    {
-      "action": "SELL",
-      "symbol": "SBIN.NS",
-      "strategyId": "S4",
-      "price": 4.65,
-      "units": 400,
-      "time": "2026-02-19T03:49:21.349Z",
-      "reason": "Manual sell: user booked profit",
-      "pnl": -141.27
-    },
-    {
-      "action": "SELL",
-      "symbol": "ITC.NS",
-      "strategyId": "S4",
-      "price": 4.71,
-      "units": 400,
-      "time": "2026-02-19T03:49:27.535Z",
-      "reason": "Manual sell: user booked profit",
-      "pnl": -114.6
-    },
-    {
-      "action": "SELL",
-      "symbol": "AXISBANK.NS",
-      "strategyId": "S4",
-      "price": 4.99,
-      "units": 400,
-      "time": "2026-02-19T03:49:33.515Z",
-      "reason": "Manual sell: user booked profit",
-      "pnl": -5.83
     }
   ],
-  "openPositions": []
+  "openPositions": [
+    {
+      "symbol": "SBIN.NS",
+      "strategyId": "S4",
+      "side": "LONG",
+      "entryPrice": 1217.5,
+      "units": 400,
+      "remainingUnits": 400,
+      "partialBooked": false,
+      "maxFavorablePercent": 0,
+      "entryTime": "2026-02-18T05:30:22.752Z",
+      "instrumentType": "PUT_OPTION",
+      "optionEntryPremium": 5,
+      "premiumMovePerUnderlyingPercent": 1
+    },
+    {
+      "symbol": "ITC.NS",
+      "strategyId": "S4",
+      "side": "LONG",
+      "entryPrice": 331.6,
+      "units": 400,
+      "remainingUnits": 400,
+      "partialBooked": false,
+      "maxFavorablePercent": 0,
+      "entryTime": "2026-02-19T03:47:50.858Z",
+      "instrumentType": "PUT_OPTION",
+      "optionEntryPremium": 5,
+      "premiumMovePerUnderlyingPercent": 1
+    },
+    {
+      "symbol": "AXISBANK.NS",
+      "strategyId": "S4",
+      "side": "LONG",
+      "entryPrice": 1372.3,
+      "units": 400,
+      "remainingUnits": 400,
+      "partialBooked": false,
+      "maxFavorablePercent": 0,
+      "entryTime": "2026-02-19T03:47:50.858Z",
+      "instrumentType": "PUT_OPTION",
+      "optionEntryPremium": 5,
+      "premiumMovePerUnderlyingPercent": 1
+    }
+  ]
 }

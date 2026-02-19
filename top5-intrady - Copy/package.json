@@ -1,0 +1,24 @@
+{
+  "name": "top5-intrady",
+  "version": "1.0.0",
+  "description": "Groww-style paper trading dashboard with top 5 intraday strategy",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "trial:today": "node src/runTodayTrial.js",
+    "trial:date": "node src/runTodayTrial.js",
+    "auto:start:register": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/register-auto-start.ps1",
+    "auto:start:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/unregister-auto-start.ps1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "nodemailer": "^6.9.15",
+    "yahoo-finance2": "^2.13.3"
+  }
+}

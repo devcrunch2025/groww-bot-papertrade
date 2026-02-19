@@ -112,7 +112,7 @@ const STRATEGY_PRESETS = {
       trendStrengthThreshold: 0.65,
       allowRepeatEntryOnContinuousTrend: true,
       perStockStopLossPercent: 0.8,
-      firstProfitTargetPercent: 1,
+      firstProfitTargetPercent: 0.5,
       firstProfitExitPercent: 50,
       remainderHardTargetPercent: 1.0,
       trailingStopPercent: 0.6,

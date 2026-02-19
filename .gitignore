@@ -16,3 +16,9 @@ put-trading - Copy (5)/node_modules/*
 put-trading - Copy (5)/dist 
 top5-intrady/node_modules/*
 .env
+top5-intrady - Copy/node_modules/*
+.gitignore
+top5-intrady - working/node_modules/*
+top5-intrady - working/dist
+top5-intrady_old/node_modules/*
+top5-intrady_old/dist

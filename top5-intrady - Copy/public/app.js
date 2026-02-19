@@ -916,6 +916,29 @@ function buildOneMinuteCandles(pricePoints, livePrice, snapshotTime) {
   return candles;
 }
 
+function getMarketSessionRangeSeconds(candles, snapshotTime) {
+  const firstCandleTimeSec = Array.isArray(candles) && candles.length > 0
+    ? Number(candles[0]?.time)
+    : NaN;
+  const baseDate = Number.isFinite(firstCandleTimeSec)
+    ? new Date(firstCandleTimeSec * 1000)
+    : snapshotTime
+      ? new Date(snapshotTime)
+      : new Date();
+
+  const year = baseDate.getUTCFullYear();
+  const month = baseDate.getUTCMonth();
+  const day = baseDate.getUTCDate();
+
+  const marketOpenSec = Math.floor(Date.UTC(year, month, day, 3, 30, 0) / 1000);
+  const marketCloseSec = Math.floor(Date.UTC(year, month, day, 9, 30, 0) / 1000);
+
+  return {
+    from: marketOpenSec,
+    to: marketCloseSec,
+  };
+}
+
 function formatLocalChartTime(timeValue) {
   if (typeof timeValue === 'number') {
     return new Date(timeValue * 1000).toLocaleTimeString([], {
@@ -1122,6 +1145,10 @@ function renderSymbolCharts(containerId, chartMap, rows, chartResolver, snapshot
     }
 
     chart.timeScale().fitContent();
+    if (typeof chart.timeScale().setVisibleRange === 'function') {
+      const marketRange = getMarketSessionRangeSeconds(candleData, snapshotTime);
+      chart.timeScale().setVisibleRange(marketRange);
+    }
     chartMap.set(symbol, { chart, series: candleSeries });
     } catch (error) {
       const errorRow = document.createElement('div');

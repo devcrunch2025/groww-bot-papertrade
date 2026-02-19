@@ -34,6 +34,26 @@
         gap: 8px;
         flex-wrap: wrap;
       }
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        gap: 8px;
+      }
+      .kpi-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 8px;
+        background: #ffffff;
+      }
+      .kpi-label {
+        color: #6b7280;
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+      .kpi-value {
+        font-size: 14px;
+        font-weight: 700;
+      }
       input[type="date"] {
         border: 1px solid #d1d5db;
         border-radius: 6px;
@@ -106,6 +126,35 @@
       .strategy-title {
         margin: 0 0 6px 0;
         font-size: 13px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-block;
+        border: 1px solid #d1d5db;
+        border-radius: 999px;
+        padding: 2px 7px;
+        font-size: 10px;
+        color: #374151;
+        background: #f9fafb;
+      }
+      .table-wrap {
+        max-height: 320px;
+        overflow: auto;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+      }
+      .table-wrap table th {
+        position: sticky;
+        top: 0;
+        background: #ffffff;
+        z-index: 1;
+      }
+      .small-muted {
+        color: #6b7280;
+        font-size: 10px;
       }
       .split {
         display: grid;
@@ -113,6 +162,9 @@
         gap: 8px;
       }
       @media (max-width: 900px) {
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
         .split {
           grid-template-columns: 1fr;
         }
@@ -128,8 +180,13 @@
           <input type="date" id="compareDate" />
           <button id="loadComparisonBtn">Load Comparison</button>
           <button id="toggleAutoRefreshBtn">Auto Refresh: On</button>
+          <span id="refreshInfo" class="muted">Next refresh in: 15s</span>
           <span id="summaryInfo" class="muted">Loading...</span>
         </div>
+      </div>
+
+      <div class="card">
+        <div id="kpiGrid" class="kpi-grid"></div>
       </div>
 
       <div class="card">
@@ -178,6 +235,8 @@
       const REFRESH_MS = 15000;
       let autoRefreshEnabled = true;
       let refreshTimerId = null;
+      let countdownTimerId = null;
+      let nextRefreshAt = Date.now() + REFRESH_MS;
       let trendSeries = [];
       let trendDate = null;
 
@@ -204,6 +263,55 @@
         const numericValue = toNumber(value);
         const prefix = numericValue > 0 ? '+' : '';
         return `${prefix}${numericValue.toFixed(2)}%`;
+      }
+
+      function formatCountdown(ms) {
+        const totalSec = Math.max(0, Math.ceil(ms / 1000));
+        return `${totalSec}s`;
+      }
+
+      function renderRefreshInfo() {
+        const refreshInfo = document.getElementById('refreshInfo');
+        if (!refreshInfo) return;
+
+        if (!autoRefreshEnabled) {
+          refreshInfo.textContent = 'Auto refresh paused';
+          return;
+        }
+
+        refreshInfo.textContent = `Next refresh in: ${formatCountdown(nextRefreshAt - Date.now())}`;
+      }
+
+      function renderKpis(data) {
+        const kpiGrid = document.getElementById('kpiGrid');
+        if (!kpiGrid) return;
+
+        const rows = data?.results || [];
+        const best = rows.find((row) => row.strategyId === data?.bestStrategyId) || rows[0] || null;
+        const totalStrategies = rows.length;
+        const totalTrades = rows.reduce((sum, row) => sum + toNumber(row.totalTrades), 0);
+        const combinedPnl = rows.reduce((sum, row) => sum + toNumber(row.totalPnl), 0);
+        const avgPnl = totalStrategies > 0 ? combinedPnl / totalStrategies : 0;
+        const spreadPnl = rows.length > 1
+          ? toNumber(rows[0].totalPnl) - toNumber(rows[rows.length - 1].totalPnl)
+          : 0;
+
+        const items = [
+          { label: 'Best Strategy', value: best ? `${best.strategyId} (${formatAmount(best.totalPnl)})` : '-' },
+          { label: 'Strategies', value: String(totalStrategies) },
+          { label: 'Total Trades', value: String(totalTrades) },
+          { label: 'Combined P/L', value: formatAmount(combinedPnl), cls: valueClass(combinedPnl) },
+          { label: 'Avg P/L | Spread', value: `${formatAmount(avgPnl)} | ${formatAmount(spreadPnl)}` },
+        ];
+
+        kpiGrid.innerHTML = items
+          .map((item) => `
+            <div class="kpi-card">
+              <div class="kpi-label">${item.label}</div>
+              <div class="kpi-value ${item.cls || ''}">${item.value}</div>
+            </div>
+          `)
+          .join('');
       }
 
       function pushWinnerTrend(data) {
@@ -343,9 +451,12 @@
         const strategyDetails = document.getElementById('strategyDetails');
         const rows = data?.results || [];
 
+        renderKpis(data);
+
         body.innerHTML = rows
           .map((row, index) => {
             const rowClass = row.strategyId === data.bestStrategyId ? 'best-row' : '';
+            const sourceLabel = String(row.dataSource || 'simulation').toUpperCase();
 
             return `
               <tr class="${rowClass}">
@@ -370,6 +481,7 @@
 
         strategyDetails.innerHTML = rows
           .map((row) => {
+            const sourceLabel = String(row.dataSource || 'simulation').toUpperCase();
             const openPositions = row.openPositions || [];
             const recentTrades = row.recentTrades || [];
 
@@ -401,43 +513,51 @@
 
             return `
               <div class="strategy-block">
-                <h3 class="strategy-title ${valueClass(row.totalPnl)}">${row.strategyId} - ${row.strategyName} | P/L: ${formatAmount(row.totalPnl)} (${formatPercent(row.pnlPercent)}) | Source: ${row.dataSource || 'simulation'}</h3>
+                <h3 class="strategy-title ${valueClass(row.totalPnl)}">
+                  <span>${row.strategyId} - ${row.strategyName} | P/L: ${formatAmount(row.totalPnl)} (${formatPercent(row.pnlPercent)})</span>
+                  <span class="badge">Source: ${sourceLabel}</span>
+                  <span class="small-muted">Trades: ${toNumber(row.totalTrades)} | Realized: ${formatAmount(row.realizedPnl)} | Unrealized: ${formatAmount(row.unrealizedPnl)}</span>
+                </h3>
                 <div class="split">
                   <div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th colspan="5">Active Trades</th>
-                        </tr>
-                        <tr>
-                          <th>Symbol</th>
-                          <th>Side</th>
-                          <th>Entry</th>
-                          <th>Units</th>
-                          <th>Entry Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>${openRows}</tbody>
-                    </table>
+                    <div class="table-wrap">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th colspan="5">Active Trades</th>
+                          </tr>
+                          <tr>
+                            <th>Symbol</th>
+                            <th>Side</th>
+                            <th>Entry</th>
+                            <th>Units</th>
+                            <th>Entry Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>${openRows}</tbody>
+                      </table>
+                    </div>
                   </div>
                   <div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th colspan="7">Recent Trade History (last 20)</th>
-                        </tr>
-                        <tr>
-                          <th>Time</th>
-                          <th>Action</th>
-                          <th>Symbol</th>
-                          <th>Price</th>
-                          <th>Units</th>
-                          <th>Reason</th>
-                          <th>P/L</th>
-                        </tr>
-                      </thead>
-                      <tbody>${tradeRows}</tbody>
-                    </table>
+                    <div class="table-wrap">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th colspan="7">Recent Trade History (last 20)</th>
+                          </tr>
+                          <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Symbol</th>
+                            <th>Price</th>
+                            <th>Units</th>
+                            <th>Reason</th>
+                            <th>P/L</th>
+                          </tr>
+                        </thead>
+                        <tbody>${tradeRows}</tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -458,6 +578,8 @@
           summaryInfo.textContent = 'Loading comparison...';
           const data = await fetchComparison(date);
           renderComparison(data);
+          nextRefreshAt = Date.now() + REFRESH_MS;
+          renderRefreshInfo();
         } catch (error) {
           summaryInfo.textContent = `Comparison error: ${error.message}`;
           document.getElementById('comparisonTable').innerHTML = '';
@@ -477,6 +599,20 @@
         refreshTimerId = setInterval(() => {
           loadComparison();
         }, REFRESH_MS);
+
+        nextRefreshAt = Date.now() + REFRESH_MS;
+        renderRefreshInfo();
+      }
+
+      function startCountdownTimer() {
+        if (countdownTimerId) {
+          clearInterval(countdownTimerId);
+          countdownTimerId = null;
+        }
+
+        countdownTimerId = setInterval(() => {
+          renderRefreshInfo();
+        }, 1000);
       }
 
       const urlDate = new URLSearchParams(window.location.search).get('date');
@@ -486,9 +622,11 @@
         autoRefreshEnabled = !autoRefreshEnabled;
         document.getElementById('toggleAutoRefreshBtn').textContent = `Auto Refresh: ${autoRefreshEnabled ? 'On' : 'Off'}`;
         startAutoRefresh();
+        renderRefreshInfo();
       });
       loadComparison();
       startAutoRefresh();
+      startCountdownTimer();
     </script>
   </body>
 </html>
