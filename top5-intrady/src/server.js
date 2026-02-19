@@ -1,3 +1,31 @@
+// Get current stocks (symbols) for paper trading
+app.get("/api/symbols", (req, res) => {
+  try {
+    const strategyEngine = require("./strategyEngine");
+    const symbols = Array.isArray(strategyEngine.state.symbols) ? strategyEngine.state.symbols : [];
+    res.json({ ok: true, symbols });
+  } catch (err) {
+    res.status(500).json({ ok: false, message: err.message || String(err) });
+  }
+});
+// Add stocks (symbols) for paper trading
+app.post("/api/add-symbols", async (req, res) => {
+  try {
+    const symbols = Array.isArray(req.body?.symbols)
+      ? req.body.symbols.map(s => String(s).trim().toUpperCase()).filter(Boolean)
+      : [];
+    if (!symbols.length) {
+      return res.status(400).json({ ok: false, message: "No symbols provided" });
+    }
+    // Update the candidate symbols in strategy engine (in-memory for now)
+    const strategyEngine = require("./strategyEngine");
+    strategyEngine.state.symbols = symbols;
+    // Optionally, persist to disk or update CANDIDATE_SYMBOLS if needed
+    res.json({ ok: true, message: `Added ${symbols.length} symbols for paper trading`, symbols });
+  } catch (err) {
+    res.status(500).json({ ok: false, message: err.message || String(err) });
+  }
+});
 require("dotenv").config();
 const path = require("path");
 const express = require("express");
@@ -329,6 +357,29 @@ app.listen(PORT, async () => {
   await startEngine(10000, async ({ snapshot }) => {
     await sendNotificationsForLatestCycle(snapshot, "auto-cycle");
   });
+
+
+  // Exit all trades (profit or not) before 1 hour of market close (i.e., at or after 14:00 IST)
+  setInterval(async () => {
+    try {
+      const now = new Date();
+      const hours = now.getHours();
+      // Default market close is 15:00 IST, so 1 hour before is 14:00 IST
+      if (hours >= 14 && hours < 15) {
+        const snapshot = getSnapshot();
+        const openPositions = snapshot?.summary?.openPositionsDetails || [];
+        if (openPositions.length > 0) {
+          for (const pos of openPositions) {
+            await forceSellActiveTradeBySymbol(pos.symbol, "Auto square-off: exit all before 1hr close");
+          }
+          await sendNotificationsForLatestCycle(getSnapshot(), "auto-squareoff-all");
+        }
+      }
+    } catch (err) {
+      console.error("Error in auto square-off:", err);
+    }
+  }, 60000); // check every minute
+
   setInterval(() => {
     refreshStrategyMonitor().catch(() => {
       // handled in state

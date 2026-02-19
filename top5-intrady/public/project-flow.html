@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>top5-intrady Project Flow & Strategies</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
+    h1, h2, h3 { color: #1a73e8; }
+    code, pre { background: #eee; padding: 2px 6px; border-radius: 3px; }
+    section { margin-bottom: 2em; }
+    ul { margin-left: 1.5em; }
+    .strategy-table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+    .strategy-table th, .strategy-table td { border: 1px solid #bbb; padding: 8px; text-align: left; }
+    .strategy-table th { background: #e3eefd; }
+  </style>
+</head>
+<body>
+  <h1>top5-intrady: Project Flow & Strategies</h1>
+
+  <section>
+    <h2>1. Folder Structure Overview</h2>
+    <ul>
+      <li><b>src/</b> — Main source code (server, strategies, engine, email notifier)</li>
+      <li><b>public/</b> — Frontend HTML/JS for UI and visualization</li>
+      <li><b>data/</b> — Live state and price history JSON files</li>
+      <li><b>logs/</b> — JSON logs of trading trials and runs</li>
+      <li><b>scripts/</b> — Helper scripts for server and auto-start</li>
+      <li><b>package.json</b> — Node.js dependencies and scripts</li>
+      <li><b>run-app-ngrok.bat</b> — Batch file for running with ngrok</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. Main Flow</h2>
+    <ol>
+      <li>Server starts from <code>src/server.js</code>.</li>
+      <li>Loads strategy engine (<code>src/strategyEngine.js</code>), which manages trading logic and strategy selection.</li>
+      <li>Reads/writes state and price data from <code>data/</code>.</li>
+      <li>Logs trades and events to <code>logs/</code>.</li>
+      <li>Serves UI and endpoints from <code>public/</code>.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>3. Strategy Presets</h2>
+    <table class="strategy-table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Key Parameters</th>
+      </tr>
+      <tr>
+        <td>S1</td>
+        <td>Balanced Momentum</td>
+        <td>
+          buyContinuousRiseMinutes: 8<br>
+          shortContinuousFallMinutes: 8<br>
+          trendStrengthThreshold: 0.75<br>
+          allowRepeatEntryOnContinuousTrend: true<br>
+          perStockStopLossPercent: 0.8<br>
+          firstProfitTargetPercent: 0.6<br>
+          firstProfitExitPercent: 60<br>
+          remainderHardTargetPercent: 1.2<br>
+          trailingStopPercent: 0.5
+        </td>
+      </tr>
+      <tr>
+        <td>S2</td>
+        <td>Conservative Filter</td>
+        <td>
+          buyContinuousRiseMinutes: 10<br>
+          shortContinuousFallMinutes: 10<br>
+          trendStrengthThreshold: 0.82<br>
+          allowRepeatEntryOnContinuousTrend: false<br>
+          perStockStopLossPercent: 0.8<br>
+          firstProfitTargetPercent: 0.7<br>
+          firstProfitExitPercent: 65<br>
+          remainderHardTargetPercent: 1.4<br>
+          trailingStopPercent: 0.45
+        </td>
+      </tr>
+      <tr>
+        <td>S3</td>
+        <td>Aggressive Intraday</td>
+        <td>
+          buyContinuousRiseMinutes: 6<br>
+          shortContinuousFallMinutes: 6<br>
+          trendStrengthThreshold: 0.65<br>
+          allowRepeatEntryOnContinuousTrend: true<br>
+          perStockStopLossPercent: 0.8<br>
+          firstProfitTargetPercent: 0.5<br>
+          firstProfitExitPercent: 50<br>
+          remainderHardTargetPercent: 1.0<br>
+          trailingStopPercent: 0.6
+        </td>
+      </tr>
+      <tr>
+        <td>S4</td>
+        <td>Option-Style Bearish PUT</td>
+        <td>
+          buyContinuousRiseMinutes: 6<br>
+          shortContinuousFallMinutes: 6<br>
+          trendStrengthThreshold: 0.65<br>
+          allowRepeatEntryOnContinuousTrend: false<br>
+          perStockStopLossPercent: 0.8<br>
+          firstProfitTargetPercent: 0.5<br>
+          firstProfitExitPercent: 100<br>
+          remainderHardTargetPercent: 0<br>
+          trailingStopPercent: 0<br>
+          supertrendFactor: 3.0<br>
+          supertrendPeriod: 10<br>
+          rsiPeriod: 14<br>
+          emaFastPeriod: 20<br>
+          emaSlowPeriod: 50<br>
+          optionPremium: 5.0<br>
+          targetPoints: 2.0<br>
+          stopLossPoints: 1.0<br>
+          premiumMovePerUnderlyingPercent: 1.0
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Data & Logging Flow</h2>
+    <ul>
+      <li>Live state is tracked in <code>data/live-state.json</code>.</li>
+      <li>Historical price data is stored in <code>data/price-history/</code> by date.</li>
+      <li>Trade logs and trial results are saved in <code>logs/</code> as JSON files.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Public Interface & Scripts</h2>
+    <ul>
+      <li><b>public/index.html</b>: Main dashboard/UI.</li>
+      <li><b>public/comparison.html</b>: For comparing strategies or results.</li>
+      <li><b>public/tradingview-test.html</b>: For charting and visualization.</li>
+      <li><b>scripts/</b>: PowerShell scripts for auto-start and server management.</li>
+      <li><b>run-app-ngrok.bat</b>: Batch file to run the app with ngrok tunnel.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. Flow Diagram</h2>
+    <ul>
+      <li>Start server → Load strategy engine → Select strategy → Fetch data → Execute trades → Log results → Serve UI</li>
+    </ul>
+  </section>
+
+</body>
+</html>

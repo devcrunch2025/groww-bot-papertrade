@@ -97,3 +97,443 @@
 [2026-02-19 10:00:43] Started ngrok process (PID 17916).
 [2026-02-19 10:00:45] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
 [2026-02-19 10:00:45] Ngrok health check passed.
+[2026-02-19 10:05:45] App health check passed.
+[2026-02-19 10:05:45] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:05:45] Started ngrok process (PID 13028).
+[2026-02-19 10:05:47] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:05:47] Ngrok health check passed.
+[2026-02-19 10:10:47] App health check passed.
+[2026-02-19 10:10:47] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:10:47] Started ngrok process (PID 22228).
+[2026-02-19 10:10:49] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:10:49] Ngrok health check passed.
+[2026-02-19 10:15:49] App health check passed.
+[2026-02-19 10:15:49] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:15:49] Started ngrok process (PID 20776).
+[2026-02-19 10:15:51] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:15:51] Ngrok health check passed.
+[2026-02-19 10:20:51] App health check passed.
+[2026-02-19 10:20:51] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:20:51] Started ngrok process (PID 22592).
+[2026-02-19 10:20:53] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:20:53] Ngrok health check passed.
+[2026-02-19 10:25:54] App health check passed.
+[2026-02-19 10:25:54] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:25:54] Started ngrok process (PID 16692).
+[2026-02-19 10:25:56] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:25:56] Ngrok health check passed.
+[2026-02-19 10:30:56] App health check passed.
+[2026-02-19 10:30:56] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:30:56] Started ngrok process (PID 5976).
+[2026-02-19 10:30:58] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:30:58] Ngrok health check passed.
+[2026-02-19 10:35:58] App health check passed.
+[2026-02-19 10:35:58] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:35:58] Started ngrok process (PID 6880).
+[2026-02-19 10:36:00] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:36:00] Ngrok health check passed.
+[2026-02-19 10:41:00] App health check passed.
+[2026-02-19 10:41:00] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:41:00] Started ngrok process (PID 20200).
+[2026-02-19 10:41:02] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:41:02] Ngrok health check passed.
+[2026-02-19 10:46:02] App health check passed.
+[2026-02-19 10:46:02] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:46:02] Started ngrok process (PID 22684).
+[2026-02-19 10:46:04] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:46:04] Ngrok health check passed.
+[2026-02-19 10:51:05] App health check passed.
+[2026-02-19 10:51:05] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:51:05] Started ngrok process (PID 17132).
+[2026-02-19 10:51:07] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:51:07] Ngrok health check passed.
+[2026-02-19 10:56:07] App health check passed.
+[2026-02-19 10:56:07] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 10:56:07] Started ngrok process (PID 18420).
+[2026-02-19 10:56:09] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 10:56:09] Ngrok health check passed.
+[2026-02-19 11:01:09] App health check passed.
+[2026-02-19 11:01:09] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:01:09] Started ngrok process (PID 12416).
+[2026-02-19 11:01:11] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:01:11] Ngrok health check passed.
+[2026-02-19 11:06:11] App health check passed.
+[2026-02-19 11:06:11] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:06:11] Started ngrok process (PID 8500).
+[2026-02-19 11:06:13] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:06:13] Ngrok health check passed.
+[2026-02-19 11:11:13] App health check passed.
+[2026-02-19 11:11:13] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:11:13] Started ngrok process (PID 15668).
+[2026-02-19 11:11:15] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:11:15] Ngrok health check passed.
+[2026-02-19 11:16:15] App health check passed.
+[2026-02-19 11:16:15] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:16:15] Started ngrok process (PID 692).
+[2026-02-19 11:16:17] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:16:17] Ngrok health check passed.
+[2026-02-19 11:21:17] App health check passed.
+[2026-02-19 11:21:17] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:21:17] Started ngrok process (PID 24132).
+[2026-02-19 11:21:19] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:21:19] Ngrok health check passed.
+[2026-02-19 11:26:19] App health check passed.
+[2026-02-19 11:26:19] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:26:19] Started ngrok process (PID 22064).
+[2026-02-19 11:26:21] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:26:21] Ngrok health check passed.
+[2026-02-19 11:31:21] App health check passed.
+[2026-02-19 11:31:21] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:31:21] Started ngrok process (PID 13300).
+[2026-02-19 11:31:23] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:31:23] Ngrok health check passed.
+[2026-02-19 11:36:23] App health check passed.
+[2026-02-19 11:36:23] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:36:23] Started ngrok process (PID 10452).
+[2026-02-19 11:36:25] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:36:25] Ngrok health check passed.
+[2026-02-19 11:41:25] App health check passed.
+[2026-02-19 11:41:25] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:41:25] Started ngrok process (PID 14716).
+[2026-02-19 11:41:27] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:41:28] Ngrok health check passed.
+[2026-02-19 11:46:28] App health check passed.
+[2026-02-19 11:46:28] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:46:28] Started ngrok process (PID 2628).
+[2026-02-19 11:46:30] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:46:30] Ngrok health check passed.
+[2026-02-19 11:51:30] App health check passed.
+[2026-02-19 11:51:30] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:51:30] Started ngrok process (PID 4840).
+[2026-02-19 11:51:32] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:51:32] Ngrok health check passed.
+[2026-02-19 11:56:32] App health check passed.
+[2026-02-19 11:56:32] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 11:56:32] Started ngrok process (PID 22784).
+[2026-02-19 11:56:34] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 11:56:34] Ngrok health check passed.
+[2026-02-19 12:01:34] App health check passed.
+[2026-02-19 12:01:34] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:01:34] Started ngrok process (PID 18352).
+[2026-02-19 12:01:36] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:01:36] Ngrok health check passed.
+[2026-02-19 12:06:36] App health check passed.
+[2026-02-19 12:06:36] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:06:36] Started ngrok process (PID 17348).
+[2026-02-19 12:06:38] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:06:38] Ngrok health check passed.
+[2026-02-19 12:11:38] App health check passed.
+[2026-02-19 12:11:38] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:11:38] Started ngrok process (PID 20852).
+[2026-02-19 12:11:40] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:11:40] Ngrok health check passed.
+[2026-02-19 12:16:40] App health check passed.
+[2026-02-19 12:16:40] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:16:40] Started ngrok process (PID 14620).
+[2026-02-19 12:16:42] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:16:42] Ngrok health check passed.
+[2026-02-19 12:21:42] App health check passed.
+[2026-02-19 12:21:42] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:21:42] Started ngrok process (PID 19052).
+[2026-02-19 12:21:44] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:21:44] Ngrok health check passed.
+[2026-02-19 12:26:45] App health check passed.
+[2026-02-19 12:26:45] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:26:45] Started ngrok process (PID 15520).
+[2026-02-19 12:26:47] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:26:47] Ngrok health check passed.
+[2026-02-19 12:31:47] App health check passed.
+[2026-02-19 12:31:47] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:31:47] Started ngrok process (PID 23908).
+[2026-02-19 12:31:49] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:31:49] Ngrok health check passed.
+[2026-02-19 12:36:49] App health check passed.
+[2026-02-19 12:36:49] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:36:49] Started ngrok process (PID 16580).
+[2026-02-19 12:36:51] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:36:51] Ngrok health check passed.
+[2026-02-19 12:41:51] App health check passed.
+[2026-02-19 12:41:51] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:41:51] Started ngrok process (PID 21584).
+[2026-02-19 12:41:53] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:41:53] Ngrok health check passed.
+[2026-02-19 12:46:53] App health check passed.
+[2026-02-19 12:46:53] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:46:53] Started ngrok process (PID 19164).
+[2026-02-19 12:46:55] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:46:55] Ngrok health check passed.
+[2026-02-19 12:51:55] App health check passed.
+[2026-02-19 12:51:55] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:51:55] Started ngrok process (PID 2516).
+[2026-02-19 12:51:57] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:51:57] Ngrok health check passed.
+[2026-02-19 12:56:57] App health check passed.
+[2026-02-19 12:56:57] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 12:56:57] Started ngrok process (PID 1620).
+[2026-02-19 12:56:59] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 12:56:59] Ngrok health check passed.
+[2026-02-19 13:01:59] App health check passed.
+[2026-02-19 13:01:59] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:01:59] Started ngrok process (PID 23320).
+[2026-02-19 13:02:01] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:02:01] Ngrok health check passed.
+[2026-02-19 13:07:01] App health check passed.
+[2026-02-19 13:07:01] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:07:01] Started ngrok process (PID 5364).
+[2026-02-19 13:07:03] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:07:03] Ngrok health check passed.
+[2026-02-19 13:12:03] App health check passed.
+[2026-02-19 13:12:03] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:12:03] Started ngrok process (PID 16000).
+[2026-02-19 13:12:05] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:12:05] Ngrok health check passed.
+[2026-02-19 13:17:06] App health check passed.
+[2026-02-19 13:17:06] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:17:06] Started ngrok process (PID 18024).
+[2026-02-19 13:17:08] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:17:08] Ngrok health check passed.
+[2026-02-19 13:22:08] App health check passed.
+[2026-02-19 13:22:08] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:22:08] Started ngrok process (PID 21412).
+[2026-02-19 13:22:10] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:22:10] Ngrok health check passed.
+[2026-02-19 13:27:10] App health check passed.
+[2026-02-19 13:27:10] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:27:10] Started ngrok process (PID 22628).
+[2026-02-19 13:27:12] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:27:12] Ngrok health check passed.
+[2026-02-19 13:32:12] App health check passed.
+[2026-02-19 13:32:12] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:32:12] Started ngrok process (PID 23976).
+[2026-02-19 13:32:14] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:32:14] Ngrok health check passed.
+[2026-02-19 13:37:14] App health check passed.
+[2026-02-19 13:37:14] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:37:14] Started ngrok process (PID 11244).
+[2026-02-19 13:37:16] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:37:16] Ngrok health check passed.
+[2026-02-19 13:42:16] App health check passed.
+[2026-02-19 13:42:16] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:42:16] Started ngrok process (PID 16740).
+[2026-02-19 13:42:18] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:42:18] Ngrok health check passed.
+[2026-02-19 13:47:18] App health check passed.
+[2026-02-19 13:47:18] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:47:18] Started ngrok process (PID 17372).
+[2026-02-19 13:47:20] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:47:20] Ngrok health check passed.
+[2026-02-19 13:52:20] App health check passed.
+[2026-02-19 13:52:20] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:52:20] Started ngrok process (PID 1924).
+[2026-02-19 13:52:22] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:52:22] Ngrok health check passed.
+[2026-02-19 13:57:22] App health check passed.
+[2026-02-19 13:57:22] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 13:57:22] Started ngrok process (PID 22196).
+[2026-02-19 13:57:24] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 13:57:24] Ngrok health check passed.
+[2026-02-19 14:02:24] App health check passed.
+[2026-02-19 14:02:24] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:02:24] Started ngrok process (PID 16192).
+[2026-02-19 14:02:26] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:02:26] Ngrok health check passed.
+[2026-02-19 14:07:26] App health check passed.
+[2026-02-19 14:07:27] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:07:27] Started ngrok process (PID 9808).
+[2026-02-19 14:07:29] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:07:29] Ngrok health check passed.
+[2026-02-19 14:12:29] App health check passed.
+[2026-02-19 14:12:29] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:12:29] Started ngrok process (PID 22504).
+[2026-02-19 14:12:31] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:12:31] Ngrok health check passed.
+[2026-02-19 14:17:31] App health check passed.
+[2026-02-19 14:17:31] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:17:31] Started ngrok process (PID 3544).
+[2026-02-19 14:17:33] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:17:33] Ngrok health check passed.
+[2026-02-19 14:22:33] App health check passed.
+[2026-02-19 14:22:33] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:22:33] Started ngrok process (PID 14356).
+[2026-02-19 14:22:35] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:22:35] Ngrok health check passed.
+[2026-02-19 14:27:35] App health check passed.
+[2026-02-19 14:27:35] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:27:35] Started ngrok process (PID 13540).
+[2026-02-19 14:27:37] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:27:37] Ngrok health check passed.
+[2026-02-19 14:32:37] App health check passed.
+[2026-02-19 14:32:37] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:32:37] Started ngrok process (PID 14056).
+[2026-02-19 14:32:39] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:32:39] Ngrok health check passed.
+[2026-02-19 14:37:39] App health check passed.
+[2026-02-19 14:37:39] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:37:39] Started ngrok process (PID 16408).
+[2026-02-19 14:37:41] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:37:41] Ngrok health check passed.
+[2026-02-19 14:42:41] App health check passed.
+[2026-02-19 14:42:41] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:42:41] Started ngrok process (PID 1220).
+[2026-02-19 14:42:43] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:42:43] Ngrok health check passed.
+[2026-02-19 14:47:43] App health check passed.
+[2026-02-19 14:47:43] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:47:43] Started ngrok process (PID 20440).
+[2026-02-19 14:47:45] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:47:45] Ngrok health check passed.
+[2026-02-19 14:52:45] App health check passed.
+[2026-02-19 14:52:45] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:52:45] Started ngrok process (PID 22360).
+[2026-02-19 14:52:47] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:52:47] Ngrok health check passed.
+[2026-02-19 14:57:47] App health check passed.
+[2026-02-19 14:57:47] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 14:57:48] Started ngrok process (PID 22336).
+[2026-02-19 14:57:50] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 14:57:50] Ngrok health check passed.
+[2026-02-19 15:02:50] App health check passed.
+[2026-02-19 15:02:50] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:02:50] Started ngrok process (PID 22936).
+[2026-02-19 15:02:52] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:02:52] Ngrok health check passed.
+[2026-02-19 15:07:52] App health check passed.
+[2026-02-19 15:07:52] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:07:52] Started ngrok process (PID 21940).
+[2026-02-19 15:07:54] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:07:54] Ngrok health check passed.
+[2026-02-19 15:12:54] App health check passed.
+[2026-02-19 15:12:54] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:12:54] Started ngrok process (PID 15464).
+[2026-02-19 15:12:56] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:12:56] Ngrok health check passed.
+[2026-02-19 15:17:56] App health check passed.
+[2026-02-19 15:17:56] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:17:56] Started ngrok process (PID 2756).
+[2026-02-19 15:17:58] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:17:58] Ngrok health check passed.
+[2026-02-19 15:22:58] App health check passed.
+[2026-02-19 15:22:58] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:22:58] Started ngrok process (PID 1724).
+[2026-02-19 15:23:00] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:23:00] Ngrok health check passed.
+[2026-02-19 15:28:00] App health check passed.
+[2026-02-19 15:28:00] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:28:00] Started ngrok process (PID 18572).
+[2026-02-19 15:28:02] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:28:02] Ngrok health check passed.
+[2026-02-19 15:33:02] App health check passed.
+[2026-02-19 15:33:02] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:33:02] Started ngrok process (PID 15744).
+[2026-02-19 15:33:04] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:33:04] Ngrok health check passed.
+[2026-02-19 15:38:04] App health check passed.
+[2026-02-19 15:38:04] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:38:04] Started ngrok process (PID 21536).
+[2026-02-19 15:38:06] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:38:06] Ngrok health check passed.
+[2026-02-19 15:43:07] App health check passed.
+[2026-02-19 15:43:07] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:43:07] Started ngrok process (PID 6904).
+[2026-02-19 15:43:09] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:43:09] Ngrok health check passed.
+[2026-02-19 15:48:09] App health check passed.
+[2026-02-19 15:48:09] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:48:09] Started ngrok process (PID 18968).
+[2026-02-19 15:48:11] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:48:11] Ngrok health check passed.
+[2026-02-19 15:53:11] App health check passed.
+[2026-02-19 15:53:11] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:53:11] Started ngrok process (PID 6440).
+[2026-02-19 15:53:13] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:53:13] Ngrok health check passed.
+[2026-02-19 15:58:13] App health check passed.
+[2026-02-19 15:58:13] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 15:58:13] Started ngrok process (PID 19688).
+[2026-02-19 15:58:15] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 15:58:15] Ngrok health check passed.
+[2026-02-19 16:03:15] App health check passed.
+[2026-02-19 16:03:15] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:03:15] Started ngrok process (PID 6692).
+[2026-02-19 16:03:17] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:03:17] Ngrok health check passed.
+[2026-02-19 16:08:17] App health check passed.
+[2026-02-19 16:08:17] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:08:17] Started ngrok process (PID 16936).
+[2026-02-19 16:08:19] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:08:19] Ngrok health check passed.
+[2026-02-19 16:13:19] App health check passed.
+[2026-02-19 16:13:19] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:13:19] Started ngrok process (PID 6232).
+[2026-02-19 16:13:21] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:13:21] Ngrok health check passed.
+[2026-02-19 16:18:21] App health check passed.
+[2026-02-19 16:18:21] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:18:21] Started ngrok process (PID 8500).
+[2026-02-19 16:18:23] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:18:23] Ngrok health check passed.
+[2026-02-19 16:23:23] App health check passed.
+[2026-02-19 16:23:23] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:23:23] Started ngrok process (PID 5680).
+[2026-02-19 16:23:25] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:23:25] Ngrok health check passed.
+[2026-02-19 16:28:25] App health check passed.
+[2026-02-19 16:28:26] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:28:26] Started ngrok process (PID 4840).
+[2026-02-19 16:28:28] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:28:28] Ngrok health check passed.
+[2026-02-19 16:33:28] App health check passed.
+[2026-02-19 16:33:28] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:33:28] Started ngrok process (PID 10608).
+[2026-02-19 16:33:30] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:33:30] Ngrok health check passed.
+[2026-02-19 16:38:30] App health check passed.
+[2026-02-19 16:38:30] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:38:30] Started ngrok process (PID 6376).
+[2026-02-19 16:38:32] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:38:32] Ngrok health check passed.
+[2026-02-19 16:43:32] App health check passed.
+[2026-02-19 16:43:32] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:43:32] Started ngrok process (PID 23932).
+[2026-02-19 16:43:34] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:43:34] Ngrok health check passed.
+[2026-02-19 16:48:34] App health check passed.
+[2026-02-19 16:48:34] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:48:34] Started ngrok process (PID 11256).
+[2026-02-19 16:48:36] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:48:36] Ngrok health check passed.
+[2026-02-19 16:53:36] App health check passed.
+[2026-02-19 16:53:37] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:53:37] Started ngrok process (PID 22144).
+[2026-02-19 16:53:39] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:53:39] Ngrok health check passed.
+[2026-02-19 16:58:39] App health check passed.
+[2026-02-19 16:58:39] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 16:58:39] Started ngrok process (PID 3736).
+[2026-02-19 16:58:41] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 16:58:41] Ngrok health check passed.
+[2026-02-19 17:03:41] App health check passed.
+[2026-02-19 17:03:41] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 17:03:41] Started ngrok process (PID 8984).
+[2026-02-19 17:03:44] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 17:03:44] Ngrok health check passed.
+[2026-02-19 17:08:44] App health check passed.
+[2026-02-19 17:08:44] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 17:08:44] Started ngrok process (PID 12200).
+[2026-02-19 17:08:46] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 17:08:46] Ngrok health check passed.
+[2026-02-19 17:13:46] App health check passed.
+[2026-02-19 17:13:46] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 17:13:46] Started ngrok process (PID 13604).
+[2026-02-19 17:13:48] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 17:13:48] Ngrok health check passed.
+[2026-02-19 17:18:48] App health check passed.
+[2026-02-19 17:18:48] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 17:18:48] Started ngrok process (PID 19228).
+[2026-02-19 17:18:50] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 17:18:50] Ngrok health check passed.
+[2026-02-19 17:23:50] App health check passed.
+[2026-02-19 17:23:50] Ngrok process is not running. Restarting ngrok.
+[2026-02-19 17:23:50] Started ngrok process (PID 20996).
+[2026-02-19 17:23:52] Ngrok public URL: https://unlevel-marceline-nondependably.ngrok-free.dev
+[2026-02-19 17:23:52] Ngrok health check passed.
