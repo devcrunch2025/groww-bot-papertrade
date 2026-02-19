@@ -86,6 +86,7 @@ const STRATEGY_PRESETS = {
       trailingStopPercent: 0.5,
       timeExitMinutes: 0,
       moveStopToEntryAfterFirstExit: true,
+      
     },
   },
   S2: {
@@ -107,11 +108,11 @@ const STRATEGY_PRESETS = {
   S3: {
     name: "Aggressive Intraday",
     config: {
-      buyContinuousRiseMinutes: 6,
-      shortContinuousFallMinutes: 6,
+      buyContinuousRiseMinutes: 3,
+      shortContinuousFallMinutes: 3,
       trendStrengthThreshold: 0.65,
       allowRepeatEntryOnContinuousTrend: true,
-      perStockStopLossPercent: 0.8,
+      perStockStopLossPercent: 0.5,
       firstProfitTargetPercent: 1,
       firstProfitExitPercent: 50,
       remainderHardTargetPercent: 1.0,

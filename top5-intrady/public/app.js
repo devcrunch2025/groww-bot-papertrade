@@ -80,6 +80,7 @@ async function sellTradeBySymbol(symbol, reason = 'Manual sell: user booked prof
 
 const liveChartInstances = new Map();
 const todayTradedChartInstances = new Map();
+const manualChartInstances = new Map();
 const strategyPresetById = new Map();
 let dashboardViewStrategyId = '';
 let latestLiveRealizedPnl = 0;
@@ -683,7 +684,10 @@ function applyAutoTheme() {
 
 function renderSelected(rows) {
   const body = document.getElementById('selectedTable');
-  body.innerHTML = rows
+  // enforce maximum of 5 selected symbols in the UI
+  const MAX_SELECTED = 5;
+  const limited = Array.isArray(rows) ? rows.slice(0, MAX_SELECTED) : [];
+  body.innerHTML = limited
     .map((row) => {
       const move1m = toNumber(row.move1mPercent);
       const move3m = toNumber(row.move3mPercent);
@@ -722,6 +726,7 @@ function renderTrades(trades, selectedRows = []) {
         <td class="money-col">${formatAmount(investedAmount)}</td>
         <td>${trade.reason}</td>
         <td class="money-col ${valueClass(toNumber(trade?.pnl))}">${trade?.pnl !== null && trade?.pnl !== undefined ? formatSignedAmount(trade.pnl) : '-'}</td>
+        <td class="money-col ${valueClass((toNumber(trade?.pnl) && investedAmount) ? (toNumber(trade.pnl) / investedAmount) * 100 : 0)}">${(trade?.pnl !== null && trade?.pnl !== undefined && investedAmount) ? ((toNumber(trade.pnl) / investedAmount > 0 ? '+' : '') + Number((toNumber(trade.pnl) / investedAmount) * 100).toFixed(2) + '%') : '-'}</td>
       </tr>
     `;
     })
@@ -765,6 +770,9 @@ function renderActiveTrades(openPositions = [], selectedRows = []) {
         ? (isShort ? entryPrice - livePrice : livePrice - entryPrice)
         : 0;
       const totalPnl = pnlPerUnit * units;
+      const pnlPercent = hasValidLivePrice && entryPrice
+        ? (pnlPerUnit / entryPrice) * 100
+        : null;
 
       return `
       <tr>
@@ -774,7 +782,7 @@ function renderActiveTrades(openPositions = [], selectedRows = []) {
         <td class="money-col">${formatAmount(entryPrice)}</td>
         <td class="money-col ${hasValidLivePrice ? valueClass(pnlPerUnit) : 'neu'}">${hasValidLivePrice ? formatAmount(livePrice) : '-'}</td>
         <td class="money-col">${formatAmount(units)}</td>
-        <td class="money-col ${valueClass(pnlPerUnit)}">${hasValidLivePrice ? formatSignedAmount(pnlPerUnit) : '-'}</td>
+        <td class="money-col ${valueClass(pnlPercent ?? 0)}">${hasValidLivePrice && pnlPercent !== null ? (pnlPercent > 0 ? '+' : '') + Number(pnlPercent).toFixed(2) + '%' : '-'}</td>
         <td class="money-col ${valueClass(totalPnl)}">${hasValidLivePrice ? formatSignedAmount(totalPnl) : '-'}</td>
         <td>${formatTime(position?.entryTime)}</td>
         <td><button class="sell-trade-btn" data-symbol="${symbol || ''}">Sell</button></td>
@@ -1195,6 +1203,50 @@ function renderTodayTradedCharts(trial) {
     (row) => symbolsForCharts.find((item) => item.symbol === row.symbol)?.chart,
     snapshotTime,
   );
+}
+
+async function renderManualCharts() {
+  const containerId = 'manualChartsContainer';
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  try {
+    const res = await fetch(`/api/symbols?_ts=${Date.now()}`);
+    const data = await res.json();
+    const symbols = Array.isArray(data.symbols) ? data.symbols : [];
+    if (!symbols.length) {
+      container.innerHTML = '<div class="muted">No manual stocks to chart.</div>';
+      // destroy any existing charts
+      if (manualChartInstances.size) {
+        for (const entry of manualChartInstances.values()) {
+          if (entry?.chart && typeof entry.chart.remove === 'function') entry.chart.remove();
+        }
+        manualChartInstances.clear();
+      }
+      return;
+    }
+
+    // fetch series data for symbols
+    const qres = await fetch(`/api/quotes?symbols=${encodeURIComponent(symbols.join(','))}`);
+    const qjson = await qres.json();
+    const quotes = Array.isArray(qjson.quotes) ? qjson.quotes : [];
+
+    const chartsBySymbol = {};
+    const rows = symbols.map((s) => ({ symbol: s, currentPrice: '-' }));
+
+    quotes.forEach((q) => {
+      const prices = Array.isArray(q.prices) ? q.prices : [];
+      chartsBySymbol[q.symbol] = { prices: prices.map(p => ({ time: p.time, price: Number(p.price) })), buyMarkers: [], sellMarkers: [] };
+      const row = rows.find(r => r.symbol === q.symbol);
+      if (row) row.currentPrice = q.price || '-';
+    });
+
+    // ensure chart library and render
+    await ensureChartLibraryLoaded().catch(() => {});
+    renderSymbolCharts(containerId, manualChartInstances, rows, (row) => chartsBySymbol[row.symbol] || { prices: [], buyMarkers: [], sellMarkers: [] }, new Date().toISOString());
+  } catch (err) {
+    container.innerHTML = `<div class="muted">Manual charts failed: ${err.message}</div>`;
+  }
 }
 
 function getMovePercentByMinutesFromPrices(prices, minutes) {
@@ -1650,6 +1702,7 @@ async function refresh() {
     renderTrades(viewState.trades, viewState.selected);
     renderLiveCharts(viewState.selected, viewState.charts || {}, viewState.status?.lastRun, viewState.trades || []);
     renderChartActiveTime(viewState);
+    await renderManualCharts();
     updateBotThinkingTicker(viewState, 'live');
     refreshPremarketIfDue();
 

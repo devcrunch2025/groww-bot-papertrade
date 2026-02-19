@@ -273,6 +273,9 @@
             <span id="chartActiveTime" class="muted">Chart active time: -</span>
           </div>
           <div class="card">
+              <div style="margin-bottom:10px;">
+              <a href="#" id="addStocksLink" onclick="openAddStocksModal(event)" style="color:#2563eb;font-weight:bold;text-decoration:underline;">Add Stocks</a>
+            </div>
             <div id="addStocksModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:1000;align-items:center;justify-content:center;">
               <div style="background:#fff;padding:24px 20px 16px 20px;border-radius:8px;max-width:350px;width:90vw;box-shadow:0 2px 16px #0003;position:relative;display:flex;flex-direction:column;align-items:stretch;">
                 <button id="closeAddStocksModal" style="position:absolute;top:8px;right:8px;background:none;border:none;font-size:18px;cursor:pointer;">&times;</button>
@@ -280,11 +283,7 @@
                 <label for="stockAutoInput">Add Stock (auto-suggest):</label>
                 <input id="stockAutoInput" type="text" autocomplete="off" style="width:100%;margin:8px 0 12px 0;padding:6px;border-radius:4px;border:1px solid #ccc;" placeholder="Type to search..." />
                 <div id="stockAutoSuggest" style="position:relative;"></div>
-                  <div style="display:flex;gap:8px;margin-bottom:8px;">
-                    <button id="addStockBtn" style="background:#2563eb;color:#fff;padding:8px 18px;border:none;border-radius:4px;">Add</button>
-                    <button id="loadTopNseBtn" style="background:#0ea5e9;color:#fff;padding:8px 12px;border:none;border-radius:4px;">Load TOP NSE</button>
-                    <button id="loadTopBseBtn" style="background:#06b6d4;color:#fff;padding:8px 12px;border:none;border-radius:4px;">Load TOP BSE</button>
-                  </div>
+                <button id="addStockBtn" style="background:#2563eb;color:#fff;padding:8px 18px;border:none;border-radius:4px;margin-bottom:8px;">Add</button>
                 <div id="addStocksStatus" style="margin-bottom:8px;font-size:13px;"></div>
                 <div><b>Current Stocks:</b></div>
                 <ul id="currentStocksList" style="list-style:none;padding:0;margin:8px 0 0 0;"></ul>
@@ -438,7 +437,6 @@
                   });
 
                   addStockBtn.addEventListener('click', async () => {
-                    const MAX_MANUAL = 5;
                     const symbol = stockAutoInput.value.trim().toUpperCase();
                       if (!symbol) {
                         addStocksStatus.textContent = 'Enter a stock symbol.';
@@ -450,56 +448,11 @@
                       addStocksStatus.style.color = '#b91c1c';
                       return;
                     }
-                    if (currentStocks.length >= MAX_MANUAL) {
-                      addStocksStatus.textContent = `Maximum ${MAX_MANUAL} stocks allowed.`;
-                      addStocksStatus.style.color = '#b91c1c';
-                      return;
-                    }
                     const updated = [...currentStocks, symbol];
                     await updateStocksOnServer(updated);
                     stockAutoInput.value = '';
                     stockAutoSuggest.innerHTML = '';
                     await fetchCurrentStocks();
-                  });
-
-                  // Load TOP NSE list into modal and persist
-                  document.getElementById('loadTopNseBtn')?.addEventListener('click', async () => {
-                    try {
-                      const res = await fetch('/api/top-nse');
-                      const data = await res.json();
-                      if (data.ok && Array.isArray(data.symbols)) {
-                        await updateStocksOnServer(data.symbols.slice(0,5));
-                        await fetchCurrentStocks();
-                        addStocksStatus.textContent = 'Loaded TOP NSE symbols.';
-                        addStocksStatus.style.color = '#166534';
-                      } else {
-                        addStocksStatus.textContent = data.message || 'Failed to load TOP NSE.';
-                        addStocksStatus.style.color = '#b91c1c';
-                      }
-                    } catch (err) {
-                      addStocksStatus.textContent = 'Error: ' + (err.message || err);
-                      addStocksStatus.style.color = '#b91c1c';
-                    }
-                  });
-
-                  // Load TOP BSE list into modal and persist
-                  document.getElementById('loadTopBseBtn')?.addEventListener('click', async () => {
-                    try {
-                      const res = await fetch('/api/top-bse');
-                      const data = await res.json();
-                      if (data.ok && Array.isArray(data.symbols)) {
-                        await updateStocksOnServer(data.symbols.slice(0,5));
-                        await fetchCurrentStocks();
-                        addStocksStatus.textContent = 'Loaded TOP BSE symbols.';
-                        addStocksStatus.style.color = '#166534';
-                      } else {
-                        addStocksStatus.textContent = data.message || 'Failed to load TOP BSE.';
-                        addStocksStatus.style.color = '#b91c1c';
-                      }
-                    } catch (err) {
-                      addStocksStatus.textContent = 'Error: ' + (err.message || err);
-                      addStocksStatus.style.color = '#b91c1c';
-                    }
                   });
 
                   // Global fallback opener so anchor onclick works even if listeners fail
@@ -556,7 +509,6 @@
               <button id="applyStrategyBtn">View</button>
               <button id="openComparisonBtn">Compare</button>
               <button id="downloadTrialCsvBtn">CSV</button>
-              <button id="addStocksLink" style="background:transparent;border:none;color:#2563eb;font-weight:bold;text-decoration:underline;cursor:pointer;padding:0 6px;">Add Stocks</button>
               <span id="trialStatus" class="muted"></span>
               <span id="strategyStatus" class="muted"></span>
             </div>
@@ -606,7 +558,7 @@
                     <th class="money-col">Entry</th>
                     <th class="money-col">Live</th>
                     <th class="money-col">Units</th>
-                    <th class="money-col">P/L %</th>
+                    <th class="money-col">P/L / Unit</th>
                     <th class="money-col">P/L Total</th>
                     <th>Entry Time</th>
                     <th>Action</th>
@@ -636,7 +588,6 @@
               </table>
             </div>
           </div>
-          <!-- Manual Stocks Charts moved to right panel so all charts appear on the right side -->
 
           <div class="card">
             <h2>Selected Top 5 Intraday</h2>
@@ -674,7 +625,6 @@
                     <th class="money-col">Invested Amount</th>
                     <th>Reason</th>
                     <th class="money-col">P/L</th>
-                    <th class="money-col">P/L %</th>
                   </tr>
                 </thead>
                 <tbody id="tradesTable"></tbody>
@@ -744,10 +694,6 @@
           <div class="card">
             <h2>Today Traded Charts</h2>
             <div id="todayTradedChartsContainer" class="charts-grid"></div>
-          </div>
-          <div class="card">
-            <h2>Manual Stocks Charts</h2>
-            <div id="manualChartsContainer" class="charts-grid"></div>
           </div>
         </div>
       </div>
