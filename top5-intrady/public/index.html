@@ -373,7 +373,7 @@
                     }
                   }
 
-                  currentStocksList.addEventListener('click', async (e) => {
+                  currentStocksList?.addEventListener('click', async (e) => {
                     if (e.target.classList.contains('deleteStockBtn')) {
                       const symbol = e.target.getAttribute('data-symbol');
                       const updated = currentStocks.filter(s => s !== symbol);
@@ -416,7 +416,7 @@
                   }
 
                   // Auto-suggest logic
-                  stockAutoInput.addEventListener('input', () => {
+                  stockAutoInput?.addEventListener('input', () => {
                     const val = stockAutoInput.value.trim().toUpperCase();
                     if (!val) {
                       stockAutoSuggest.innerHTML = '';
@@ -430,14 +430,14 @@
                       stockAutoSuggest.innerHTML = '';
                     }
                   });
-                  stockAutoSuggest.addEventListener('click', (e) => {
+                  stockAutoSuggest?.addEventListener('click', (e) => {
                     if (e.target.classList.contains('auto-suggest-item')) {
                       stockAutoInput.value = e.target.textContent;
                       stockAutoSuggest.innerHTML = '';
                     }
                   });
 
-                  addStockBtn.addEventListener('click', async () => {
+                  addStockBtn?.addEventListener('click', async () => {
                     const MAX_MANUAL = 5;
                     const symbol = stockAutoInput.value.trim().toUpperCase();
                       if (!symbol) {
@@ -519,7 +519,7 @@
                     }
                   };
 
-                  addStocksLink.addEventListener('click', async (e) => {
+                  addStocksLink?.addEventListener('click', async (e) => {
                     e.preventDefault();
                     addStocksModal.style.display = 'flex';
                     addStocksModal.style.alignItems = 'center';
@@ -530,10 +530,10 @@
                     await fetchAllScrips();
                     await fetchCurrentStocks();
                   });
-                  closeAddStocksModal.addEventListener('click', () => {
+                  closeAddStocksModal?.addEventListener('click', () => {
                     addStocksModal.style.display = 'none';
                   });
-                  addStocksModal.addEventListener('click', (e) => {
+                  addStocksModal?.addEventListener('click', (e) => {
                     if (e.target === addStocksModal) addStocksModal.style.display = 'none';
                   });
                   // ensure dashboard shows manual stocks on initial load
@@ -556,7 +556,7 @@
               <button id="applyStrategyBtn">View</button>
               <button id="openComparisonBtn">Compare</button>
               <button id="downloadTrialCsvBtn">CSV</button>
-              <button id="addStocksLink" style="background:transparent;border:none;color:#2563eb;font-weight:bold;text-decoration:underline;cursor:pointer;padding:0 6px;">Add Stocks</button>
+              <button id="addStocksLink" onclick="openAddStocksModal(event)" style="background:transparent;border:none;color:#2563eb;font-weight:bold;text-decoration:underline;cursor:pointer;padding:0 6px;">Add Stocks</button>
               <span id="trialStatus" class="muted"></span>
               <span id="strategyStatus" class="muted"></span>
             </div>
